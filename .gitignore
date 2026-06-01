@@ -1,0 +1,4 @@
+cowork-docs
+build/
+*.o
+*.ko
