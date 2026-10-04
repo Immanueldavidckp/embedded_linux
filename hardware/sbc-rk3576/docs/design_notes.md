@@ -31,28 +31,28 @@ Input: USB-C 5 V/3 A (5.1 kΩ Rd on CC1/CC2, no PD) → 6 A fuse → 5 V TVS →
 
 | Rail | Source | V | Feeds |
 |---|---|---|---|
-| VDD_CPU_BIG_S0 | RK806 BUCK1 (6.5 A, 0.24 µH) | 0.85 (DVFS) | A72 cluster |
-| VDD_NPU_S0 | BUCK2 (5 A) | 0.75 | NPU |
-| VDD_LOGIC_S0 | BUCK3 (5 A) | 0.75 | logic, memories |
-| VDD_GPU_S0 | BUCK4 (5 A) | 0.85 | Mali-G52 |
-| VDD_CPU_LIT_S0 | BUCK5 (3 A) | 0.85 | A53 cluster |
-| VDD_DDR_S0 | BUCK6 | 0.75 | DDR PHY digital |
-| VCC_3V3_S3 | BUCK7 | 3.3 | always-on 3.3 V, PMUIO1 (debug UART) |
-| VDD2H_DDR_S3 | BUCK8 | 1.05 | LPDDR5 VDD2H |
-| VCC_1V8_S3 | BUCK9 | 1.8 | PMUIO0, VCCIO0/4/5/7, eMMC VCCQ, LPDDR5 VDD1 (through a bead) |
-| VDDQ_DDR_S0 | BUCK10 | 0.5 | LPDDR5 VDDQ + DDR PHY VDDQ |
+| VDD_CPU_BIG_S0 | RK806 BUCK1 (6.5 A, 0.24 µH) | 0.55–0.95 (DVFS) | A72 cluster |
+| VDD_NPU_S0 | BUCK2 (5 A) | 0.55–0.95 | NPU |
+| VDD_CPU_LIT_S0 | BUCK3 (5 A) | 0.55–0.95 | A53 cluster |
+| VCC_3V3_S3 | BUCK4 (5 A) | 3.3 | always-on 3.3 V: PMUIO1 (debug UART), Ethernet PHY, Wi-Fi |
+| VDD_GPU_S0 | BUCK5 | 0.55–0.90 | Mali-G52 |
+| VDDQ_DDR_S0 | BUCK6 | 0.5 | LPDDR5 VDDQ + DDR PHY VDDQ |
+| VDD_LOGIC_S0 | BUCK7 | 0.55–0.80 | logic, memories |
+| VCC_1V8_S3 | BUCK8 | 1.8 | PMUIO0, VCCIO0/4/5/7, eMMC VCCQ, RGMII, LPDDR5 VDD1 (through a bead) |
+| VDD2H_DDR_S3 | BUCK9 | 1.05 | LPDDR5 VDD2H |
+| VDD_DDR_S0 | BUCK10 | 0.55–1.2 | DDR PHY digital |
 | VCC_2V0_PLDO_S3 | TPS562201 | 2.0 | PLDO1–3 pre-regulator (keeps LDO loss low) |
 | VCC_1V1_NLDO_S3 | TPS562201 | 1.1 | NLDO1–5 pre-regulator |
 | VDD2L_DDR_S3 | TPS562201 | 0.9 | LPDDR5 VDD2L |
 | VCC3V3_PCIE | TPS563201 (3 A) | 3.3 | M.2 SSD (up to 2.5 A peaks), enabled by VCC_3V3_S0 |
 | VCC_3V3_S0 | AP2171W from 3V3_S3, EN = PMIC EXT_EN | 3.3 | VCCIO2/3/6, eMMC VCC |
 | PLDO1..5 | RK806 | 1.8/1.8/1.2/3.3/SD | PHY analog 1.8 V, HDMI 1.8 V, DCPHY 1.2 V, USB 3.3 V, SD IO |
-| NLDO1..5 | RK806 | 0.75/0.85/0.75/0.75/0.85 | PMU logic, PHY 0.85 V, PLL 0.75 V, HDMI 0.75 V, DDR PLL |
+| NLDO1..5 | RK806 | 0.75/0.85/0.8375/0.85/0.75 | PMU logic, DDR PLL, HDMI PHY, PHY 0.85 V, PLL/USB2 0.75 V |
 
-**Sequencing:** the **RK806S-5** variant has an OTP slot table preset for RK3576. The buck→rail mapping
-mirrors the ROCK 4D, which uses the same PMIC variant. Before layout sign-off, check the slot table in the
-RK806 datasheet. If a rail lands on the wrong buck, it powers up in the wrong order, and that is a silent
-board killer.
+**Sequencing:** the **RK806S-5** variant has an OTP slot table preset for RK3576, so each buck/LDO must
+carry the rail that OTP expects. The mapping above is **verified against mainline Linux
+`rk3576-rock-4d.dts`** (same PMIC variant + SoC). Rev A0 got 12 of these assignments wrong; the
+device-tree cross-check caught it (see LOG.md #11).
 
 **Power budget:** ~15 W from USB-C 5 V/3 A. An RK3576 under full CPU+NPU load (~6–7 W), plus an NVMe SSD
 (up to ~8 W peak), plus USB3 VBUS (4.5 W) can exceed that. Use a 5 V/4 A supply, or add a PD sink
@@ -73,7 +73,7 @@ controller in rev B (e.g. CH224K, about $0.30) and take 9 V.
 | USB-C OTG0 | USB2_OTG0_DP/DM | USBC_DP/DM | maskrom/ADB, VBUSDET divider |
 | USB3 host | USB3_OTG1_SS* + USB2_OTG1 | USB3_*, USB3A_* | 100 nF TX AC caps, 0.5 pF ESD, AP2171W VBUS switch |
 
-502 of 698 SoC balls are connected and 196 are no-connect: unused MIPI CSI/DSI, UFS, Ethernet RGMII,
+Unused SoC balls are no-connect: MIPI CSI/DSI, UFS, the second Ethernet MAC,
 audio, SPI and spare GPIO. Sheet 11 shows every free ball by name.
 
 ## 5. Known simplifications in rev A0 (decided on purpose)
@@ -82,7 +82,8 @@ audio, SPI and spare GPIO. Sheet 11 shows every free ball by name.
 - PHY REXT resistors are DNP. The reference leaves them NC; the footprints are there in case the RK3576
   hardware guide says otherwise.
 - RK806 FB pins use 0 Ω remote sense (internal reference via OTP). Divider footprints are DNP.
-- No Ethernet, Wi-Fi, 40-pin header, audio, RTC battery or camera/display connectors. These were cut for cost.
+- No 40-pin header, analog audio, RTC battery or camera/display connectors. These were cut for cost.
+  Gigabit Ethernet, a USB hub with 2 extra USB-A ports and Wi-Fi 5/BT were added in rev A1 for desktop use.
 - No reverse-polarity FET: a USB-C source can't present reversed polarity, and a SOT-23 FET would dissipate
   about 0.5 W at 3 A.
 

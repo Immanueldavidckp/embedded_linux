@@ -2,7 +2,7 @@
 
 ## Board
 
-- 85 × 56 mm, R3 corners, 4× M2.5 holes 3.5 mm in from each corner (78 × 49 mm pattern).
+- 100 × 72 mm, R3 corners, 4× M2.5 holes 3.5 mm in from each corner (93 × 65 mm pattern).
 - 8 layers, 1.6 mm, ENIG. Stackup is defined in the PCB file (Board Setup → Physical Stackup):
 
 | Layer | Use | Dielectric below |

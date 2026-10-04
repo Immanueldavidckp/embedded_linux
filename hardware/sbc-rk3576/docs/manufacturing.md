@@ -14,7 +14,7 @@
 | Surface finish | ENIG (flat pads for 0.5–0.65 mm pitch BGAs) |
 | Solder mask / silk | green / white, both sides |
 | Copper | 1 oz outer (finished), 0.5 oz inner |
-| Outline | 85 × 56 mm, R3 corners; panelize 2×3 with V-score + 5 mm rails and fiducials |
+| Outline | 100 × 72 mm, R3 corners; panelize 2×2 with V-score + 5 mm rails and fiducials |
 
 ## Assembly spec
 
@@ -44,7 +44,7 @@ every IC in their 3D preview before you pay.
 ## Release checklist (rev A0 → rev A1, orderable)
 
 - [ ] Replace the RK3576 land pattern with Rockchip's. Re-run `build.sh`; parity must stay at 0.
-- [ ] Verify the RK806S-5 OTP slot table matches the BUCK/LDO→rail mapping on sheet 02.
+- [x] RK806S-5 BUCK/LDO→rail mapping verified against mainline `rk3576-rock-4d.dts` (rev A1).
 - [ ] Confirm the VCCIO bank voltages (sheet 04 `pwr_map`) against the RK3576 HW design guide, especially
       VCCIO1 (SDMMC0), VCCIO4/5, and the GPIO4_C bank used for HDMI DDC/HPD.
 - [ ] Check the M.2 socket footprint against the chosen part (LOTES APCI0026 / Amphenol MDT420M),

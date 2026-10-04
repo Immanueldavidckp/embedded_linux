@@ -174,17 +174,20 @@ def build():
     L_BIG = ('Inductor_SMD:L_Coilcraft_XAL4030-XXX', 'MDA4030-R24M (0.24uH 8A)', 0.12)
     L_MID = ('Inductor_SMD:L_Coilcraft_XAL4030-XXX', 'MDA4030-R47M (0.47uH 5.5A)', 0.10)
     L_SML = ('Inductor_SMD:L_Changjiang_FNR4030S', 'FNR4030S1R0NT (1uH 3.4A)', 0.05)
+    # Buck/LDO -> rail mapping MUST match the RK806S-5 OTP power-up slots. Verified
+    # against mainline Linux arch/arm64/boot/dts/rockchip/rk3576-rock-4d.dts (same
+    # PMIC variant + SoC): dcdc-reg1..10, pldo-reg1..5, nldo-reg1..5.
     bucks = {
-        1: ('VDD_CPU_BIG_S0', '0.85V', '0.24uH', L_BIG, '3x22uF 2x47uF/0805'),
-        2: ('VDD_NPU_S0', '0.75V', '0.47uH', L_MID, '3x22uF'),
-        3: ('VDD_LOGIC_S0', '0.75V', '0.47uH', L_MID, '3x22uF'),
-        4: ('VDD_GPU_S0', '0.85V', '0.47uH', L_MID, '3x22uF'),
-        5: ('VDD_CPU_LIT_S0', '0.85V', '1uH', L_SML, '2x22uF'),
-        6: ('VDD_DDR_S0', '0.75V', '1uH', L_SML, '2x22uF'),
-        7: ('VCC_3V3_S3', '3.3V', '1uH', L_SML, '2x22uF'),
-        8: ('VDD2H_DDR_S3', '1.05V', '1uH', L_SML, '2x22uF'),
-        9: ('VCC_1V8_S3', '1.8V', '1uH', L_SML, '2x22uF'),
-        10: ('VDDQ_DDR_S0', '0.5V', '1uH', L_SML, '2x22uF'),
+        1: ('VDD_CPU_BIG_S0', '0.55-0.95V', '0.24uH', L_BIG, '3x22uF 2x47uF/0805'),
+        2: ('VDD_NPU_S0', '0.55-0.95V', '0.47uH', L_MID, '3x22uF'),
+        3: ('VDD_CPU_LIT_S0', '0.55-0.95V', '0.47uH', L_MID, '3x22uF'),
+        4: ('VCC_3V3_S3', '3.3V', '0.47uH', L_MID, '3x22uF'),
+        5: ('VDD_GPU_S0', '0.55-0.90V', '1uH', L_SML, '2x22uF'),
+        6: ('VDDQ_DDR_S0', '0.5V', '1uH', L_SML, '2x22uF'),
+        7: ('VDD_LOGIC_S0', '0.55-0.80V', '1uH', L_SML, '2x22uF'),
+        8: ('VCC_1V8_S3', '1.8V', '1uH', L_SML, '2x22uF'),
+        9: ('VDD2H_DDR_S3', '1.05V', '1uH', L_SML, '2x22uF'),
+        10: ('VDD_DDR_S0', '0.55-1.2V', '1uH', L_SML, '2x22uF'),
     }
     for n, name in rk806.items():
         m = re.fullmatch(r'VCC(\d+)(_\d)?', name)
@@ -211,9 +214,9 @@ def build():
         'PLDO1': ('VCCA_1V8_S0', '1.8V'), 'PLDO2': ('VCCA1V8_PLDO2_S0', '1.8V'),
         'PLDO3': ('VDDA_1V2_S0', '1.2V'), 'PLDO4': ('VCCA_3V3_S0', '3.3V'),
         'PLDO5': ('VCCIO_SD_S0', '3.3V/1.8V'),
-        'NLDO1': ('VDD_0V75_S3', '0.75V'), 'NLDO2': ('VDDA_0V85_S0', '0.85V'),
-        'NLDO3': ('VDDA_0V75_S0', '0.75V'), 'NLDO4': ('VDDA0V75_HDMI_S0', '0.75V'),
-        'NLDO5': ('VDDA_DDR_PLL_S0', '0.85V'),
+        'NLDO1': ('VDD_0V75_S3', '0.75V'), 'NLDO2': ('VDDA_DDR_PLL_S0', '0.85V'),
+        'NLDO3': ('VDDA0V75_HDMI_S0', '0.8375V'), 'NLDO4': ('VDDA_0V85_S0', '0.85V'),
+        'NLDO5': ('VDDA_0V75_S0', '0.75V'),
     }
     for n, name in rk806.items():
         if name in ldos:
@@ -243,8 +246,8 @@ def build():
     d.R('10k', 'PMIC_INT_L', 'VCC_1V8_S3')
     d.R('10k', 'SYS_RESET_L', 'VCC_1V8_S3')
     d.notes.append('RK806S-5 OTP fixes the power-up order of BUCK/LDO slots for RK3576. The '
-                   'buck->rail mapping on sheet 02 mirrors the Radxa ROCK 4D reference (also RK806S-5 '
-                   '+ RK3576) - re-check against the RK806 datasheet slot table before layout sign-off.')
+                   'buck/LDO->rail mapping on sheet 02 is verified against mainline Linux rk3576-rock-4d.dts '
+                   '(same PMIC variant + SoC).')
 
     # ===================================================== 03 discrete regulators
     d.sheet = '03_power_ext'
