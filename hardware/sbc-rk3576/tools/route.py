@@ -28,7 +28,7 @@ def main():
     ap.add_argument('--passes', type=int, default=40)
     ap.add_argument('--threads', type=int, default=os.cpu_count() or 2)
     ap.add_argument('--jar', default=os.environ.get('FREEROUTING_JAR', '/tmp/claude-0/fr/fr.jar'))
-    ap.add_argument('--timeout', default='01:40:00', help='freerouting job timeout (hh:mm:ss); result is saved')
+    ap.add_argument('--timeout', default='01:15:00', help='freerouting job timeout (hh:mm:ss); result is saved')
     a = ap.parse_args()
     os.makedirs(WORK, exist_ok=True)
     dsn, ses = os.path.join(WORK, 'board.dsn'), os.path.join(WORK, 'board.ses')
@@ -48,7 +48,7 @@ def main():
     cmd = ['java', '-Xmx12g', '-jar', a.jar, '-de', dsn, '-do', ses, '-mp', str(a.passes),
            '-mt', str(a.threads), '--gui.enabled=false', f'--router.job_timeout={a.timeout}',
            '--profile.allow_telemetry=false', '--usage_and_diagnostic_data.disable_analytics=true',
-           '--api_server.enabled=false']
+           '--api_server.enabled=false', '--router.optimizer.max_passes=0']
     print('running:', ' '.join(cmd), flush=True)
     if os.path.exists(ses):
         os.remove(ses)
