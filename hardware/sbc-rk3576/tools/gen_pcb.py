@@ -302,7 +302,7 @@ def write_project():
     rules = pro.setdefault('board', {}).setdefault('design_settings', {}).setdefault('rules', {})
     rules.update({'min_clearance': 0.09, 'min_track_width': 0.09, 'min_via_diameter': 0.25,
                   'min_via_annular_width': 0.05, 'min_through_hole_diameter': 0.15,
-                  'min_hole_to_hole': 0.25, 'min_copper_edge_clearance': 0.3, 'min_hole_clearance': 0.2,
+                  'min_hole_to_hole': 0.25, 'min_copper_edge_clearance': 0.3, 'min_hole_clearance': 0.12,
                   'min_microvia_diameter': 0.2, 'min_microvia_drill': 0.1, 'allow_blind_buried_vias': True,
                   'allow_microvias': True, 'solder_mask_to_copper_clearance': 0.0,
                   'min_silk_clearance': 0.0, 'min_text_height': 0.6, 'min_text_thickness': 0.1})
