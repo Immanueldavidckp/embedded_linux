@@ -2,3 +2,9 @@ cowork-docs
 build/
 *.o
 *.ko
+# KiCad local state
+*.kicad_prl
+*-backups/
+fp-info-cache
+\#auto_saved_files\#
+_autosave-*

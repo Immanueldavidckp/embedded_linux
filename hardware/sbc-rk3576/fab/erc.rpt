@@ -1,0 +1,30 @@
+ERC report (2026-10-04T04:00:40+0000, Encoding UTF8)
+Report includes: Errors, Warnings, Exclusions
+
+***** Sheet /
+
+***** Sheet /01_power_input/
+
+***** Sheet /02_pmic/
+
+***** Sheet /03_power_ext/
+
+***** Sheet /04_soc_power/
+
+***** Sheet /05_soc_system/
+
+***** Sheet /06_lpddr5/
+
+***** Sheet /07_storage/
+
+***** Sheet /08_nvme/
+
+***** Sheet /09_hdmi/
+
+***** Sheet /10_usb/
+
+***** Sheet /11_soc_gpio/
+
+***** Sheet /12_mechanical/
+
+ ** ERC messages: 0  Errors 0  Warnings 0
