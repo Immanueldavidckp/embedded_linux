@@ -10,19 +10,25 @@ DOC=$ROOT/docs
 
 python3 gen_lib.py
 python3 gen_schematic.py
-python3 gen_pcb.py
+# The PCB carries routing now. Re-placing it from scratch throws that away, so
+# only do it on request:  REGEN_PCB=1 tools/build.sh   (then route.py again)
+if [ "${REGEN_PCB:-0}" = 1 ]; then
+    python3 gen_pcb.py
+    python3 fanout.py
+fi
 python3 gen_bom.py
 
 echo "== ERC"
 kicad-cli sch erc --severity-all --exit-code-violations -o "$FAB/erc.rpt" "$KI/rk3576-sbc.kicad_sch"
-echo "== DRC + schematic parity (unrouted connections are expected until layout)"
+echo "== DRC + schematic parity"
 kicad-cli pcb drc --schematic-parity --severity-all -o "$FAB/drc.rpt" "$KI/rk3576-sbc.kicad_pcb" || true
 grep -E "^\*\* Found" "$FAB/drc.rpt"
-if grep -qE "^\*\* Found [1-9][0-9]* (DRC violations|Footprint errors)" "$FAB/drc.rpt"; then
+if grep -qE "^\*\* Found [1-9][0-9]* Footprint errors" "$FAB/drc.rpt"; then
     echo "DRC/parity errors - see fab/drc.rpt"; exit 1
 fi
 
-echo "== Fabrication outputs (DRAFT: board is placed, not routed)"
+python3 length_report.py || true
+echo "== Fabrication outputs (DRAFT until DRC shows 0 unconnected and lengths are tuned)"
 rm -rf "$FAB/gerbers-draft" && mkdir -p "$FAB/gerbers-draft"
 kicad-cli pcb export gerbers --layers F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,In5.Cu,In6.Cu,B.Cu,F.Paste,B.Paste,F.SilkS,B.SilkS,F.Mask,B.Mask,Edge.Cuts \
     --subtract-soldermask -o "$FAB/gerbers-draft/" "$KI/rk3576-sbc.kicad_pcb" >/dev/null

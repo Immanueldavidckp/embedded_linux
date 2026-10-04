@@ -28,13 +28,14 @@ def main():
     ap.add_argument('--passes', type=int, default=40)
     ap.add_argument('--threads', type=int, default=os.cpu_count() or 2)
     ap.add_argument('--jar', default=os.environ.get('FREEROUTING_JAR', '/tmp/claude-0/fr/fr.jar'))
+    ap.add_argument('--timeout', default='01:40:00', help='freerouting job timeout (hh:mm:ss); result is saved')
     a = ap.parse_args()
     os.makedirs(WORK, exist_ok=True)
     dsn, ses = os.path.join(WORK, 'board.dsn'), os.path.join(WORK, 'board.ses')
 
     board = pcbnew.LoadBoard(PCB)
     before = unrouted(board)
-    shutil.copy(PCB, PCB.replace('.kicad_pcb', '.unrouted.kicad_pcb.bak'))
+    shutil.copy(PCB, PCB.replace('.kicad_pcb', '.before-route.kicad_pcb.bak'))
     if not pcbnew.ExportSpecctraDSN(board, dsn):
         raise SystemExit('DSN export failed')
     # L2/L5/L7 are solid GND planes: mark them 'power' so the router only drops
@@ -45,9 +46,15 @@ def main():
     open(dsn, 'w').write(txt)
     t0 = time.time()
     cmd = ['java', '-Xmx12g', '-jar', a.jar, '-de', dsn, '-do', ses, '-mp', str(a.passes),
-           '-mt', str(a.threads), '--gui.enabled=false']
+           '-mt', str(a.threads), '--gui.enabled=false', f'--router.job_timeout={a.timeout}',
+           '--profile.allow_telemetry=false', '--usage_and_diagnostic_data.disable_analytics=true',
+           '--api_server.enabled=false']
     print('running:', ' '.join(cmd), flush=True)
-    subprocess.run(cmd, check=True)
+    if os.path.exists(ses):
+        os.remove(ses)
+    subprocess.run(cmd, check=False)
+    if not os.path.exists(ses):
+        raise SystemExit('freerouting produced no session file')
     print(f'freerouting finished in {(time.time() - t0) / 60:.1f} min', flush=True)
 
     board = pcbnew.LoadBoard(PCB)

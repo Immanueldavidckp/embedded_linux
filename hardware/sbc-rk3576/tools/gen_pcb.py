@@ -355,8 +355,8 @@ def gnd_zone(board, layer, net):
     z.SetLayer(layer)
     z.SetNet(net)
     z.SetIsRuleArea(False)
-    z.SetLocalClearance(MM(0.2))
-    z.SetMinThickness(MM(0.15))
+    z.SetLocalClearance(MM(0.1))      # 0.55 mm BGA via field: keep plane webs
+    z.SetMinThickness(MM(0.1))
     z.SetPadConnection(pcbnew.ZONE_CONNECTION_THERMAL)
     z.SetZoneName(f'GND_{board.GetLayerName(layer)}')
     o = z.Outline()
@@ -437,6 +437,10 @@ def main():
         sides = [TOP, BOT] if is_tht(fp) else [side]
         fixed.append((ref, box, set(sides)))
         occ.mark(box, sides, pad=0.2)
+    # Keep the bottom side under the fine-pitch BGAs free for via-in-pad fan-out
+    # (tools/fanout.py); their decoupling ends up as a tight ring around them.
+    for r in ('U401', 'U601'):
+        occ.mark(bbox_mm(fps[r][1]), [BOT], pad=0.3)
     clash = [f'{r1}/{r2}' for i, (r1, b1, s1) in enumerate(fixed) for (r2, b2, s2) in fixed[i + 1:]
              if s1 & s2 and b1[0] < b2[2] and b2[0] < b1[2] and b1[1] < b2[3] and b2[1] < b1[3]]
     if clash:
