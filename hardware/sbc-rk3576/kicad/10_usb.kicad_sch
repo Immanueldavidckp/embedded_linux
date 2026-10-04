@@ -4,7 +4,7 @@
   (uuid "d87c06e6-6e58-567f-993b-7be58d747a49")
   (paper "A4")
   (title_block
-    (title "USB-C OTG (maskrom) + USB 3.0 host")
+    (title "USB-C OTG (maskrom) + USB 3.0 host port")
     (date "2026-10-04")
     (rev "A0-draft")
     (company "RK3576 SBC (LPDDR5 / eMMC / NVMe / HDMI 4K)")
@@ -1812,7 +1812,7 @@
       (effects (font (size 1.27 1.27)) hide)
     )
   )
-  (text "10_usb: USB-C OTG (maskrom) + USB 3.0 host"
+  (text "10_usb: USB-C OTG (maskrom) + USB 3.0 host port"
     (at 20 20 0)
     (effects (font (size 3 3)) (justify left bottom))
     (uuid "0b0d9754-abcc-59c9-a63e-b8c239cd568c")

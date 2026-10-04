@@ -226,7 +226,7 @@
     )
     (instances (project "rk3576-sbc" (path "/3461ca5d-73ab-5b55-b754-dceefbd02664" (page "11"))))
   )
-  (text "USB-C OTG (maskrom) + USB 3.0 host"
+  (text "USB-C OTG (maskrom) + USB 3.0 host port"
     (at 163 177 0)
     (effects (font (size 1.8 1.8)) (justify left))
     (uuid "94756199-3f9d-522e-a9c7-f228e203d980")
@@ -274,6 +274,50 @@
     (at 163 253 0)
     (effects (font (size 1.8 1.8)) (justify left))
     (uuid "0793c9a8-7336-578a-90a0-a114fa19cbd8")
+  )
+  (sheet
+    (at 290 50)
+    (size 100 25)
+    (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0))
+    (uuid "db380339-f7c8-5540-8210-7aafa8b6b225")
+    (property "Sheetname" "13_ethernet"
+      (at 290 49.3 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "13_ethernet.kicad_sch"
+      (at 290 75.6 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances (project "rk3576-sbc" (path "/3461ca5d-73ab-5b55-b754-dceefbd02664" (page "14"))))
+  )
+  (text "Gigabit Ethernet (RTL8211F RGMII)"
+    (at 293 63 0)
+    (effects (font (size 1.8 1.8)) (justify left))
+    (uuid "ff0b6249-104e-5512-b08a-a108a2b3c29f")
+  )
+  (sheet
+    (at 290 88)
+    (size 100 25)
+    (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0))
+    (uuid "4e0878cf-3c2c-5c3c-a71f-2433a524f1e3")
+    (property "Sheetname" "14_usb_hub_wifi"
+      (at 290 87.3 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "14_usb_hub_wifi.kicad_sch"
+      (at 290 113.6 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances (project "rk3576-sbc" (path "/3461ca5d-73ab-5b55-b754-dceefbd02664" (page "15"))))
+  )
+  (text "USB 2.0 hub, 2x USB-A, Wi-Fi 5 + BT module"
+    (at 293 101 0)
+    (effects (font (size 1.8 1.8)) (justify left))
+    (uuid "c7aede83-243d-5a82-b8fa-e33576e5a325")
   )
   (text "BLOCK DIAGRAM"
     (at 30 150 0)

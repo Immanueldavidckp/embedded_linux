@@ -8,3 +8,5 @@ build/
 fp-info-cache
 \#auto_saved_files\#
 _autosave-*
+hardware/sbc-rk3576/build/
+*.unrouted.kicad_pcb.bak

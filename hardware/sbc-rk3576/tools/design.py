@@ -29,9 +29,11 @@ SHEETS = OrderedDict([
     ('07_storage', 'eMMC 5.1 + microSD'),
     ('08_nvme', 'M.2 M-key NVMe (PCIe 2.1 x1)'),
     ('09_hdmi', 'HDMI 2.1 TX (4K)'),
-    ('10_usb', 'USB-C OTG (maskrom) + USB 3.0 host'),
+    ('10_usb', 'USB-C OTG (maskrom) + USB 3.0 host port'),
     ('11_soc_gpio', 'RK3576 GPIO banks'),
     ('12_mechanical', 'Mounting holes, fiducials'),
+    ('13_ethernet', 'Gigabit Ethernet (RTL8211F RGMII)'),
+    ('14_usb_hub_wifi', 'USB 2.0 hub, 2x USB-A, Wi-Fi 5 + BT module'),
 ])
 
 # --------------------------------------------------------------------- parts
@@ -587,9 +589,10 @@ def build():
     d.add('U', 'Power_Protection:USBLC6-2SC6', 'USBLC6-2SC6', 'Package_TO_SOT_SMD:SOT-23-6',
           {'1': 'USBC_DP', '6': 'USBC_DP', '3': 'USBC_DM', '4': 'USBC_DM', '2': 'GND', '5': 'VBUS_IN'},
           mpn='USBLC6-2SC6', mfr='ST', lcsc='C7519', price=0.06, desc='USB-C D+/D- ESD')
-    # OTG1: USB 3.0 Type-A host
-    S('USB2_OTG1_DP', 'USB3A_DP')
-    S('USB2_OTG1_DM', 'USB3A_DM')
+    # OTG1: USB 3.0 Type-A host. SuperSpeed goes straight to the port; the USB2
+    # pair goes through the FE1.1s hub (sheet 14) whose port 1 feeds this jack.
+    S('USB2_OTG1_DP', 'HUB_UP_DP')
+    S('USB2_OTG1_DM', 'HUB_UP_DM')
     S('USB2_OTG1_VBUSDET', 'VBUS_USB3A')     # host: tie VBUSDET to own VBUS
     S('USB3_OTG1_SSTXP', 'USB3_TXP')
     S('USB3_OTG1_SSTXN', 'USB3_TXN')
@@ -621,8 +624,147 @@ def build():
     # ===================================================== 11 GPIO (SoC GPIO units live here)
     d.sheet = '11_soc_gpio'
     d.notes.append('All RK3576 pins not listed in design.py are left unconnected (no-connect flags). '
-                   'A 40-pin expansion header and Ethernet are deliberate omissions for cost; '
-                   'the GPIO sheet shows every free ball if you want to add them.')
+                   'A 40-pin expansion header is a deliberate omission for cost; '
+                   'the GPIO sheet shows every free ball if you want to add one.')
+
+    # ===================================================== 13 Ethernet
+    d.sheet = '13_ethernet'
+    # RTL8211F-CG on GMAC0 (RGMII, M0 pin group, 1.8 V IO as on the ROCK 4D)
+    rgmii = [('ETH0_TXD0_M0', '18', 'RGMII_TXD0'), ('ETH0_TXD1_M0', '17', 'RGMII_TXD1'),
+             ('ETH0_TXD2_M0', '16', 'RGMII_TXD2'), ('ETH0_TXD3_M0', '15', 'RGMII_TXD3'),
+             ('ETH0_TXCTL_M0', '19', 'RGMII_TXCTL'), ('ETH0_RXD0_M0', '25', 'RGMII_RXD0'),
+             ('ETH0_RXD1_M0', '24', 'RGMII_RXD1'), ('ETH0_RXD2_M0', '23', 'RGMII_RXD2'),
+             ('ETH0_RXD3_M0', '22', 'RGMII_RXD3'), ('ETH0_RXCTL_M0', '26', 'RGMII_RXCTL'),
+             ('ETH0_MDC_M0', '13', 'ETH_MDC'), ('ETH0_MDIO_M0', '14', 'ETH_MDIO')]
+    phy = {pin: net for _f, pin, net in rgmii}
+    for func, _pin, net in rgmii:
+        S(func, net)
+    # clocks: 22R source series resistors at each driver
+    S('ETH0_TXCLK_M0', 'RGMII_TXC_SOC')
+    d.R('22R', 'RGMII_TXC_SOC', 'RGMII_TXC', desc='TXC series termination at SoC')
+    phy['20'] = 'RGMII_TXC'
+    phy['27'] = 'RGMII_RXC_PHY'
+    d.R('22R', 'RGMII_RXC_PHY', 'RGMII_RXC', desc='RXC series termination at PHY')
+    S('ETH0_RXCLK_M0', 'RGMII_RXC')
+    mdi = {'1': 'ETH_MDI0_P', '2': 'ETH_MDI0_N', '4': 'ETH_MDI1_P', '5': 'ETH_MDI1_N',
+           '6': 'ETH_MDI2_P', '7': 'ETH_MDI2_N', '9': 'ETH_MDI3_P', '10': 'ETH_MDI3_N'}
+    phy.update(mdi)
+    phy.update({'3': 'VDD10_PHY', '8': 'VDD10_PHY', '21': 'VDD10_PHY', '38': 'VDD10_PHY',
+                '11': 'VCC3V3_PHY', '29': 'VCC3V3_PHY', '40': 'VCC3V3_PHY', '28': 'VCC_1V8_S3',
+                '30': 'PHY_REG_OUT', '12': 'PHY_RST_L', '31': 'PHY_INT_L', '32': 'PHY_LED0',
+                '33': 'PHY_LED1', '34': 'PHY_LED2', '35': None, '36': 'PHY_XI', '37': 'PHY_XO',
+                '39': 'PHY_RSET', '41': 'GND'})
+    d.add('U', 'sbc:RTL8211F-CG', 'RTL8211F-CG', 'sbc:WQFN-40-1EP_5x5mm_P0.4mm', phy,
+          mpn='RTL8211F-CG', mfr='Realtek', lcsc='C187932', price=0.89, desc='Gigabit RGMII PHY')
+    d.add('FB', 'Device:FerriteBead_Small', '120R@100MHz', 'Inductor_SMD:L_0603_1608Metric',
+          {'1': 'VCC_3V3_S3', '2': 'VCC3V3_PHY'}, mpn='BLM18PG121SN1D', mfr='Murata', price=0.02)
+    d.caps('VCC3V3_PHY', '1x10uF 3x100nF')
+    # internal switching regulator: REG_OUT -> 2.2uH -> DVDD10/AVDD10
+    d.L('2.2uH', 'PHY_REG_OUT', 'VDD10_PHY', 'Inductor_SMD:L_1008_2520Metric', 'MWSA2520S-2R2MT (2.2uH 1.5A)',
+        0.03, mfr='Sunlord', desc='RTL8211F switching regulator inductor')
+    d.caps('VDD10_PHY', '2x4.7uF 4x100nF')
+    d.caps('VCC_1V8_S3', '1x1uF')
+    d.R('2.49k', 'PHY_RSET', 'GND', desc='RSET 1%')
+    d.add('Y', 'Device:Crystal_GND24', '25MHz', 'Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm',
+          {'1': 'PHY_XI', '2': 'GND', '3': 'PHY_XO', '4': 'GND'},
+          mpn='X322525MOB4SI (25MHz 20pF)', mfr='Yangxing', lcsc='C9006', price=0.08)
+    d.C('15pF', 'PHY_XI', size='0402', diel='C0G', volt='50V')
+    d.C('15pF', 'PHY_XO', size='0402', diel='C0G', volt='50V')
+    d.R('1.5k', 'ETH_MDIO', 'VCC_1V8_S3', desc='MDIO pull-up')
+    # reset: RC power-on reset + open-drain override from a GPIO (level independent)
+    d.R('10k', 'PHY_RST_L', 'VCC3V3_PHY')
+    d.C('1uF', 'PHY_RST_L')
+    S('GPIO1_D0', 'PHY_RST_GPIO')
+    d.add('Q', 'Transistor_FET:BSS138', 'BSS138', 'Package_TO_SOT_SMD:SOT-23',
+          {'1': 'PHY_RST_GPIO', '2': 'GND', '3': 'PHY_RST_L'},
+          mpn='BSS138', mfr='onsemi/CJ', lcsc='C52895', price=0.01, desc='PHY reset (GPIO high = reset)')
+    d.R('100k', 'PHY_RST_GPIO', 'GND')
+    S('GPIO1_D1', 'PHY_INT_L')
+    d.R('4.7k', 'PHY_INT_L', 'VCC_1V8_S3', desc='INTB open-drain pull-up')
+    # Straps: CFG_LDO[1:0] (LED2,LED1) select RGMII IO level; 1.8 V = LED2 high, LED1 low
+    # (verify against RTL8211F datasheet strap table). CFG_EXT (LED0) low.
+    d.R('4.7k', 'PHY_LED0', 'GND', desc='CFG_EXT strap = 0')
+    d.R('4.7k', 'PHY_LED1', 'GND', desc='CFG_LDO0 strap = 0')
+    d.R('4.7k', 'PHY_LED2', 'VCC3V3_PHY', desc='CFG_LDO1 strap = 1')
+    # LEDs in the jack: LED1 active-high (strap 0), LED2 active-low (strap 1)
+    d.R('510R', 'PHY_LED1', 'ETH_LED_G_A')
+    d.R('510R', 'VCC3V3_PHY', 'ETH_LED_Y_A')
+    rj = {'P2': 'ETH_MDI0_P', 'P3': 'ETH_MDI0_N', 'P4': 'ETH_MDI1_P', 'P7': 'ETH_MDI1_N',
+          'P5': 'ETH_MDI2_P', 'P6': 'ETH_MDI2_N', 'P8': 'ETH_MDI3_P', 'P9': 'ETH_MDI3_N',
+          'P1': 'ETH_CT_A', 'P10': 'ETH_CT_B', '11': 'ETH_LED_G_A', '12': 'GND',
+          '13': 'ETH_LED_Y_A', '14': 'PHY_LED2', 'SHIELD0': 'GND', 'SHIELD1': 'GND'}
+    d.add('J', 'sbc:HR911130C', 'RJ45 GbE', 'sbc:RJ45_Hanrun_HR911130C_MagJack', rj,
+          mpn='HR911130C', mfr='HanRun', lcsc='C50933', price=0.55, desc='RJ45 + 1000BASE-T magnetics + LEDs')
+    # voltage-mode PHY: centre taps AC-coupled to ground, never to a supply
+    d.C('100nF', 'ETH_CT_A', desc='MDI centre tap')
+    d.C('100nF', 'ETH_CT_B', desc='MDI centre tap')
+
+    # ===================================================== 14 USB hub + Wi-Fi
+    d.sheet = '14_usb_hub_wifi'
+    hub = {'1': 'GND', '2': 'HUB_XO', '3': 'HUB_XI', '4': 'WIFI_USB_DM', '5': 'WIFI_USB_DP',
+           '6': 'USBA2_DM', '7': 'USBA2_DP', '8': 'USBA1_DM', '9': 'USBA1_DP',
+           '10': 'USB3A_DM', '11': 'USB3A_DP', '12': 'HUB_1V8', '13': 'HUB_3V3', '14': 'HUB_REXT',
+           '15': 'HUB_UP_DM', '16': 'HUB_UP_DP', '17': 'HUB_RST_L', '18': 'HUB_3V3', '19': 'HUB_3V3',
+           '20': 'VCC5V_HUB', '21': 'HUB_3V3', '22': None, '23': None, '24': None, '25': None,
+           '26': 'HUB_OVC_L', '27': None, '28': 'HUB_1V8'}
+    d.add('U', 'sbc:FE1.1s', 'FE1.1s', 'sbc:SSOP-28_3.9x9.9mm_P0.635mm', hub,
+          mpn='FE1.1S-BSOP28BCN', mfr='Terminus', lcsc='C9359', price=0.36,
+          desc='USB2.0 4-port hub, self-powered (BUSJ=1)')
+    d.add('FB', 'Device:FerriteBead_Small', '120R@100MHz', 'Inductor_SMD:L_0603_1608Metric',
+          {'1': 'VCC5V0_SYS_S5', '2': 'VCC5V_HUB'}, mpn='BLM18PG121SN1D', mfr='Murata', price=0.02)
+    d.caps('VCC5V_HUB', '1x4.7uF 1x100nF')
+    d.caps('HUB_3V3', '1x10uF 2x100nF')
+    d.caps('HUB_1V8', '1x1uF 1x100nF')
+    d.R('2.7k', 'HUB_REXT', 'GND', desc='REXT 1%')
+    d.R('10k', 'HUB_RST_L', 'HUB_3V3')
+    d.C('1uF', 'HUB_RST_L', desc='hub power-on reset')
+    d.add('Y', 'Device:Crystal_GND24', '12MHz', 'Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm',
+          {'1': 'HUB_XI', '2': 'GND', '3': 'HUB_XO', '4': 'GND'},
+          mpn='X322512MSB4SI (12MHz 20pF)', mfr='Yangxing', lcsc='C9002', price=0.08)
+    d.C('22pF', 'HUB_XI', size='0402', diel='C0G', volt='50V')
+    d.C('22pF', 'HUB_XO', size='0402', diel='C0G', volt='50V')
+    # dual stacked USB 2.0 type-A (hub ports 2 and 3), ganged 1.5 A switch
+    d.add('J', 'Connector:USB_A_Stacked', 'USB2.0 A x2', 'Connector_USB:USB_A_CUI_UJ2-ADH-TH_Horizontal_Stacked',
+          {'1': 'VBUS_USB2A', '2': 'USBA1_DM', '3': 'USBA1_DP', '4': 'GND',
+           '5': 'VBUS_USB2A', '6': 'USBA2_DM', '7': 'USBA2_DP', '8': 'GND', '9': 'GND'},
+          mpn='UJ2-ADH-TH', mfr='CUI', price=0.55, desc='dual stacked USB 2.0 A (keyboard + mouse)')
+    d.add('U', 'Power_Protection:USBLC6-2SC6', 'USBLC6-2SC6', 'Package_TO_SOT_SMD:SOT-23-6',
+          {'1': 'USBA1_DP', '6': 'USBA1_DP', '3': 'USBA1_DM', '4': 'USBA1_DM', '2': 'GND', '5': 'VBUS_USB2A'},
+          mpn='USBLC6-2SC6', mfr='ST', lcsc='C7519', price=0.06, desc='USB-A #1 ESD')
+    d.add('U', 'Power_Protection:USBLC6-2SC6', 'USBLC6-2SC6', 'Package_TO_SOT_SMD:SOT-23-6',
+          {'1': 'USBA2_DP', '6': 'USBA2_DP', '3': 'USBA2_DM', '4': 'USBA2_DM', '2': 'GND', '5': 'VBUS_USB2A'},
+          mpn='USBLC6-2SC6', mfr='ST', lcsc='C7519', price=0.06, desc='USB-A #2 ESD')
+    d.add('U', 'Power_Management:AP2171W', 'AP2171W', 'Package_TO_SOT_SMD:SOT-23-5',
+          {'1': 'VBUS_USB2A', '2': 'GND', '3': 'HUB_OVC_L', '4': 'USB_HOST_PWREN', '5': 'VCC5V0_SYS_S5'},
+          mpn='AP2171WG-7', mfr='Diodes Inc', lcsc='C155555', price=0.12, desc='USB2-A VBUS switch (ganged)')
+    d.R('10k', 'HUB_OVC_L', 'HUB_3V3')
+    d.caps('VBUS_USB2A', '1x47uF/0805 1x100nF')
+    # Wi-Fi 5 + BT 4.2 USB module on hub port 4 (mainline Linux: rtw88_8821cu + btusb)
+    wifi = {'1': 'GND', '2': 'WIFI_RF', '3': None, '4': 'GND', '11': 'VCC3V3_WIFI', '12': 'WIFI_USB_DM',
+            '13': 'WIFI_USB_DP', '14': 'GND', '16': 'WIFI_WL_DIS_L', '17': 'WIFI_BT_DIS_L',
+            '18': 'WIFI_CHIP_EN', '5': None, '6': None, '7': None, '8': None, '9': None, '10': None,
+            '15': None, '19': None, '20': None, '21': None, '22': None}
+    d.add('U', 'sbc:BL-M8821CU1', 'BL-M8821CU1', 'sbc:WiFi_Module_22P_13.0x12.2mm_P1.27mm', wifi,
+          mpn='BL-M8821CU1 (alt BL-M8723DU1, JLC C9900166844)', mfr='LB-Link', price=2.60,
+          desc='Wi-Fi 5 dual-band 1T1R + BT 4.2, USB 2.0')
+    d.add('FB', 'Device:FerriteBead_Small', '120R@100MHz', 'Inductor_SMD:L_0603_1608Metric',
+          {'1': 'VCC_3V3_S3', '2': 'VCC3V3_WIFI'}, mpn='BLM18PG121SN1D', mfr='Murata', price=0.02)
+    d.caps('VCC3V3_WIFI', '1x22uF 1x1uF 1x100nF')
+    d.R('10k', 'WIFI_WL_DIS_L', 'VCC3V3_WIFI')
+    d.R('10k', 'WIFI_BT_DIS_L', 'VCC3V3_WIFI')
+    d.R('10k', 'WIFI_CHIP_EN', 'VCC3V3_WIFI')
+    S('GPIO1_D2', 'WIFI_PD_GPIO')
+    d.add('Q', 'Transistor_FET:BSS138', 'BSS138', 'Package_TO_SOT_SMD:SOT-23',
+          {'1': 'WIFI_PD_GPIO', '2': 'GND', '3': 'WIFI_CHIP_EN'},
+          mpn='BSS138', mfr='onsemi/CJ', lcsc='C52895', price=0.01, desc='Wi-Fi power-down (GPIO high = off)')
+    d.R('100k', 'WIFI_PD_GPIO', 'GND')
+    # antenna: 50R CPWG to a u.FL, pi-match footprints (series 0R, shunts DNP)
+    d.R('0R', 'WIFI_RF', 'WIFI_ANT', size='0402', desc='RF pi-match series')
+    d.C('DNP', 'WIFI_RF', size='0402', dnp=True, desc='RF pi-match shunt')
+    d.C('DNP', 'WIFI_ANT', size='0402', dnp=True, desc='RF pi-match shunt')
+    d.add('J', 'Connector:Conn_Coaxial', 'u.FL', 'Connector_Coaxial:U.FL_Hirose_U.FL-R-SMT-1_Vertical',
+          {'1': 'WIFI_ANT', '2': 'GND'}, mpn='U.FL-R-SMT-1(10)', mfr='Hirose', price=0.25,
+          desc='Wi-Fi/BT antenna (2.4/5 GHz dipole, IPEX cable)')
 
     # ===================================================== 12 mechanical
     d.sheet = '12_mechanical'
@@ -639,7 +781,7 @@ def build():
     for ui, (lbl, _l, _r) in enumerate(rk3576_units(), 1):
         unit_sheet[ui] = {'DDR': '06_lpddr5', 'SYS': '05_soc_system', 'PWR': '04_soc_power',
                           'GND': '04_soc_power'}.get(lbl, '11_soc_gpio')
-    d.add('U', 'sbc:RK3576', 'RK3576', 'sbc:RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER',
+    d.add('U', 'sbc:RK3576', 'RK3576', 'sbc:RK3576_FCCSP-698_16.1x17.2mm',
           {b: soc_nets.get(b) for b, _ in SOC_PINS}, mpn='RK3576', mfr='Rockchip', price=22.00,
           desc='Octa-core 4xA72@2.2GHz + 4xA53, Mali-G52, 6 TOPS NPU', unit_sheets=unit_sheet, ref='U401')
     refs = [p.ref for p in d.parts]

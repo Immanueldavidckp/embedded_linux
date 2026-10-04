@@ -357,7 +357,7 @@
       (on_board yes)
       (property "Reference" "U" (at 0 86.36 0) (effects (font (size 1.27 1.27))))
       (property "Value" "RK3576" (at 0 88.9 0) (effects (font (size 1.27 1.27))))
-      (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER"
+      (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm"
         (at 0 0 0)
         (effects (font (size 1.27 1.27)) hide)
       )
@@ -4668,7 +4668,7 @@
     (uuid "63d09a5f-b332-5ffe-a536-d8d9fbe7953c")
     (property "Reference" "U401" (at 60.96 33.02 0) (effects (font (size 1.27 1.27))))
     (property "Value" "RK3576" (at 60.96 187.96 0) (effects (font (size 1.27 1.27))))
-    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER"
+    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm"
       (at 60.96 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5187,7 +5187,7 @@
       (effects (font (size 1.27 1.27)) hide)
     )
   )
-  (global_label "USB3A_DM"
+  (global_label "HUB_UP_DM"
     (shape passive)
     (at 83.82 149.86 0)
     (fields_autoplaced)
@@ -5198,7 +5198,7 @@
       (effects (font (size 1.27 1.27)) hide)
     )
   )
-  (global_label "USB3A_DP"
+  (global_label "HUB_UP_DP"
     (shape passive)
     (at 83.82 152.4 0)
     (fields_autoplaced)

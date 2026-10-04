@@ -62,7 +62,7 @@
       (on_board yes)
       (property "Reference" "U" (at 0 86.36 0) (effects (font (size 1.27 1.27))))
       (property "Value" "RK3576" (at 0 88.9 0) (effects (font (size 1.27 1.27))))
-      (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER"
+      (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm"
         (at 0 0 0)
         (effects (font (size 1.27 1.27)) hide)
       )
@@ -4373,7 +4373,7 @@
     (uuid "45946daf-ff6c-5ebe-859e-026e0ab44cb3")
     (property "Reference" "U401" (at 43.18 33.02 0) (effects (font (size 1.27 1.27))))
     (property "Value" "RK3576" (at 43.18 203.2 0) (effects (font (size 1.27 1.27))))
-    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER"
+    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm"
       (at 43.18 116.84 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5940,7 +5940,7 @@
     (uuid "8225ffb1-c3e3-5005-b8b0-4fc5c017baff")
     (property "Reference" "U401" (at 96.52 33.02 0) (effects (font (size 1.27 1.27))))
     (property "Value" "RK3576" (at 96.52 203.2 0) (effects (font (size 1.27 1.27))))
-    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER"
+    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm"
       (at 96.52 116.84 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -7507,7 +7507,7 @@
     (uuid "5980cf2d-0df4-54e6-82b7-a556e51bd9c1")
     (property "Reference" "U401" (at 177.8 33.02 0) (effects (font (size 1.27 1.27))))
     (property "Value" "RK3576" (at 177.8 149.86 0) (effects (font (size 1.27 1.27))))
-    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER"
+    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm"
       (at 177.8 91.44 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -15614,7 +15614,7 @@
     (uuid "0b11fc24-98ce-5338-b56f-c74994195b84")
     (property "Reference" "U401" (at 716.28 264.16 0) (effects (font (size 1.27 1.27))))
     (property "Value" "RK3576" (at 716.28 287.02 0) (effects (font (size 1.27 1.27))))
-    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER"
+    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm"
       (at 716.28 274.32 0)
       (effects (font (size 1.27 1.27)) hide)
     )

@@ -1936,7 +1936,7 @@
       (on_board yes)
       (property "Reference" "U" (at 0 86.36 0) (effects (font (size 1.27 1.27))))
       (property "Value" "RK3576" (at 0 88.9 0) (effects (font (size 1.27 1.27))))
-      (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER"
+      (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm"
         (at 0 0 0)
         (effects (font (size 1.27 1.27)) hide)
       )
@@ -8991,7 +8991,7 @@
     (uuid "1609c440-406a-55a7-9558-92a8a54e9ddf")
     (property "Reference" "U401" (at 175.26 33.02 0) (effects (font (size 1.27 1.27))))
     (property "Value" "RK3576" (at 175.26 144.78 0) (effects (font (size 1.27 1.27))))
-    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER"
+    (property "Footprint" "sbc:RK3576_FCCSP-698_16.1x17.2mm"
       (at 175.26 88.9 0)
       (effects (font (size 1.27 1.27)) hide)
     )

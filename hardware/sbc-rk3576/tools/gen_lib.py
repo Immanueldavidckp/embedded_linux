@@ -327,6 +327,55 @@ def smd_standoff_fp():
     return fp
 
 
+# Verified third-party land patterns (LCSC/EasyEDA via easyeda2kicad), kept in
+# data/lcsc_footprints for provenance. Pad names were checked against the
+# datasheets: RK3576 = all 698 ball IDs of the datasheet pin list.
+LCSC_FP = {
+    'FCCSP-698_L17.2-W16.1-TL_RK3576': 'RK3576_FCCSP-698_16.1x17.2mm',      # LCSC C42388007
+    'WQFN-40_L5.0-W5.0-P0.4-BL-EP': 'WQFN-40-1EP_5x5mm_P0.4mm',             # RTL8211F-CG C187932
+    'SSOP-28_L9.9-W3.9-P0.635-LS6.0-BL-1': 'SSOP-28_3.9x9.9mm_P0.635mm',    # FE1.1S C9359
+    'RJ45-TH_HR911130C': 'RJ45_Hanrun_HR911130C_MagJack',                    # HR911130C C50933
+    'WIFIM-SMD_22P-L13.0-W12.2-P1.27': 'WiFi_Module_22P_13.0x12.2mm_P1.27mm',  # BL-M8x2xU1 family
+}
+
+
+def copy_lcsc_footprints(pretty):
+    from sexp import parse, find, findall
+    src = os.path.join(DATA, 'lcsc_footprints')
+    for old, new in LCSC_FP.items():
+        tree = parse(open(os.path.join(src, old + '.kicad_mod')).read())
+        tree[1] = Q(new)
+        # drop vendor 3D model paths that only exist on the original PC, and the
+        # body-only EasyEDA courtyard (it does not cover the pads)
+        tree[:] = [c for c in tree if not (isinstance(c, list) and c and (
+            c[0] == 'model' or (c[0] in ('fp_line', 'fp_rect', 'fp_circle', 'fp_arc')
+                                and find(c, 'layer') and find(c, 'layer')[1] == 'F.CrtYd')))]
+        xs, ys = [], []
+        for pad in findall(tree, 'pad'):
+            at, size = find(pad, 'at'), find(pad, 'size')
+            x, y, w, h = float(at[1]), float(at[2]), float(size[1]), float(size[2])
+            if len(at) > 3 and int(float(at[3])) % 180 == 90:
+                w, h = h, w
+            xs += [x - w / 2, x + w / 2]
+            ys += [y - h / 2, y + h / 2]
+            # mechanical pegs: unnamed plated holes with zero annular ring -> NPTH
+            drill = find(pad, 'drill')
+            if pad[1] == '' and pad[2] == 'thru_hole' and drill and float(drill[1]) >= w - 1e-6:
+                pad[2] = 'np_thru_hole'
+                pad[pad.index(find(pad, 'layers'))] = ['layers', Q('*.Cu'), Q('*.Mask')]
+        for g in tree:
+            if isinstance(g, list) and g and g[0] in ('fp_line', 'fp_rect') and find(g, 'layer') \
+                    and find(g, 'layer')[1] in ('F.Fab', 'F.SilkS'):
+                for k in ('start', 'end'):
+                    e = find(g, k)
+                    xs.append(float(e[1]))
+                    ys.append(float(e[2]))
+        m = 0.25
+        tree.append(fp_rect(min(xs) - m, min(ys) - m, max(xs) + m, max(ys) + m, 'F.CrtYd', 0.05))
+        with open(os.path.join(pretty, new + '.kicad_mod'), 'w') as f:
+            f.write(dump(tree) + '\n')
+
+
 def write_fp(fp, libdir):
     with open(os.path.join(libdir, fp[1] + '.kicad_mod'), 'w') as f:
         f.write(dump(fp) + '\n')
@@ -339,8 +388,11 @@ def main():
 
     lp5_balls = [b for b, _ in read_pins('lpddr5_315b_pins.csv')]
     emmc_balls = [b for b, _ in read_pins('emmc_153b_pins.csv')]
+    copy_lcsc_footprints(pretty)
+    stale = os.path.join(pretty, 'RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER.kicad_mod')
+    if os.path.exists(stale):
+        os.remove(stale)
     fps = [
-        rk3576_fp(),
         bga_grid_fp('LPDDR5_FBGA-315_12.4x15.0mm_P0.8x0.7mm', 'LPDDR5/5X x32 315-ball FBGA (JEDEC), '
                     '15 cols @0.8mm x 21 rows @0.7mm, NSMD 0.35mm pads', lp5_balls, 0.8, 0.7, 15, 21,
                     12.4, 15.0, 0.35),
@@ -354,7 +406,7 @@ def main():
 
     syms = [
         make_symbol('RK3576', 'U', [(f'RK3576 {lbl}', l, r) for lbl, l, r in rk3576_units()],
-                    'sbc:RK3576_FCCSP-698_16.1x17.2mm_PLACEHOLDER',
+                    'sbc:RK3576_FCCSP-698_16.1x17.2mm',
                     'https://www.rock-chips.com/uploads/pdf/2024.3.18/192/RK3576%20Brief%20Datasheet.pdf',
                     'Rockchip RK3576 octa-core (4xA72 + 4xA53) SoC, FCCSP698L'),
         make_symbol('LPDDR5_x32_315b', 'U', [(f'LPDDR5 {l}', a, b) for l, a, b in lpddr5_units()],
@@ -367,6 +419,47 @@ def main():
                     'Rockchip RK806S-5 PMIC: 10 bucks, 5 PLDO, 5 NLDO'),
         make_symbol('M.2_M_Key', 'J', m2_units(), 'sbc:M.2_Socket3_M-Key_H4.2mm', '',
                     'M.2 Socket 3, M key (PCIe NVMe SSD)'),
+    ]
+    P, B, I, O = 'passive', 'bidirectional', 'input', 'output'
+    W = 'power_in'
+    rtl = {1: 'MDI0+', 2: 'MDI0-', 3: 'AVDD10', 4: 'MDI1+', 5: 'MDI1-', 6: 'MDI2+', 7: 'MDI2-', 8: 'AVDD10',
+           9: 'MDI3+', 10: 'MDI3-', 11: 'AVDD33', 12: 'PHYRSTB', 13: 'MDC', 14: 'MDIO', 15: 'TXD3', 16: 'TXD2',
+           17: 'TXD1', 18: 'TXD0', 19: 'TXCTL', 20: 'TXC', 21: 'DVDD10', 22: 'RXD3/PHYAD0', 23: 'RXD2/PLLOFF',
+           24: 'RXD1/TXDLY', 25: 'RXD0/RXDLY', 26: 'RXCTL/PHYAD2', 27: 'RXC/PHYAD1', 28: 'DVDD_RG',
+           29: 'DVDD33', 30: 'REG_OUT', 31: 'INTB/PMEB', 32: 'LED0/CFG_EXT', 33: 'LED1/CFG_LDO0',
+           34: 'LED2/CFG_LDO1', 35: 'CLKOUT', 36: 'XTAL_IN', 37: 'XTAL_OUT', 38: 'AVDD10', 39: 'RSET',
+           40: 'AVDD33', 41: 'EPAD'}
+    rtl_pw = {3, 8, 11, 21, 28, 29, 38, 40, 41}
+    rtl_l = [(str(n), v, W) for n, v in rtl.items() if n in rtl_pw] + \
+            [(str(n), v, P) for n, v in rtl.items() if n in range(12, 21)]
+    rtl_r = [(str(n), v, P) for n, v in rtl.items() if n not in rtl_pw and n not in range(12, 21)]
+    # FE1.1s SSOP-28 per Terminus datasheet Rev 1.0 (LCSC symbol mislabels 12/13/28 as NC)
+    fe = {1: 'VSS', 2: 'XOUT', 3: 'XIN', 4: 'DM4', 5: 'DP4', 6: 'DM3', 7: 'DP3', 8: 'DM2', 9: 'DP2',
+          10: 'DM1', 11: 'DP1', 12: 'VD18_O', 13: 'VD33', 14: 'REXT', 15: 'DMU', 16: 'DPU', 17: 'XRSTJ',
+          18: 'VBUSM', 19: 'BUSJ', 20: 'VDD5', 21: 'VD33_O', 22: 'DRV', 23: 'LED1', 24: 'LED2',
+          25: 'PWRJ', 26: 'OVCJ', 27: 'TESTJ', 28: 'VD18'}
+    fe_l = [(str(n), fe[n], W if n in (1, 13, 20, 28) else P) for n in (20, 13, 28, 1, 21, 12, 15, 16, 17, 18, 19, 14, 2, 3)]
+    fe_r = [(str(n), fe[n], P) for n in (10, 11, 8, 9, 6, 7, 4, 5, 22, 23, 24, 25, 26, 27)]
+    wifi = {1: 'GND', 2: 'RF', 3: 'NC', 4: 'GND', 5: 'PCM_IN', 6: 'PCM_OUT', 7: 'PCM_SYNC', 8: 'PCM_CLK',
+            9: 'BT_WAKE_HOST', 10: 'HOST_WAKE_BT', 11: 'VDD33', 12: 'USB_DM', 13: 'USB_DP', 14: 'GND',
+            15: 'GPIO/PCM', 16: '~{WL_DIS}', 17: '~{BT_DIS}', 18: 'CHIP_EN', 19: 'HOST_WAKE_WL',
+            20: 'WL_WAKE_HOST', 21: 'WPS', 22: 'LED'}
+    wf_l = [(str(n), wifi[n], W if n in (1, 4, 11, 14) else P) for n in (11, 1, 4, 14, 2, 3, 12, 13, 16, 17, 18)]
+    wf_r = [(str(n), wifi[n], P) for n in (5, 6, 7, 8, 9, 10, 15, 19, 20, 21, 22)]
+    rj = [('P2', 'MDI0+'), ('P3', 'MDI0-'), ('P4', 'MDI1+'), ('P7', 'MDI1-'), ('P5', 'MDI2+'),
+          ('P6', 'MDI2-'), ('P8', 'MDI3+'), ('P9', 'MDI3-'), ('P1', 'CT_A'), ('P10', 'CT_B')]
+    rj_r = [('11', 'LED_G_A'), ('12', 'LED_G_K'), ('13', 'LED_Y_A'), ('14', 'LED_Y_K'),
+            ('SHIELD0', 'SHIELD'), ('SHIELD1', 'SHIELD')]
+    syms += [
+        make_symbol('RTL8211F-CG', 'U', [('RTL8211F', rtl_l, rtl_r)], 'sbc:WQFN-40-1EP_5x5mm_P0.4mm', '',
+                    'Realtek RGMII Gigabit Ethernet PHY'),
+        make_symbol('FE1.1s', 'U', [('FE1.1s', fe_l, fe_r)], 'sbc:SSOP-28_3.9x9.9mm_P0.635mm', '',
+                    'Terminus USB 2.0 4-port hub'),
+        make_symbol('BL-M8821CU1', 'U', [('WiFi5+BT4.2 USB', wf_l, wf_r)],
+                    'sbc:WiFi_Module_22P_13.0x12.2mm_P1.27mm', '',
+                    'LB-Link RTL8821CU dual-band Wi-Fi 5 + BT 4.2 USB module'),
+        make_symbol('HR911130C', 'J', [('RJ45 GbE', [(n, v, P) for n, v in rj], [(n, v, P) for n, v in rj_r])],
+                    'sbc:RJ45_Hanrun_HR911130C_MagJack', '', 'RJ45 with integrated 1000BASE-T magnetics + LEDs'),
     ]
     lib = ['kicad_symbol_lib', ['version', 20220914], ['generator', 'sbc_gen']] + syms
     with open(os.path.join(KICAD, 'sbc.kicad_sym'), 'w') as f:

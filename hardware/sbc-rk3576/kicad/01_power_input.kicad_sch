@@ -1427,12 +1427,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "3b3fdba9-a66a-5226-98bb-eda433d63ab4")
+    (uuid "f1469e33-66a6-52bf-9d53-a164ee8998c9")
     (property "Reference" "#FLG002" (at 71.12 104.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 71.12 105.42 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 71.12 109.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 71.12 109.22 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "bf6fc748-dc5f-552e-a5b1-eec1c81fc486"))
+    (pin "1" (uuid "5f97574c-0e63-52fc-b64c-bbbb192e722a"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1442,12 +1442,12 @@
       )
     )
   )
-  (global_label "VCC3V3_PCIE"
+  (global_label "HUB_1V8"
     (shape passive)
     (at 71.12 109.22 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "22fed631-9d6e-5917-a4e8-7701c0211da8")
+    (uuid "8dfad64f-df04-5a93-bb4b-488116aec3c3")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 71.12 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1460,12 +1460,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "2e2f7e2f-fcff-591e-983e-59da9002d3ad")
+    (uuid "9fb7c6d8-8938-55cc-a008-38035becd598")
     (property "Reference" "#FLG003" (at 109.22 104.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 109.22 105.42 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 109.22 109.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 109.22 109.22 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "0852e562-1cc7-5c32-9e7e-86367cb0b89e"))
+    (pin "1" (uuid "08938731-38d0-504b-9077-605dca44b807"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1475,12 +1475,12 @@
       )
     )
   )
-  (global_label "VCC5V0_SYS_S5"
+  (global_label "HUB_3V3"
     (shape passive)
     (at 109.22 109.22 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "1622a301-1a5e-5083-9fe5-7029e1a7fd41")
+    (uuid "e51ce127-f357-5309-b099-c04d269a1fa3")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 109.22 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1493,12 +1493,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "e411dcb3-6a2e-5f28-9bbe-2b9f127edaff")
+    (uuid "3b3fdba9-a66a-5226-98bb-eda433d63ab4")
     (property "Reference" "#FLG004" (at 149.86 104.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 149.86 105.42 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 149.86 109.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 149.86 109.22 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "7cafc541-3cb9-5e09-88c8-2a6192d3afad"))
+    (pin "1" (uuid "bf6fc748-dc5f-552e-a5b1-eec1c81fc486"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1508,12 +1508,12 @@
       )
     )
   )
-  (global_label "VCC5V_HDMI"
+  (global_label "VCC3V3_PCIE"
     (shape passive)
     (at 149.86 109.22 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "34cf47ab-8f7a-5336-81b0-335b84018914")
+    (uuid "22fed631-9d6e-5917-a4e8-7701c0211da8")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 149.86 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1526,12 +1526,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "3dccdfa8-af6f-50b0-998c-9129d8694fcb")
+    (uuid "c8417cc9-956c-5ab3-a96a-ac560e6b5f1e")
     (property "Reference" "#FLG005" (at 190.5 104.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 190.5 105.42 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 190.5 109.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 190.5 109.22 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "df34e9b7-a8dd-5bd5-bc87-4352a559aa2d"))
+    (pin "1" (uuid "71c65230-ad00-5580-9370-292ca71aaa15"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1541,12 +1541,12 @@
       )
     )
   )
-  (global_label "VCCA1V8_PLDO2_S0"
+  (global_label "VCC3V3_PHY"
     (shape passive)
     (at 190.5 109.22 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "175455c6-497d-57a8-a70b-1f0122a23aee")
+    (uuid "291cd57a-9573-5d9a-8fc7-96e1186b5ba7")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 190.5 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1559,12 +1559,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "1ff1138f-c498-5aad-ac5c-1bb7c5d1231c")
+    (uuid "829bdaa8-ac87-52dc-afbe-dd72fbd48023")
     (property "Reference" "#FLG006" (at 231.14 104.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 231.14 105.42 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 231.14 109.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 231.14 109.22 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "9913b61d-9329-5b27-a2ce-e105c4bc1e67"))
+    (pin "1" (uuid "da6dafd1-f0c4-58ad-a4a2-6c34fb5645c0"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1574,12 +1574,12 @@
       )
     )
   )
-  (global_label "VCCA_1V8_S0"
+  (global_label "VCC3V3_WIFI"
     (shape passive)
     (at 231.14 109.22 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "fec5b4cf-4263-5bc1-a1d4-4dcd45906c9a")
+    (uuid "f291e0be-6a3b-5c6e-a5f2-175298e259e3")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 231.14 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1592,12 +1592,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "b71e70a8-aa88-5084-8114-175d2400055a")
+    (uuid "2e2f7e2f-fcff-591e-983e-59da9002d3ad")
     (property "Reference" "#FLG007" (at 269.24 104.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 269.24 105.42 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 269.24 109.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 269.24 109.22 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "c49c6114-a9d2-5133-a3db-0bc664464955"))
+    (pin "1" (uuid "0852e562-1cc7-5c32-9e7e-86367cb0b89e"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1607,12 +1607,12 @@
       )
     )
   )
-  (global_label "VCCA_3V3_S0"
+  (global_label "VCC5V0_SYS_S5"
     (shape passive)
     (at 269.24 109.22 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "5fabccdd-d73c-5e06-ab2b-6bbc403b2844")
+    (uuid "1622a301-1a5e-5083-9fe5-7029e1a7fd41")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 269.24 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1625,12 +1625,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "4c37d64e-8848-5319-ae68-43792d244657")
+    (uuid "e411dcb3-6a2e-5f28-9bbe-2b9f127edaff")
     (property "Reference" "#FLG008" (at 309.88 104.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 309.88 105.42 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 309.88 109.22 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 309.88 109.22 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "728d6d2a-b237-5dd7-82e4-193044e74be6"))
+    (pin "1" (uuid "7cafc541-3cb9-5e09-88c8-2a6192d3afad"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1640,12 +1640,12 @@
       )
     )
   )
-  (global_label "VCCIO_SD_S0"
+  (global_label "VCC5V_HDMI"
     (shape passive)
     (at 309.88 109.22 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "a2677dd1-a902-518e-87d3-1596c09178b1")
+    (uuid "34cf47ab-8f7a-5336-81b0-335b84018914")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 309.88 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1658,12 +1658,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "d8969ebe-e831-5462-ba40-0c8fe0eaddb0")
+    (uuid "c9880df6-6915-5af3-8397-6642a98345b5")
     (property "Reference" "#FLG009" (at 30.48 119.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 30.48 120.66 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 30.48 124.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 30.48 124.46 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "90babcec-9383-53d6-ba82-802ba7eb6912"))
+    (pin "1" (uuid "97d0964e-26f0-5c68-95bd-1e8dc55eb60f"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1673,12 +1673,12 @@
       )
     )
   )
-  (global_label "VCC_1V1_NLDO_S3"
+  (global_label "VCC5V_HUB"
     (shape passive)
     (at 30.48 124.46 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "84656191-e176-587c-822b-f88bd41dcf23")
+    (uuid "d34d42da-a734-5f85-9771-153e860539a9")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 30.48 124.46 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1691,12 +1691,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "77c794f8-8c2a-58d1-92c8-0b8579037f27")
+    (uuid "3dccdfa8-af6f-50b0-998c-9129d8694fcb")
     (property "Reference" "#FLG010" (at 71.12 119.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 71.12 120.66 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 71.12 124.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 71.12 124.46 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "d707710d-2854-5c50-b729-b1f3fd664041"))
+    (pin "1" (uuid "df34e9b7-a8dd-5bd5-bc87-4352a559aa2d"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1706,12 +1706,12 @@
       )
     )
   )
-  (global_label "VCC_1V8_S3"
+  (global_label "VCCA1V8_PLDO2_S0"
     (shape passive)
     (at 71.12 124.46 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "f21c2796-d062-51fb-b0df-af49711af390")
+    (uuid "175455c6-497d-57a8-a70b-1f0122a23aee")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 71.12 124.46 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1724,12 +1724,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "fec59d48-1fd2-568d-a6a4-3a9aa556e2b4")
+    (uuid "1ff1138f-c498-5aad-ac5c-1bb7c5d1231c")
     (property "Reference" "#FLG011" (at 109.22 119.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 109.22 120.66 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 109.22 124.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 109.22 124.46 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "ac835623-04bd-56f1-bd46-386445ab6e4c"))
+    (pin "1" (uuid "9913b61d-9329-5b27-a2ce-e105c4bc1e67"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1739,12 +1739,12 @@
       )
     )
   )
-  (global_label "VCC_2V0_PLDO_S3"
+  (global_label "VCCA_1V8_S0"
     (shape passive)
     (at 109.22 124.46 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "ebde26d7-1a80-594e-8b56-2d4b6c2f5fe3")
+    (uuid "fec5b4cf-4263-5bc1-a1d4-4dcd45906c9a")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 109.22 124.46 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1757,12 +1757,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "2d32e5b5-8a5d-5b7a-a53c-7e0ffa25b7df")
+    (uuid "b71e70a8-aa88-5084-8114-175d2400055a")
     (property "Reference" "#FLG012" (at 149.86 119.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 149.86 120.66 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 149.86 124.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 149.86 124.46 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "b900dbd5-98db-5b80-9272-f5bf8e6d6533"))
+    (pin "1" (uuid "c49c6114-a9d2-5133-a3db-0bc664464955"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1772,12 +1772,12 @@
       )
     )
   )
-  (global_label "VCC_3V3_S3"
+  (global_label "VCCA_3V3_S0"
     (shape passive)
     (at 149.86 124.46 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "678c081e-0cb3-5f9c-bfb0-def4a000b6cb")
+    (uuid "5fabccdd-d73c-5e06-ab2b-6bbc403b2844")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 149.86 124.46 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1790,12 +1790,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "3a2a89c0-3634-5aa2-8fd7-bce152702a80")
+    (uuid "4c37d64e-8848-5319-ae68-43792d244657")
     (property "Reference" "#FLG013" (at 190.5 119.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 190.5 120.66 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 190.5 124.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 190.5 124.46 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "55abd778-cc67-5bd7-84a9-b9a0dd906d5d"))
+    (pin "1" (uuid "728d6d2a-b237-5dd7-82e4-193044e74be6"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1805,12 +1805,12 @@
       )
     )
   )
-  (global_label "VDD1_DDR_S3"
+  (global_label "VCCIO_SD_S0"
     (shape passive)
     (at 190.5 124.46 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "64adf683-8973-57a3-9f36-8228bc04bdc2")
+    (uuid "a2677dd1-a902-518e-87d3-1596c09178b1")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 190.5 124.46 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1823,12 +1823,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "f096f1d7-cf8e-527a-90e8-dbe163ee8525")
+    (uuid "d8969ebe-e831-5462-ba40-0c8fe0eaddb0")
     (property "Reference" "#FLG014" (at 231.14 119.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 231.14 120.66 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 231.14 124.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 231.14 124.46 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "d9b13231-699e-5721-b529-7105593c39ec"))
+    (pin "1" (uuid "90babcec-9383-53d6-ba82-802ba7eb6912"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1838,12 +1838,12 @@
       )
     )
   )
-  (global_label "VDD2H_DDR_S3"
+  (global_label "VCC_1V1_NLDO_S3"
     (shape passive)
     (at 231.14 124.46 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "e9fc133c-b5bc-5dde-a0a7-844862cee189")
+    (uuid "84656191-e176-587c-822b-f88bd41dcf23")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 231.14 124.46 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1856,12 +1856,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "c6d6087d-e6c5-5a9c-9f28-a3a1e110878c")
+    (uuid "77c794f8-8c2a-58d1-92c8-0b8579037f27")
     (property "Reference" "#FLG015" (at 269.24 119.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 269.24 120.66 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 269.24 124.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 269.24 124.46 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "caacc05c-2c5f-5100-a391-02819902a0dd"))
+    (pin "1" (uuid "d707710d-2854-5c50-b729-b1f3fd664041"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1871,12 +1871,12 @@
       )
     )
   )
-  (global_label "VDD2L_DDR_S3"
+  (global_label "VCC_1V8_S3"
     (shape passive)
     (at 269.24 124.46 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "90910ee9-9707-59ec-9705-0a94d8133667")
+    (uuid "f21c2796-d062-51fb-b0df-af49711af390")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 269.24 124.46 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1889,12 +1889,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "0550cced-fe70-5987-86ac-a8d10ed1fedf")
+    (uuid "fec59d48-1fd2-568d-a6a4-3a9aa556e2b4")
     (property "Reference" "#FLG016" (at 309.88 119.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 309.88 120.66 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 309.88 124.46 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 309.88 124.46 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "92af9007-d696-55ae-a211-2fbc72808ac8"))
+    (pin "1" (uuid "ac835623-04bd-56f1-bd46-386445ab6e4c"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1904,12 +1904,12 @@
       )
     )
   )
-  (global_label "VDDA0V75_HDMI_S0"
+  (global_label "VCC_2V0_PLDO_S3"
     (shape passive)
     (at 309.88 124.46 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "a023eca0-c6b1-51bf-bc49-db4160eb4ec8")
+    (uuid "ebde26d7-1a80-594e-8b56-2d4b6c2f5fe3")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 309.88 124.46 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1922,12 +1922,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "63eff6b2-b958-55f2-95e7-c14ba072cb15")
+    (uuid "2d32e5b5-8a5d-5b7a-a53c-7e0ffa25b7df")
     (property "Reference" "#FLG017" (at 30.48 134.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 30.48 135.9 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 30.48 139.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 30.48 139.7 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "beb6f45b-ebe8-51f9-8ba6-cbe8cc80e278"))
+    (pin "1" (uuid "b900dbd5-98db-5b80-9272-f5bf8e6d6533"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1937,12 +1937,12 @@
       )
     )
   )
-  (global_label "VDDA_0V75_S0"
+  (global_label "VCC_3V3_S3"
     (shape passive)
     (at 30.48 139.7 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "685b8411-2166-5c51-8e10-ef15ba6ee3e0")
+    (uuid "678c081e-0cb3-5f9c-bfb0-def4a000b6cb")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 30.48 139.7 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1955,12 +1955,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "50672e8c-f022-5b77-994c-12700437e198")
+    (uuid "5ddbf88f-20c1-55b5-a149-3c3ac6762227")
     (property "Reference" "#FLG018" (at 71.12 134.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 71.12 135.9 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 71.12 139.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 71.12 139.7 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "c3af303d-9e40-5a6a-8324-03527d47f0d8"))
+    (pin "1" (uuid "ff0211c0-6d8d-5cec-89ac-fbfc2967dce7"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -1970,12 +1970,12 @@
       )
     )
   )
-  (global_label "VDDA_0V85_S0"
+  (global_label "VDD10_PHY"
     (shape passive)
     (at 71.12 139.7 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "7b2c32f2-a8ae-5c3d-9227-5a9b50c32255")
+    (uuid "85a0b2a8-3fa9-50ad-aaa9-e6a72b6e3928")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 71.12 139.7 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1988,12 +1988,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "ae72d453-0fcf-5ece-b52d-6f97cd497697")
+    (uuid "3a2a89c0-3634-5aa2-8fd7-bce152702a80")
     (property "Reference" "#FLG019" (at 109.22 134.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 109.22 135.9 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 109.22 139.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 109.22 139.7 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "2fc53375-5a24-583d-a2ad-fb641d3e7f4a"))
+    (pin "1" (uuid "55abd778-cc67-5bd7-84a9-b9a0dd906d5d"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -2003,12 +2003,12 @@
       )
     )
   )
-  (global_label "VDDA_1V2_S0"
+  (global_label "VDD1_DDR_S3"
     (shape passive)
     (at 109.22 139.7 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "3b76c5bc-20a0-5079-9a21-9c5d8db4d18c")
+    (uuid "64adf683-8973-57a3-9f36-8228bc04bdc2")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 109.22 139.7 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -2021,12 +2021,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "a2766514-f2d3-520f-8a49-0700a3468ce9")
+    (uuid "f096f1d7-cf8e-527a-90e8-dbe163ee8525")
     (property "Reference" "#FLG020" (at 149.86 134.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 149.86 135.9 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 149.86 139.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 149.86 139.7 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "e851d245-ed89-5966-ab22-fb491047708a"))
+    (pin "1" (uuid "d9b13231-699e-5721-b529-7105593c39ec"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -2036,12 +2036,12 @@
       )
     )
   )
-  (global_label "VDDA_DDR_PLL_S0"
+  (global_label "VDD2H_DDR_S3"
     (shape passive)
     (at 149.86 139.7 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "69483532-ff75-58ec-88cf-81381bbce324")
+    (uuid "e9fc133c-b5bc-5dde-a0a7-844862cee189")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 149.86 139.7 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -2054,12 +2054,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "98120bbb-5a68-5ad5-a84f-c71c87d73125")
+    (uuid "c6d6087d-e6c5-5a9c-9f28-a3a1e110878c")
     (property "Reference" "#FLG021" (at 190.5 134.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 190.5 135.9 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "369e7bfc-1d2e-5421-881a-784ad530e724"))
+    (pin "1" (uuid "caacc05c-2c5f-5100-a391-02819902a0dd"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -2069,12 +2069,12 @@
       )
     )
   )
-  (global_label "VDDQ_DDR_S0"
+  (global_label "VDD2L_DDR_S3"
     (shape passive)
     (at 190.5 139.7 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "eb189e35-329c-5a95-be0f-bd9f343ff830")
+    (uuid "90910ee9-9707-59ec-9705-0a94d8133667")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 190.5 139.7 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -2087,12 +2087,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "7a2609dd-37b5-584d-a1fd-01c0ac98db80")
+    (uuid "0550cced-fe70-5987-86ac-a8d10ed1fedf")
     (property "Reference" "#FLG022" (at 231.14 134.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 231.14 135.9 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 231.14 139.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 231.14 139.7 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "1e8e0ab7-e823-53b6-b5e9-9c4eb25baf8f"))
+    (pin "1" (uuid "92af9007-d696-55ae-a211-2fbc72808ac8"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -2102,12 +2102,12 @@
       )
     )
   )
-  (global_label "VDD_0V75_S3"
+  (global_label "VDDA0V75_HDMI_S0"
     (shape passive)
     (at 231.14 139.7 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "5cb9d6e7-d96a-50a0-b663-84dc07ccd632")
+    (uuid "a023eca0-c6b1-51bf-bc49-db4160eb4ec8")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 231.14 139.7 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -2120,12 +2120,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "775eba0b-1ed1-5166-957e-db60716d9a0e")
+    (uuid "63eff6b2-b958-55f2-95e7-c14ba072cb15")
     (property "Reference" "#FLG023" (at 269.24 134.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 269.24 135.9 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 269.24 139.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 269.24 139.7 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "69e8f873-690b-52f9-b23a-83bd78d9e019"))
+    (pin "1" (uuid "beb6f45b-ebe8-51f9-8ba6-cbe8cc80e278"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -2135,12 +2135,12 @@
       )
     )
   )
-  (global_label "VDD_CPU_BIG_S0"
+  (global_label "VDDA_0V75_S0"
     (shape passive)
     (at 269.24 139.7 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "7a818453-8dbd-57e0-9e74-0d9ad8c9602e")
+    (uuid "685b8411-2166-5c51-8e10-ef15ba6ee3e0")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 269.24 139.7 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -2153,12 +2153,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "3e12632e-07f7-534f-8bb7-154fb77181e5")
+    (uuid "50672e8c-f022-5b77-994c-12700437e198")
     (property "Reference" "#FLG024" (at 309.88 134.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 309.88 135.9 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 309.88 139.7 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 309.88 139.7 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "8a2200f8-8868-5f7e-aeb4-3bb1496e90b3"))
+    (pin "1" (uuid "c3af303d-9e40-5a6a-8324-03527d47f0d8"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -2168,12 +2168,12 @@
       )
     )
   )
-  (global_label "VDD_CPU_LIT_S0"
+  (global_label "VDDA_0V85_S0"
     (shape passive)
     (at 309.88 139.7 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "77af7217-1e9e-56a6-9aff-efebdeb9948a")
+    (uuid "7b2c32f2-a8ae-5c3d-9227-5a9b50c32255")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 309.88 139.7 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -2186,12 +2186,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "5e9a3b48-091a-5ef5-bd33-a20376141490")
+    (uuid "ae72d453-0fcf-5ece-b52d-6f97cd497697")
     (property "Reference" "#FLG025" (at 30.48 149.94 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 30.48 151.14 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 30.48 154.94 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 30.48 154.94 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "992804c8-f500-50cf-a6a9-08af49aff6c6"))
+    (pin "1" (uuid "2fc53375-5a24-583d-a2ad-fb641d3e7f4a"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -2201,12 +2201,12 @@
       )
     )
   )
-  (global_label "VDD_DDR_S0"
+  (global_label "VDDA_1V2_S0"
     (shape passive)
     (at 30.48 154.94 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "0d1e93ad-97cf-5e75-b998-992d623f4169")
+    (uuid "3b76c5bc-20a0-5079-9a21-9c5d8db4d18c")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 30.48 154.94 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -2219,12 +2219,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "e0b3243a-79d5-54d3-bd12-ced64f425410")
+    (uuid "a2766514-f2d3-520f-8a49-0700a3468ce9")
     (property "Reference" "#FLG026" (at 71.12 149.94 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 71.12 151.14 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 71.12 154.94 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 71.12 154.94 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "9951e6e0-4855-58e2-a8c6-0cd1163ec399"))
+    (pin "1" (uuid "e851d245-ed89-5966-ab22-fb491047708a"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -2234,12 +2234,12 @@
       )
     )
   )
-  (global_label "VDD_GPU_S0"
+  (global_label "VDDA_DDR_PLL_S0"
     (shape passive)
     (at 71.12 154.94 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "5d93d7fe-6739-5fed-bf21-6cb83dcde48f")
+    (uuid "69483532-ff75-58ec-88cf-81381bbce324")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 71.12 154.94 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -2252,12 +2252,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "bb3b3d16-4a36-50b0-8fdc-70114eb6bd08")
+    (uuid "98120bbb-5a68-5ad5-a84f-c71c87d73125")
     (property "Reference" "#FLG027" (at 109.22 149.94 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 109.22 151.14 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 109.22 154.94 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 109.22 154.94 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "6941f001-2f35-5cec-bfd5-cb1f46eeb391"))
+    (pin "1" (uuid "369e7bfc-1d2e-5421-881a-784ad530e724"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -2267,12 +2267,12 @@
       )
     )
   )
-  (global_label "VDD_LOGIC_S0"
+  (global_label "VDDQ_DDR_S0"
     (shape passive)
     (at 109.22 154.94 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "874bc371-58f3-5aae-b3ca-8690f2b8051e")
+    (uuid "eb189e35-329c-5a95-be0f-bd9f343ff830")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 109.22 154.94 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -2285,12 +2285,12 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "ea6634e9-30a0-5e2b-9014-81aaca18d6bc")
+    (uuid "7a2609dd-37b5-584d-a1fd-01c0ac98db80")
     (property "Reference" "#FLG028" (at 149.86 149.94 0) (effects (font (size 1.27 1.27)) hide))
     (property "Value" "PWR_FLAG" (at 149.86 151.14 0) (effects (font (size 1.27 1.27))))
     (property "Footprint" "" (at 149.86 154.94 0) (effects (font (size 1.27 1.27)) hide))
     (property "Datasheet" "" (at 149.86 154.94 0) (effects (font (size 1.27 1.27)) hide))
-    (pin "1" (uuid "210b81c7-6689-56fa-9ea3-3fae1a657c38"))
+    (pin "1" (uuid "1e8e0ab7-e823-53b6-b5e9-9c4eb25baf8f"))
     (instances
       (project "rk3576-sbc"
         (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
@@ -2300,14 +2300,212 @@
       )
     )
   )
-  (global_label "VDD_NPU_S0"
+  (global_label "VDD_0V75_S3"
     (shape passive)
     (at 149.86 154.94 270)
     (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
-    (uuid "84d994d0-ad52-5d96-a39e-37c67b10ab21")
+    (uuid "5cb9d6e7-d96a-50a0-b663-84dc07ccd632")
     (property "Intersheetrefs" "${INTERSHEET_REFS}"
       (at 149.86 154.94 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+  (symbol
+    (lib_id "power:PWR_FLAG")
+    (at 190.5 154.94 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "775eba0b-1ed1-5166-957e-db60716d9a0e")
+    (property "Reference" "#FLG029" (at 190.5 149.94 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Value" "PWR_FLAG" (at 190.5 151.14 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 190.5 154.94 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 190.5 154.94 0) (effects (font (size 1.27 1.27)) hide))
+    (pin "1" (uuid "69e8f873-690b-52f9-b23a-83bd78d9e019"))
+    (instances
+      (project "rk3576-sbc"
+        (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
+          (reference "#FLG029")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (global_label "VDD_CPU_BIG_S0"
+    (shape passive)
+    (at 190.5 154.94 270)
+    (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify right))
+    (uuid "7a818453-8dbd-57e0-9e74-0d9ad8c9602e")
+    (property "Intersheetrefs" "${INTERSHEET_REFS}"
+      (at 190.5 154.94 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+  (symbol
+    (lib_id "power:PWR_FLAG")
+    (at 231.14 154.94 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "3e12632e-07f7-534f-8bb7-154fb77181e5")
+    (property "Reference" "#FLG030" (at 231.14 149.94 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Value" "PWR_FLAG" (at 231.14 151.14 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 231.14 154.94 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 231.14 154.94 0) (effects (font (size 1.27 1.27)) hide))
+    (pin "1" (uuid "8a2200f8-8868-5f7e-aeb4-3bb1496e90b3"))
+    (instances
+      (project "rk3576-sbc"
+        (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
+          (reference "#FLG030")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (global_label "VDD_CPU_LIT_S0"
+    (shape passive)
+    (at 231.14 154.94 270)
+    (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify right))
+    (uuid "77af7217-1e9e-56a6-9aff-efebdeb9948a")
+    (property "Intersheetrefs" "${INTERSHEET_REFS}"
+      (at 231.14 154.94 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+  (symbol
+    (lib_id "power:PWR_FLAG")
+    (at 269.24 154.94 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "5e9a3b48-091a-5ef5-bd33-a20376141490")
+    (property "Reference" "#FLG031" (at 269.24 149.94 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Value" "PWR_FLAG" (at 269.24 151.14 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 269.24 154.94 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 269.24 154.94 0) (effects (font (size 1.27 1.27)) hide))
+    (pin "1" (uuid "992804c8-f500-50cf-a6a9-08af49aff6c6"))
+    (instances
+      (project "rk3576-sbc"
+        (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
+          (reference "#FLG031")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (global_label "VDD_DDR_S0"
+    (shape passive)
+    (at 269.24 154.94 270)
+    (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify right))
+    (uuid "0d1e93ad-97cf-5e75-b998-992d623f4169")
+    (property "Intersheetrefs" "${INTERSHEET_REFS}"
+      (at 269.24 154.94 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+  (symbol
+    (lib_id "power:PWR_FLAG")
+    (at 309.88 154.94 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "e0b3243a-79d5-54d3-bd12-ced64f425410")
+    (property "Reference" "#FLG032" (at 309.88 149.94 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Value" "PWR_FLAG" (at 309.88 151.14 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 309.88 154.94 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 309.88 154.94 0) (effects (font (size 1.27 1.27)) hide))
+    (pin "1" (uuid "9951e6e0-4855-58e2-a8c6-0cd1163ec399"))
+    (instances
+      (project "rk3576-sbc"
+        (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
+          (reference "#FLG032")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (global_label "VDD_GPU_S0"
+    (shape passive)
+    (at 309.88 154.94 270)
+    (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify right))
+    (uuid "5d93d7fe-6739-5fed-bf21-6cb83dcde48f")
+    (property "Intersheetrefs" "${INTERSHEET_REFS}"
+      (at 309.88 154.94 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+  (symbol
+    (lib_id "power:PWR_FLAG")
+    (at 30.48 170.18 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "bb3b3d16-4a36-50b0-8fdc-70114eb6bd08")
+    (property "Reference" "#FLG033" (at 30.48 165.18 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Value" "PWR_FLAG" (at 30.48 166.38 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 30.48 170.18 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 30.48 170.18 0) (effects (font (size 1.27 1.27)) hide))
+    (pin "1" (uuid "6941f001-2f35-5cec-bfd5-cb1f46eeb391"))
+    (instances
+      (project "rk3576-sbc"
+        (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
+          (reference "#FLG033")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (global_label "VDD_LOGIC_S0"
+    (shape passive)
+    (at 30.48 170.18 270)
+    (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify right))
+    (uuid "874bc371-58f3-5aae-b3ca-8690f2b8051e")
+    (property "Intersheetrefs" "${INTERSHEET_REFS}"
+      (at 30.48 170.18 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+  (symbol
+    (lib_id "power:PWR_FLAG")
+    (at 71.12 170.18 0)
+    (unit 1)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid "ea6634e9-30a0-5e2b-9014-81aaca18d6bc")
+    (property "Reference" "#FLG034" (at 71.12 165.18 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Value" "PWR_FLAG" (at 71.12 166.38 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 71.12 170.18 0) (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 71.12 170.18 0) (effects (font (size 1.27 1.27)) hide))
+    (pin "1" (uuid "210b81c7-6689-56fa-9ea3-3fae1a657c38"))
+    (instances
+      (project "rk3576-sbc"
+        (path "/3461ca5d-73ab-5b55-b754-dceefbd02664/faf040b9-32f4-5fcc-8b2b-7b7595088cbe"
+          (reference "#FLG034")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (global_label "VDD_NPU_S0"
+    (shape passive)
+    (at 71.12 170.18 270)
+    (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify right))
+    (uuid "84d994d0-ad52-5d96-a39e-37c67b10ab21")
+    (property "Intersheetrefs" "${INTERSHEET_REFS}"
+      (at 71.12 170.18 0)
       (effects (font (size 1.27 1.27)) hide)
     )
   )

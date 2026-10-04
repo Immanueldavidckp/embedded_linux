@@ -20,50 +20,61 @@ SYSFP = '/usr/share/kicad/footprints'
 PCB = os.path.join(KICAD, 'rk3576-sbc.kicad_pcb')
 PRO = os.path.join(KICAD, 'rk3576-sbc.kicad_pro')
 
-W, H = 85.0, 56.0          # board size (mm), credit-card SBC form factor
+W, H = 100.0, 72.0         # board size (mm), Pico-ITX-like (room for RJ45 + 3 USB-A)
 CORNER = 3.0
 MM = pcbnew.FromMM
 TOP, BOT = 'top', 'bottom'
 
 # ref: (x, y, rot, side) - or (edge, pos, side, overhang) for edge connectors
 PLACE = {
-    'U401': (40.0, 26.0, 0, TOP),     # RK3576
-    'U601': (20.0, 26.0, 0, TOP),     # LPDDR5 - left of SoC, on the DDR ball edge
-    'U701': (61.0, 15.0, 0, TOP),     # eMMC - right/top of SoC (EMMC balls D..G28)
-    'U201': (40.0, 7.0, 0, TOP),      # RK806 PMIC above the SoC (short core-rail loops)
-    'Y501': (53.5, 36.5, 0, TOP),     # 24 MHz near OSC_XIN/XOUT (U28/U29)
-    'U301': (9.5, 8.0, 0, TOP),       # 2V0 pre-reg
-    'U302': (9.5, 14.5, 0, TOP),      # 1V1 pre-reg
-    'U303': (9.5, 21.0, 0, TOP),      # VDD2L for LPDDR5
-    'U304': (58.0, 46.0, 0, TOP),     # M.2 3V3 buck
-    'U305': (70.5, 8.5, 0, TOP),      # VCC_3V3_S0 switch
-    'U901': (48.5, 41.0, 0, TOP),     # HDMI ESD
-    'U902': (44.5, 41.0, 0, TOP),     # HDMI ESD
-    'U1001': (24.0, 46.0, 0, TOP),    # USB-C ESD
-    'U1002': (74.0, 40.0, 0, TOP),    # USB3 SS ESD
-    'U1003': (74.0, 44.0, 0, TOP),    # USB-A D+/D- ESD
-    'U1004': (74.0, 14.0, 0, TOP),    # USB-A VBUS switch
-    'U702': (6.0, 27.0, 0, BOT),      # SD power switch
-    'J101': ('bottom', 14.0, TOP, 1.0),     # USB-C power/OTG
-    'J901': ('bottom', 36.0, TOP, 1.0),     # HDMI
-    'J1001': ('right', 28.0, TOP, 2.0),     # USB3 type-A
-    'J701': ('left', 39.0, BOT, -0.3),       # microSD (bottom side)
-    'J801': (66.0, 33.0, 90, BOT),    # M.2 socket, card extends to -x over the bottom
-    'H801': (23.0, 33.0, 0, BOT),     # 2242 standoff (verify vs connector datum)
-    'H802': (35.0, 33.0, 0, BOT),     # 2230 standoff
-    'J501': (64.0, 52.6, 90, TOP),    # debug UART header (GND/TX/RX) on the bottom edge
-    'SW501': (51.0, 3.0, 0, TOP),     # MASKROM
-    'SW502': (58.0, 3.0, 0, TOP),     # POWER
-    'SW503': (65.0, 3.0, 0, TOP),     # RESET
-    'LED101': (3.5, 46.0, 0, TOP),
-    'LED501': (3.5, 43.0, 0, TOP),
-    'LED801': (3.5, 40.0, 0, TOP),
-    'H1201': (3.5, 3.5, 0, TOP), 'H1202': (81.5, 3.5, 0, TOP),
-    'H1203': (3.5, 52.5, 0, TOP), 'H1204': (81.5, 52.5, 0, TOP),
-    'FID1201': (9.0, 2.5, 0, TOP), 'FID1202': (77.0, 9.0, 0, TOP), 'FID1203': (23.0, 53.0, 0, TOP),
+    'U401': (45.0, 33.0, 0, TOP),     # RK3576 (DDR balls on its left edge, HS I/O right/bottom)
+    'U601': (25.0, 33.0, 0, TOP),     # LPDDR5 - left of SoC, on the DDR ball edge
+    'U701': (66.0, 21.0, 0, TOP),     # eMMC - right/top of SoC (EMMC balls D..G28)
+    'U201': (45.0, 12.0, 0, TOP),     # RK806 PMIC above the SoC (short core-rail loops)
+    'Y501': (58.0, 44.5, 0, TOP),     # 24 MHz near OSC_XIN/XOUT (U28/U29)
+    'U301': (8.0, 20.0, 0, TOP),     # 2V0 pre-reg
+    'U302': (8.0, 27.0, 0, TOP),     # 1V1 pre-reg
+    'U303': (8.0, 34.0, 0, TOP),     # VDD2L for LPDDR5
+    'U304': (62.0, 56.0, 0, TOP),     # M.2 3V3 buck
+    'U305': (60.0, 4.5, 0, TOP),      # VCC_3V3_S0 switch
+    'U901': (52.5, 55.0, 0, TOP),     # HDMI ESD
+    'U902': (48.5, 55.0, 0, TOP),     # HDMI ESD
+    'U1001': (22.0, 60.0, 0, TOP),    # USB-C ESD
+    'U1002': (80.0, 21.0, 0, TOP),    # USB3 SS ESD
+    'U1003': (80.0, 11.0, 0, TOP),     # USB3-A D+/D- ESD
+    'U1004': (75.0, 6.0, 0, TOP),     # USB3-A VBUS switch
+    'U702': (8.0, 40.0, 0, BOT),      # SD power switch
+    'U1301': (72.0, 60.0, 0, TOP),    # RTL8211F next to the RJ45
+    'Y1301': (72.0, 66.5, 0, TOP),
+    'U1401': (74.5, 34.0, 90, TOP),   # FE1.1s hub between SoC and the USB-A stack
+    'Y1401': (74.5, 42.5, 0, TOP),
+    'U1402': (81.0, 37.5, 0, TOP),    # USB-A #1 ESD
+    'U1403': (81.0, 42.0, 0, TOP),    # USB-A #2 ESD
+    'U1404': (70.0, 4.5, 0, TOP),     # USB2-A VBUS switch
+    'U1405': (17.0, 9.0, 0, TOP),     # Wi-Fi/BT module, top-left away from the SoC
+    'J1402': (4.5, 13.0, 0, TOP),     # u.FL antenna
+    'J101': ('bottom', 12.0, TOP, 1.0),     # USB-C power/OTG
+    'J901': ('bottom', 34.0, TOP, 1.0),     # HDMI
+    'J1001': ('right', 16.0, TOP, 2.0),     # USB3 type-A
+    'J1401': ('right', 34.8, TOP, 2.0),     # 2x USB2 type-A (stacked)
+    'J1301': ('right', 56.0, TOP, 2.0),     # RJ45 GbE
+    'J701': ('left', 50.0, BOT, -0.3),      # microSD (bottom side)
+    'J801': (74.0, 44.0, 90, BOT),    # M.2 socket, card extends to -x over the bottom
+    'H801': (32.0, 44.0, 0, BOT),     # 2242 standoff (verify vs connector datum)
+    'H802': (44.0, 44.0, 0, BOT),     # 2230 standoff
+    'J501': (50.0, 68.6, 90, TOP),    # debug UART header (GND/TX/RX) on the bottom edge
+    'SW501': (28.0, 4.0, 0, TOP),     # MASKROM
+    'SW502': (35.0, 4.0, 0, TOP),     # POWER
+    'SW503': (42.0, 4.0, 0, TOP),     # RESET
+    'LED101': (4.0, 58.0, 0, TOP),
+    'LED501': (4.0, 55.0, 0, TOP),
+    'LED801': (4.0, 52.0, 0, TOP),
+    'H1201': (3.5, 3.5, 0, TOP), 'H1202': (96.5, 3.5, 0, TOP),
+    'H1203': (3.5, 68.5, 0, TOP), 'H1204': (96.5, 68.5, 0, TOP),
+    'FID1201': (52.0, 2.5, 0, TOP), 'FID1202': (64.0, 69.5, 0, TOP), 'FID1203': (24.0, 69.5, 0, TOP),
 }
 # local "mouth" (cable side) direction of edge connectors in footprint coords
-MOUTH = {'J101': (0, 1), 'J901': (1, 0), 'J1001': (0, 1), 'J701': (0, 1)}
+MOUTH = {'J101': (0, 1), 'J901': (1, 0), 'J1001': (0, 1), 'J701': (0, 1), 'J1301': (0, -1), 'J1401': (-1, 0)}
 BGA_ANCHORS = {'U401', 'U601', 'U701'}
 
 NETCLASSES = [
@@ -74,7 +85,7 @@ NETCLASSES = [
     ('PCIE_85R', 0.12, 0.13, 0.35, 0.20, 0.13, 0.15, ['PCIE0_TX*', 'PCIE0_RX*', 'PCIE0_REFCLK*', 'M2_PET*']),
     ('USB_90R', 0.12, 0.11, 0.35, 0.20, 0.11, 0.15, ['USBC_D*', 'USB3A_D*', 'USB3_*', 'USB3A_SS*']),
     ('EMMC_SD', 0.10, 0.10, 0.35, 0.20, 0.10, 0.15, ['EMMC_*', 'SD_*']),
-    ('POWER', 0.15, 0.30, 0.45, 0.25, 0.20, 0.20,
+    ('POWER', 0.12, 0.20, 0.35, 0.20, 0.20, 0.20,
      ['VDD*', 'VCC*', 'VBUS*', 'PMIC_SW*', '*_SW', 'HDMI_5V_PTC']),
 ]
 
@@ -462,7 +473,8 @@ def main():
         a = anchor(p)
         if a is None:
             a = {'01': 'J101', '02': 'U201', '03': 'U301', '04': 'U401', '05': 'U401', '06': 'U601',
-                 '07': 'U701', '08': 'J801', '09': 'J901', '10': 'J1001', '12': 'U401'}[p.sheet[:2]]
+                 '07': 'U701', '08': 'J801', '09': 'J901', '10': 'J1001', '12': 'U401', '13': 'U1301',
+                 '14': 'U1401'}[p.sheet[:2]]
         side = BOT if (a in BGA_ANCHORS and r[0] in 'RC' and not r.startswith('LED')) else TOP
         if a == 'J801' or a == 'J701' or a == 'U702':
             side = BOT
@@ -482,15 +494,17 @@ def main():
         gnd_zone(board, l, nets['GND'])
 
     # 4) silkscreen
-    add_text(board, 'RK3576 SBC  rev A0 (draft)', 30, 54.4, 0.9)
-    add_text(board, 'USB-C 5V / OTG', 14, 47.0, 0.7)
-    add_text(board, 'HDMI 4K', 36, 46.2, 0.7)
-    add_text(board, 'USB3', 77.0, 19.0, 0.7)
-    add_text(board, 'GND TX RX', 66.5, 50.2, 0.6)
-    add_text(board, 'MASKROM  POWER  RESET', 58, 6.0, 0.6)
-    add_text(board, 'microSD', 9.0, 41.0, 0.8, pcbnew.B_SilkS, 90)
-    add_text(board, 'M.2 2230/2242 NVMe', 48, 47.5, 0.9, pcbnew.B_SilkS)
-    add_text(board, 'U401 LAND PATTERN = PLACEHOLDER', 40, 36.0, 0.6, pcbnew.F_Fab)
+    add_text(board, 'RK3576 SBC  rev A1', 32, 70.4, 0.9)
+    add_text(board, 'USB-C 5V / OTG', 12, 62.5, 0.7)
+    add_text(board, 'HDMI 4K', 34, 61.8, 0.7)
+    add_text(board, 'USB3', 92.0, 23.5, 0.7)
+    add_text(board, 'USB2 x2', 91.0, 44.0, 0.7)
+    add_text(board, 'GbE', 92.0, 46.5, 0.7)
+    add_text(board, 'GND TX RX', 52.5, 66.2, 0.6)
+    add_text(board, 'MASKROM  POWER  RESET', 35, 7.2, 0.6)
+    add_text(board, 'ANT', 4.5, 16.5, 0.6)
+    add_text(board, 'microSD', 9.0, 50.0, 0.8, pcbnew.B_SilkS, 90)
+    add_text(board, 'M.2 2230/2242 NVMe', 58, 57.5, 0.9, pcbnew.B_SilkS)
 
     pcbnew.SaveBoard(PCB, board)
     # inject stackup into (setup ...)
