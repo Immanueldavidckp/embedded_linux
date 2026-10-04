@@ -12,12 +12,14 @@ import pcbnew
 HERE = os.path.dirname(os.path.abspath(__file__))
 PCB = os.path.join(HERE, '..', 'kicad', 'rk3576-sbc.kicad_pcb')
 MM, TOMM = pcbnew.FromMM, pcbnew.ToMM
-VIA_D, VIA_DRILL, TRACK_W, CLR = 0.35, 0.20, 0.20, 0.12
-PLANE_LAYERS = {pcbnew.In1_Cu, pcbnew.In4_Cu, pcbnew.In6_Cu}
+VIA_D, VIA_DRILL, TRACK_W, CLR = 0.35, 0.20, 0.20, 0.135   # 0.12 rule + margin
+PLANE_LAYERS = {pcbnew.In1_Cu, pcbnew.In4_Cu}
 NETS = ('GND',)
+SKIP_REFS = ('U401', 'U601')     # fanned out via-in-pad already
 
 
-def main(path=PCB):
+def main(path=PCB, nets=NETS):
+    nets = set(nets)
     b = pcbnew.LoadBoard(path)
     w, h = b.GetBoardEdgesBoundingBox().GetWidth(), b.GetBoardEdgesBoundingBox().GetHeight()
     tracks = [t for t in b.GetTracks()]
@@ -57,11 +59,11 @@ def main(path=PCB):
         return not (0.8 < x < TOMM(w) - 0.8 and 0.8 < y < TOMM(h) - 0.8)
 
     for fp in b.GetFootprints():
-        if fp.GetReference() in ('U401', 'U601'):     # already fanned out via-in-pad
+        if fp.GetReference() in SKIP_REFS:
             continue
         for pad in fp.Pads():
             net = pad.GetNetname()
-            if net not in NETS or pad.GetAttribute() != pcbnew.PAD_ATTRIB_SMD:
+            if net not in nets or pad.GetAttribute() != pcbnew.PAD_ATTRIB_SMD:
                 continue
             c = pad.GetPosition()
             if any(v.GetNetname() == net and (v.GetPosition() - c).EuclideanNorm() < MM(1.2) for v in vias):
@@ -108,8 +110,8 @@ def main(path=PCB):
     b = pcbnew.LoadBoard(path)
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
     pcbnew.SaveBoard(path, b)
-    print(f'stitching: {added} GND vias added, {len(failed)} pads left to the router {failed[:12]}')
+    print(f'stitching: {added} vias added on {len(nets)} net(s), {len(failed)} pads left to the router {failed[:12]}')
 
 
 if __name__ == '__main__':
-    main(*sys.argv[1:])
+    main(*sys.argv[1:2])
