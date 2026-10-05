@@ -48,7 +48,7 @@ def main():
     # L2/L5 (GND) and L4/L7 (power pours) are plane layers: mark them 'power'
     # so the router only drops vias into them and never routes signals there.
     txt = open(dsn).read()
-    for lyr in ('In1.Cu', 'In3.Cu', 'In4.Cu', 'In6.Cu'):
+    for lyr in ('In1.Cu', 'In4.Cu', 'In6.Cu'):   # L4 shared signal+power, L7 power-only
         txt = txt.replace(f'(layer {lyr}\n      (type signal)', f'(layer {lyr}\n      (type power)')
     open(dsn, 'w').write(txt)
     t0 = time.time()
