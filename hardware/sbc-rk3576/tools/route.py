@@ -41,14 +41,14 @@ def main():
     # every pad inside is connected even where the real fill is an island. Hide
     # them from the router via a stripped copy; the board keeps them.
     tmp = os.path.join(WORK, 'export.kicad_pcb')
-    zones_strip.strip(PCB, tmp)
+    subprocess.run([sys.executable, os.path.join(HERE, 'islands_export.py'), PCB, tmp], check=True)
     board = pcbnew.LoadBoard(tmp)
     if not pcbnew.ExportSpecctraDSN(board, dsn):
         raise SystemExit('DSN export failed')
-    # L2/L5/L7 are solid GND planes: mark them 'power' so the router only drops
-    # vias into them and never cuts the reference plane with a signal trace.
+    # L2/L5 (GND) and L4/L7 (power pours) are plane layers: mark them 'power'
+    # so the router only drops vias into them and never routes signals there.
     txt = open(dsn).read()
-    for lyr in ('In1.Cu', 'In4.Cu', 'In6.Cu'):
+    for lyr in ('In1.Cu', 'In3.Cu', 'In4.Cu', 'In6.Cu'):
         txt = txt.replace(f'(layer {lyr}\n      (type signal)', f'(layer {lyr}\n      (type power)')
     open(dsn, 'w').write(txt)
     t0 = time.time()
