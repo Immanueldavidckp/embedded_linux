@@ -32,7 +32,7 @@ Also on the board: microSD (recovery boot), MASKROM/POWER/RESET keys, LEDs. It i
 | Placement | ✅ all 484 footprints, 262 top / 222 bottom | renders in `docs/img/` |
 | BGA fan-out | ✅ 818 via-in-pad escapes (RK3576 + LPDDR5) | `tools/fanout.py` |
 | Planes / pours | ✅ GND on L2/L5 + 284 stitch vias; 36 power pours on L4/L7 + stitch vias | `tools/stitch.py`, `tools/pour.py` |
-| **Routing** | 🟡 **76 % done**: 1,789 → **433** connections left (≈ 80 signal, ≈ 350 power-pour joins) | [fab/drc.rpt](fab/drc.rpt) |
+| **Routing** | 🟡 **≈ 73 % done**: 1,789 → **482** left (134 signal, 348 power) after clearing signals off the power layers. Commit `d51ddcc` holds a 433-left variant whose pours are fragmented | [fab/drc.rpt](fab/drc.rpt) |
 | DRC | ✅ **0 errors** apart from the unrouted connections (219 warnings: pour islands, stubs) | [fab/drc.rpt](fab/drc.rpt) |
 | Schematic ↔ PCB parity | ✅ 0 issues | [fab/drc.rpt](fab/drc.rpt) |
 | Length / skew tuning | ❌ not done: 31 groups flagged | [fab/length_report.md](fab/length_report.md) |
@@ -46,13 +46,14 @@ Also on the board: microSD (recovery boot), MASKROM/POWER/RESET keys, LEDs. It i
 
 ### What stopped full auto-routing (and what to do next)
 
-1. **Power on L4 got sliced by signals.** The early router passes used L4 for signals before the power pours
-   existed, so the pours are fragmented (83 isolated islands). Fix: reserve L4 (and L7) for power only, rip up
-   the L4 signal traces and re-route them on L1/L3/L6/L8, then re-pour.
-2. **LPDDR5 needs constrained routing**: byte lanes on one layer, matched to ±0.5 mm. No open-source
-   autorouter does this. Route DDR by hand first, then let Freerouting fill in low-speed nets.
-3. The tooling to continue is in place: `tools/route.py` runs Freerouting in saved chunks and
-   `tools/import_ses.py` imports a session. `tools/length_report.py` regenerates the tuning list.
+1. **Done:** the power layers L4/L7 were cleared of signal traces and re-poured (isolated islands 83 → 14).
+2. **Blocker:** with signals limited to L1/L3/L6/L8, Freerouting cannot escape the remaining nets from under
+   the 0.55 mm RK3576 and the LPDDR5 (no progress in a 1 h 45 min run). If it is allowed onto L4/L7, it
+   fragments the power pours again. This is the point where layout engineers route by hand.
+3. **Next (interactive, KiCad 9):** route the LPDDR5 byte lanes by hand on L3/L6 with the length tuner
+   (±0.5 mm per lane), then HDMI/PCIe/USB3 pairs on L1, then let `tools/route.py` finish the low-speed
+   nets. Join the remaining power islands with short wide traces or via stitching.
+   `tools/length_report.py` regenerates the tuning list.
 
 ## Repository layout
 

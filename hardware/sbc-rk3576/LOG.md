@@ -22,4 +22,4 @@ Interview-story bank for the RK3576 SBC hardware generation.
 | 16 | Routing runs lost twice at the 2 h limit | After `job_timeout`, Freerouting first runs an optimizer (or hangs) and only then writes the SES | End chunks by pass count (`-mp 6`), optimizer off, hard `timeout 105m`, import in a separate process. |
 | 17 | Hundreds of "unrouted" GND/power pads the router ignored | It treats plane outlines as connected; real fills were islands | GND stub+via stitching; power pours with stitching; hide pours from the router's view. |
 | 18 | KiCad 9 Python crashes after `BOARD.Remove(zone)` | Dangling SWIG wrappers | Strip zones from the file as text (`zones_strip.py`); run each step in its own process. |
-
+| 19 | Re-route after clearing L4/L7 made no progress | Signals limited to 4 layers cannot escape a 0.55 mm FCCSP + LPDDR5 with a general-purpose autorouter | Stop automating here; route DDR/escape by hand, then autoroute the rest. **Lesson:** an autorouter is a finisher, not a BGA/DDR router. |
