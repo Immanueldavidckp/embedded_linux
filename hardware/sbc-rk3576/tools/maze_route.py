@@ -576,12 +576,14 @@ class Router:
             return (float(X0 + (wx0 + x + 0.5) * R.res), float(Y0 + (wy0 + y + 0.5) * R.res))
 
         strict = {}
+        onpath = np.zeros(blocked.shape, bool)       # the A* path itself is valid by construction
+        onpath[path[:, 0], path[:, 1], path[:, 2]] = True
 
         def free_line(li, p, q):
             # straight shortcuts must clear a 1-cell dilated obstacle map, so sampling and
             # rounding along an any-angle segment can never eat into the clearance
             if li not in strict:
-                strict[li] = ndimage.binary_dilation(blocked[li].astype(bool))
+                strict[li] = ndimage.binary_dilation(blocked[li].astype(bool)) & ~onpath[li]
             sb = strict[li]
             n = int(max(abs(q[0] - p[0]), abs(q[1] - p[1])) * 3) + 1
             for k in range(1, n):

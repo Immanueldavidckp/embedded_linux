@@ -39,6 +39,7 @@ class RipRouter(M.Router):
     def __init__(self, board, res, margin, pen, history):
         super().__init__(board, res, margin)
         self.rip, self.rip_pen, self.history = False, pen, history
+        self.max_rip = 8
         self.removed, self.gone_ids = 0, set()
 
     def route_conn(self, k, A, B, pa, pb, allow_rip):
@@ -53,7 +54,7 @@ class RipRouter(M.Router):
                 new = [it for cid, it in self.added[n0:] if cid == k]
                 tw, clr, _ = M.net_class(A.GetNetname())
                 ripped = self.resolve(new, A.GetNetCode(), clr)
-                res = f'ok-rip{ripped}'
+                res = f'ok-rip{ripped}' if ripped >= 0 else 'fail-toomanyrips'
         finally:
             self.rip = False
         return res
@@ -72,8 +73,8 @@ class RipRouter(M.Router):
             if not (new.IsOnLayer(l) and other.IsOnLayer(l)):
                 continue
             c = max(clr, TOMM(other.GetOwnClearance(l)))
-            os_ = other.GetEffectiveShape(l) if other.GetClass() != 'PCB_VIA' or other.FlashLayer(l) else None
-            if os_ is not None and self.shape(new, l).Collide(os_, MM(c) - 1000):
+            # vias count as padded on every layer: FlashLayer() is stale for copper added this round
+            if self.shape(new, l).Collide(self.shape(other, l), MM(c) - 1000):
                 return True
         for h_it, o_it in ((new, other), (other, new)):
             if h_it.GetClass() != 'PCB_VIA':
@@ -89,7 +90,8 @@ class RipRouter(M.Router):
         return False
 
     def resolve(self, new_items, net, clr):
-        """Remove routed copper of other nets that the new path collides with."""
+        """Remove routed copper of other nets that the new path collides with. If that would
+        take more than max_rip items, undo the new path instead and return -1."""
         R, gone = self.R, []
         for it in new_items:
             bb = it.GetBoundingBox()
@@ -99,6 +101,12 @@ class RipRouter(M.Router):
                     continue
                 if self.collides(it, o, clr):
                     gone.append(o)
+        if len(gone) > self.max_rip:
+            for it in new_items:
+                self.b.Remove(it)
+                GRAVE.append(it)
+            R.unstamp(new_items)
+            return -1
         for o in gone:
             self.gone_ids.add(o.m_Uuid.AsString())
             self.history[o.GetNetname()] = self.history.get(o.GetNetname(), 0) + 1
@@ -183,7 +191,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('inp'); ap.add_argument('out')
     ap.add_argument('--rounds', type=int, default=8)
-    ap.add_argument('--pen', type=float, default=12.0, help='cost per cell of crossing routed copper')
+    ap.add_argument('--pen', type=float, default=60.0, help='cost per cell of crossing routed copper')
     ap.add_argument('--nets', default='.')
     ap.add_argument('--res', type=float, default=0.025)
     ap.add_argument('--margin', type=float, default=2.5)
