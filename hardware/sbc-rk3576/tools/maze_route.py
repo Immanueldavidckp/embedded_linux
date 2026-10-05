@@ -400,6 +400,11 @@ class Router:
             w, h = wx1 - wx0, wy1 - wy0
             src = self.item_cells(A, posA, wx0, wy0, w, h)
             dst = self.item_cells(B, posB, wx0, wy0, w, h)
+            if name == 'GND':            # a via into either solid GND plane connects too
+                for li in (1, 4):
+                    m = ndimage.binary_erosion(R.zone[li][wy0:wy0 + h, wx0:wx0 + w] == netcode, iterations=3)
+                    if m.any():
+                        dst[li] = (dst[li][0] | m, None, 0) if li in dst else (m, None, 0)
             if not src or not dst:
                 return 'no-cells'
             deff = self.dist_maps(netcode, clr, allowed, wx0, wy0, w, h)

@@ -169,13 +169,16 @@ def one_round(a, rnd):
         if A.GetClass() == 'ZONE' and B.GetClass() != 'ZONE':
             A, B, pa, pb = B, A, pb, pa
         conns.append((math.dist(pa, pb), k, A, B, pa, pb))
-    conns.sort(key=lambda c: c[0])
+    # priority groups first (e.g. LPDDR5 between the two BGAs), each shortest first
+    pri = [re.compile(p) for p in a.first.split(',') if p]
+    rank = lambda name: next((i for i, p in enumerate(pri) if p.search(name)), len(pri))
+    conns.sort(key=lambda c: (rank(c[2].GetNetname()), c[0]))
     stats, t0 = {}, time.time()
     for n, (dist, k, A, B, pa, pb) in enumerate(conns):
         if A.m_Uuid.AsString() in r.gone_ids or B.m_Uuid.AsString() in r.gone_ids:
             continue                      # an end was ripped earlier this round; next round has it
         try:
-            res = r.route_conn(k, A, B, pa, pb, allow_rip=True)
+            res = r.route_conn(k, A, B, pa, pb, allow_rip=not a.no_rip)
         except Exception as e:
             res = f'error:{type(e).__name__}:{e}'
         key = res.split('-rip')[0] if res.startswith('ok') else res
@@ -196,6 +199,8 @@ def main():
     ap.add_argument('--res', type=float, default=0.025)
     ap.add_argument('--margin', type=float, default=2.5)
     ap.add_argument('--max-len', type=float, default=1e9, help='skip connections longer than this (mm)')
+    ap.add_argument('--first', default='', help='comma-separated net regexes routed first, in this order')
+    ap.add_argument('--no-rip', action='store_true', help='plain multi-pass routing (no rip-up)')
     ap.add_argument('--one-round', type=int, default=-1, help=argparse.SUPPRESS)
     a = ap.parse_args()
     if a.one_round >= 0:
@@ -219,7 +224,8 @@ def main():
         best = open_n + errs if best is None else min(best, open_n + errs)
         subprocess.run([sys.executable, os.path.abspath(__file__), a.out, a.out, '--one-round', str(rnd),
                         '--pen', str(a.pen), '--nets', a.nets, '--res', str(a.res), '--margin', str(a.margin),
-                        '--max-len', str(a.max_len)], check=True)
+                        '--max-len', str(a.max_len), '--first', a.first] + (['--no-rip'] if a.no_rip else []),
+                       check=True)
         refill(a.out)
     print('done', flush=True)
 
