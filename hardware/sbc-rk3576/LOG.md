@@ -18,3 +18,8 @@ Interview-story bank for the RK3576 SBC hardware generation.
 | 12 | DRC said "499 unconnected" on two quite different boards | KiCad's report stops listing unconnected items at 499 | Read the true count from `board.GetConnectivity().GetUnconnectedCount()`: 1,789. **Lesson:** a suspiciously round or unchanged number is a cap, not a result. |
 | 13 | LCSC FE1.1s symbol marks pins 12/13/28 as NC | Library symbol error. The datasheet has VD18_O / VD33 / VD18 there | Built the symbol from the Terminus datasheet pin table. **Lesson:** a downloaded footprint can be trusted for geometry; a downloaded symbol must be checked against the datasheet. |
 | 14 | Passives placed on top of hub/Wi-Fi pins | EasyEDA courtyards outline only the body | Recompute courtyards from pad extents + 0.25 mm when importing LCSC footprints. |
+| 15 | Freerouting stalled at ~990 unrouted for 2 h | 0.55 mm FCCSP: no room for dog-bones, and the router never puts vias in pads | `fanout.py`: 818 via-in-pad escapes before routing; bottom side under the BGAs reserved for them. |
+| 16 | Routing runs lost twice at the 2 h limit | After `job_timeout`, Freerouting first runs an optimizer (or hangs) and only then writes the SES | End chunks by pass count (`-mp 6`), optimizer off, hard `timeout 105m`, import in a separate process. |
+| 17 | Hundreds of "unrouted" GND/power pads the router ignored | It treats plane outlines as connected; real fills were islands | GND stub+via stitching; power pours with stitching; hide pours from the router's view. |
+| 18 | KiCad 9 Python crashes after `BOARD.Remove(zone)` | Dangling SWIG wrappers | Strip zones from the file as text (`zones_strip.py`); run each step in its own process. |
+

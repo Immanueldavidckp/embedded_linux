@@ -85,7 +85,7 @@ NETCLASSES = [
     ('PCIE_85R', 0.12, 0.13, 0.35, 0.20, 0.13, 0.15, ['PCIE0_TX*', 'PCIE0_RX*', 'PCIE0_REFCLK*', 'M2_PET*']),
     ('USB_90R', 0.12, 0.11, 0.35, 0.20, 0.11, 0.15, ['USBC_D*', 'USB3A_D*', 'USB3_*', 'USB3A_SS*']),
     ('EMMC_SD', 0.10, 0.10, 0.35, 0.20, 0.10, 0.15, ['EMMC_*', 'SD_*']),
-    ('POWER', 0.12, 0.20, 0.35, 0.20, 0.20, 0.20,
+    ('POWER', 0.10, 0.20, 0.35, 0.20, 0.20, 0.20,
      ['VDD*', 'VCC*', 'VBUS*', 'PMIC_SW*', '*_SW', 'HDMI_5V_PTC']),
 ]
 
@@ -356,7 +356,7 @@ def gnd_zone(board, layer, net):
     z.SetNet(net)
     z.SetIsRuleArea(False)
     z.SetLocalClearance(MM(0.1))      # 0.55 mm BGA via field: keep plane webs
-    z.SetMinThickness(MM(0.1))
+    z.SetMinThickness(MM(0.09))
     z.SetPadConnection(pcbnew.ZONE_CONNECTION_THERMAL)
     z.SetZoneName(f'GND_{board.GetLayerName(layer)}')
     o = z.Outline()

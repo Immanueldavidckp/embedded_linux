@@ -8,8 +8,9 @@ large 5 V / 3.3 V rails fill what remains. Every rail pad then gets a stub+via
 into the pour (stitch.py), exactly like the GND planes.
 """
 import os, re, sys
+import subprocess
 import pcbnew
-import stitch
+import zones_strip
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PCB = os.path.join(HERE, '..', 'kicad', 'rk3576-sbc.kicad_pcb')
@@ -22,10 +23,8 @@ BIG = {'VCC5V0_SYS_S5': pcbnew.In6_Cu, 'VCC_3V3_S3': pcbnew.In6_Cu, 'VCC_3V3_S0'
 
 
 def main(path=PCB):
+    zones_strip.strip(path, path, ('PWR_', 'GND_In6.Cu'))   # idempotent; L7 = big-rail layer
     b = pcbnew.LoadBoard(path)
-    for z in list(b.Zones()):                       # idempotent; L7 becomes the big-rail layer
-        if z.GetZoneName().startswith('PWR_') or z.GetZoneName() == 'GND_In6.Cu':
-            b.Remove(z)
     rails = {}
     for f in b.GetFootprints():
         for p in f.Pads():
@@ -49,8 +48,8 @@ def main(path=PCB):
         z.SetNet(netinfo[n])
         z.SetZoneName(f'PWR_{n}')
         z.SetAssignedPriority(prio + 1)             # smallest box = highest priority
-        z.SetLocalClearance(MM(0.15))
-        z.SetMinThickness(MM(0.15))
+        z.SetLocalClearance(MM(0.10))     # must flow between 0.55 mm BGA vias
+        z.SetMinThickness(MM(0.09))
         z.SetPadConnection(pcbnew.ZONE_CONNECTION_FULL)
         z.SetIslandRemovalMode(pcbnew.ISLAND_REMOVAL_MODE_AREA)
         z.SetMinIslandArea(int(MM(1.0) * MM(1.0)))
@@ -61,7 +60,8 @@ def main(path=PCB):
         b.Add(z)
     pcbnew.SaveBoard(path, b)
     print(f'pours: {len(boxes)} power zones ({len(BIG)} board-wide on In6.Cu, rest on In3.Cu)')
-    stitch.main(path, [n for _a, n, _b in boxes])
+    # separate process: reloading a board after zone removal crashes KiCad 9 SWIG
+    subprocess.run([sys.executable, os.path.join(HERE, 'stitch.py'), path, *[n for _a, n, _b in boxes]], check=True)
 
 
 if __name__ == '__main__':

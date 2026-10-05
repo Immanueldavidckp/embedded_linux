@@ -5,7 +5,7 @@
       "Application": "Pcbnew",
       "Version": "9.0.9-9.0.9~ubuntu24.04.1"
     },
-    "CreationDate": "2026-10-04T04:00:44+00:00"
+    "CreationDate": "2026-10-05T04:16:12+00:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
@@ -14,8 +14,8 @@
       "Revision": "rev?"
     },
     "Size": {
-      "X": 85.1,
-      "Y": 56.1
+      "X": 100.1,
+      "Y": 72.1
     },
     "LayerNumber": 8,
     "BoardThickness": 1.6,
@@ -26,15 +26,17 @@
       "Layers": "Outer",
       "PadToPad": 0.09,
       "PadToTrack": 0.09,
-      "TrackToTrack": 0.09
+      "TrackToTrack": 0.09,
+      "MinLineWidth": 0.09
     },
     {
       "Layers": "Inner",
       "PadToPad": 0.0,
       "PadToTrack": 0.0,
       "TrackToTrack": 0.09,
-      "TrackToRegion": 0.2,
-      "RegionToRegion": 0.2
+      "MinLineWidth": 0.09,
+      "TrackToRegion": 0.1,
+      "RegionToRegion": 0.1
     }
   ],
   "FilesAttributes": [

@@ -8,8 +8,9 @@ as kicad/rk3576-sbc.unrouted.kicad_pcb.bak) and prints the remaining unrouted
 connection count. Freerouting does not length-match, so DDR/HDMI/PCIe/USB3
 still need interactive tuning in KiCad afterwards (see length_report.py).
 """
-import argparse, os, shutil, subprocess, time
+import argparse, os, shutil, subprocess, sys, time
 import pcbnew
+import zones_strip
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 KICAD = os.path.join(HERE, '..', 'kicad')
@@ -38,10 +39,10 @@ def main():
     shutil.copy(PCB, PCB.replace('.kicad_pcb', '.before-route.kicad_pcb.bak'))
     # Power pours are exported as whole-outline "planes", so the router believes
     # every pad inside is connected even where the real fill is an island. Hide
-    # them from the router (it then routes the rails); they stay on the board.
-    for z in list(board.Zones()):
-        if z.GetZoneName().startswith('PWR_'):
-            board.Remove(z)
+    # them from the router via a stripped copy; the board keeps them.
+    tmp = os.path.join(WORK, 'export.kicad_pcb')
+    zones_strip.strip(PCB, tmp)
+    board = pcbnew.LoadBoard(tmp)
     if not pcbnew.ExportSpecctraDSN(board, dsn):
         raise SystemExit('DSN export failed')
     # L2/L5/L7 are solid GND planes: mark them 'power' so the router only drops
@@ -63,15 +64,8 @@ def main():
         raise SystemExit('freerouting produced no session file')
     print(f'freerouting finished in {(time.time() - t0) / 60:.1f} min', flush=True)
 
-    board = pcbnew.LoadBoard(PCB)
-    if not pcbnew.ImportSpecctraSES(board, ses):
-        raise SystemExit('SES import failed')
-    pcbnew.ZONE_FILLER(board).Fill(board.Zones())
-    pcbnew.SaveBoard(PCB, board)
-    board = pcbnew.LoadBoard(PCB)
-    after = unrouted(board)
-    print(f'unrouted connections: {before} -> {after}; tracks+vias: {len(board.GetTracks())}')
-
+    print(f'unrouted before: {before}', flush=True)
+    subprocess.run([sys.executable, os.path.join(HERE, 'import_ses.py'), ses], check=True)
 
 if __name__ == '__main__':
     main()

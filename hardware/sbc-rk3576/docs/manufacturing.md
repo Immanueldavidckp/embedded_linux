@@ -21,7 +21,7 @@
 | Item | Value |
 |---|---|
 | Sides | double-sided SMT (bottom first: decaps, M.2, microSD) + 4 THT parts (USB-C shell, HDMI shell, USB-A, debug header) |
-| Placements | 400 (see `fab/cpl_jlcpcb.csv`); 10 DNP footprints are excluded |
+| Placements | 468 (see `fab/cpl_jlcpcb.csv`); DNP footprints are excluded |
 | Fine pitch | RK3576 FCCSP (0.55 mm), eMMC (0.5 mm), LPDDR5 (0.8 × 0.7 mm), 0201 passives |
 | Inspection | **X-ray all BGAs** (SoC, LPDDR5, eMMC). AOI both sides |
 | Stencil | 0.10 mm, step-down to 0.08 mm at the FCCSP if the land pattern needs it |
@@ -43,7 +43,7 @@ every IC in their 3D preview before you pay.
 
 ## Release checklist (rev A0 → rev A1, orderable)
 
-- [ ] Replace the RK3576 land pattern with Rockchip's. Re-run `build.sh`; parity must stay at 0.
+- [x] Real RK3576 land pattern (LCSC C42388007, 698/698 ball IDs match). Cross-check against Rockchip's HDK drawing.
 - [x] RK806S-5 BUCK/LDO→rail mapping verified against mainline `rk3576-rock-4d.dts` (rev A1).
 - [ ] Confirm the VCCIO bank voltages (sheet 04 `pwr_map`) against the RK3576 HW design guide, especially
       VCCIO1 (SDMMC0), VCCIO4/5, and the GPIO4_C bank used for HDMI DDC/HPD.
