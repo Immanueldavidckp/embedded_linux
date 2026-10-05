@@ -278,7 +278,7 @@ def outline(G, m):
             y0, y1 = G.y0 + i * G.res - e, G.y0 + (i + 1) * G.res + e
             ps.NewOutline()
             for x, y in ((x0, y0), (x1, y0), (x1, y1), (x0, y1)):
-                ps.Append(MM(x), MM(y))
+                ps.Append(MM(float(x)), MM(float(y)))
     ps.Simplify()
     ps.Inflate(MM(MINW / 2), pcbnew.CORNER_STRATEGY_CHAMFER_ALL_CORNERS, MM(0.005), True)
     return ps
