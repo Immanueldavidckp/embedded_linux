@@ -9,6 +9,9 @@
  *   holeok[y][x]      1 = a via drill fits here (hole-to-hole, hole-to-copper)
  *   st[l][y][x]       1 = source cell, 2 = target cell
  *   lcost[l]          cost multiplier per layer (0 = layer not allowed)
+ *   pen[l][y][x]      extra cost (x pen_unit) for entering a cell: rip-up mode, where
+ *                     other nets' routed copper is crossable at a price (NULL = none)
+ *   vpen[y][x]        same for placing a via here (NULL = none)
  *
  * A layer change at (y,x) is a through via: allowed when holeok and padok on
  * both the departure and arrival layers. Returns the path length (cells) and
@@ -49,7 +52,8 @@ static inline float hdist(int y, int x, int ty0, int tx0, int ty1, int tx1) {
 
 int astar(int L, int H, int W, const uint8_t *blocked, const uint8_t *padok, const uint8_t *holeok,
           const uint8_t *st, const float *lcost, float via_cost, float bend_cost,
-          int ty0, int tx0, int ty1, int tx1, int32_t *out, int maxout, long max_expand)
+          int ty0, int tx0, int ty1, int tx1, int32_t *out, int maxout, long max_expand,
+          const uint8_t *pen, const uint8_t *vpen, float pen_unit)
 {
     long N = (long)L * H * W, HW = (long)H * W;
     float *g = malloc(N * sizeof(float));
@@ -84,6 +88,7 @@ int astar(int L, int H, int W, const uint8_t *blocked, const uint8_t *padok, con
             if (blocked[j] || closed[j]) continue;
             float c = (d < 4 ? 1.0f : 1.41421356f) * lc;
             if (pi >= 0 && (pdx != DX[d] || pdy != DY[d])) c += bend_cost;
+            if (pen) c += pen[j] * pen_unit;
             float ng = gi + c;
             if (ng < g[j]) { g[j] = ng; par[j] = (int32_t)i; hpush(ng + hdist(ny, nx, ty0, tx0, ty1, tx1) * minl, (int32_t)j); }
         }
@@ -93,7 +98,7 @@ int astar(int L, int H, int W, const uint8_t *blocked, const uint8_t *padok, con
                 if (m == l || lcost[m] <= 0) continue;
                 long j = (long)m * HW + cell;
                 if (blocked[j] || closed[j] || !padok[j]) continue;
-                float ng = gi + via_cost;
+                float ng = gi + via_cost + (vpen ? vpen[cell] * pen_unit : 0.0f);
                 if (ng < g[j]) { g[j] = ng; par[j] = (int32_t)i; hpush(ng + hdist(y, x, ty0, tx0, ty1, tx1) * minl, (int32_t)j); }
             }
         }

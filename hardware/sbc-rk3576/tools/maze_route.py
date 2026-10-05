@@ -55,13 +55,15 @@ BGA_REFS = ('U401', 'U601', 'U701')     # RK3576, LPDDR5, eMMC
 
 _so = os.path.join(HERE, 'maze', 'libastar.so')
 if not os.path.exists(_so) or os.path.getmtime(_so) < os.path.getmtime(_so.replace('libastar.so', 'astar.c')):
-    subprocess.run(['gcc', '-O3', '-march=native', '-shared', '-fPIC', '-o', _so,
+    subprocess.run(['gcc', '-O3', '-march=native', '-shared', '-fPIC', '-o', _so + '.tmp',
                     _so.replace('libastar.so', 'astar.c'), '-lm'], check=True)
+    os.replace(_so + '.tmp', _so)          # atomic: running routers keep the old inode
 lib = ctypes.CDLL(_so)
 U8P = np.ctypeslib.ndpointer(np.uint8, flags='C_CONTIGUOUS')
 lib.astar.argtypes = [ctypes.c_int] * 3 + [U8P, U8P, U8P, U8P, np.ctypeslib.ndpointer(np.float32),
                      ctypes.c_float, ctypes.c_float] + [ctypes.c_int] * 4 + \
-                    [np.ctypeslib.ndpointer(np.int32), ctypes.c_int, ctypes.c_long]
+                    [np.ctypeslib.ndpointer(np.int32), ctypes.c_int, ctypes.c_long,
+                     ctypes.c_void_p, ctypes.c_void_p, ctypes.c_float]
 lib.astar.restype = ctypes.c_int
 
 
@@ -86,6 +88,10 @@ class Raster:
         self.nopadvia = np.zeros((self.H, self.W), np.uint8)                # vias never inside SMD pads
         self.viakeep = np.zeros((self.H, self.W), np.uint8)
         self.edge = np.ones((self.H, self.W), np.uint8)
+        # copper that rip-up may remove (routed tracks and unlocked vias): its net per cell
+        self.soft = [np.zeros((self.H, self.W), np.int32) for _ in LAYERS]
+        self.hsoft = np.zeros((self.H, self.W), np.uint8)
+        self.index, self.boxes = [], None
         self.build(board)
 
     # -- geometry helpers ------------------------------------------------
@@ -155,6 +161,7 @@ class Raster:
         d = np.hypot(GX - (xa + t * dx), GY - (ya + t * dy))
         m = d <= r + 0.5 * self.res
         self.hard[li][cy0:cy1, cx0:cx1][m] = net
+        self.soft[li][cy0:cy1, cx0:cx1][m] = net
         sub = self.clr[li][cy0:cy1, cx0:cx1]
         sub[m] = np.maximum(sub[m], int(round(clr * 100)))
 
@@ -167,6 +174,92 @@ class Raster:
         m = np.hypot(GX - c[0], GY - c[1]) <= r + 0.5 * self.res
         arr[cy0:cy1, cx0:cx1][m] = value
         return (slice(cy0, cy1), slice(cx0, cx1)), m
+
+    @staticmethod
+    def removable(it):
+        if it.GetClass() not in ('PCB_TRACK', 'PCB_ARC', 'PCB_VIA') or it.IsLocked():
+            return False
+        return True
+
+    def register(self, it):
+        bb = it.GetBoundingBox()
+        self.index.append(it)
+        self.boxes = None
+        self._bb = getattr(self, '_bb', [])
+        self._bb.append((TOMM(bb.GetLeft()), TOMM(bb.GetTop()), TOMM(bb.GetRight()), TOMM(bb.GetBottom())))
+
+    def query(self, x0, y0, x1, y1):
+        """Registered items whose bbox overlaps the mm rectangle."""
+        if self.boxes is None or len(self.boxes) != len(self._bb):
+            self.boxes = np.array(self._bb)
+        B = self.boxes
+        hit = np.nonzero((B[:, 0] <= x1) & (B[:, 2] >= x0) & (B[:, 1] <= y1) & (B[:, 3] >= y0))[0]
+        return [self.index[i] for i in hit if self.index[i] is not None]
+
+    def stamp_item(self, it):
+        net = it.GetNetCode() if it.GetNetCode() > 0 else -1
+        cls = it.GetClass()
+        soft = self.removable(it)
+        if cls == 'PAD' and it.GetAttribute() == pcbnew.PAD_ATTRIB_NPTH:
+            net = -1
+        for l in LAYERS:
+            if not it.IsOnLayer(l):
+                continue
+            if cls in ('PAD', 'PCB_VIA') and not it.FlashLayer(l):
+                continue
+            c = int(round(TOMM(it.GetOwnClearance(l)) * 100))
+            pl = self.polys(self.item_poly(it, l))
+            self.stamp_polys(self.hard[LI[l]], pl, net)
+            self.stamp_polys(self.clr[LI[l]], pl, c)
+            if soft:
+                self.stamp_polys(self.soft[LI[l]], pl, net)
+            if cls == 'PAD' and it.GetAttribute() == pcbnew.PAD_ATTRIB_SMD:
+                self.stamp_polys(self.nopadvia, pl, 1)
+                if it.GetParentFootprint().GetReference() in BGA_REFS:
+                    # BGA balls may take a via-in-pad (filled + capped, see manufacturing.md),
+                    # but only dead centre
+                    px, py = self.px(it.GetPosition().x, it.GetPosition().y)
+                    self.nopadvia[int(round(py)), int(round(px))] = 0
+        if cls in ('PAD', 'PCB_VIA') and it.HasHole():
+            hs = it.GetEffectiveHoleShape()
+            a, bb = hs.GetSeg().A, hs.GetSeg().B
+            r = TOMM(hs.GetWidth()) / 2
+            for k in range(5):
+                q = ((a.x + (bb.x - a.x) * k / 4) / 1e6, (a.y + (bb.y - a.y) * k / 4) / 1e6)
+                sl, m = self.stamp_disc(self.holes, q, r, net)
+                if soft:
+                    self.hsoft[sl][m] = 1
+
+    def unstamp(self, removed):
+        """Forget removed items: clear their area and re-stamp everything else that overlaps it."""
+        rm = {id(it) for it in removed}
+        for i, it in enumerate(self.index):
+            if it is not None and id(it) in rm:
+                self.index[i] = None
+        for it in removed:
+            bb = it.GetBoundingBox()
+            x0, y0 = TOMM(bb.GetLeft()) - 0.1, TOMM(bb.GetTop()) - 0.1
+            x1, y1 = TOMM(bb.GetRight()) + 0.1, TOMM(bb.GetBottom()) + 0.1
+            cx0, cy0 = max(int((x0 - X0) / self.res), 0), max(int((y0 - Y0) / self.res), 0)
+            cx1, cy1 = min(int((x1 - X0) / self.res) + 2, self.W), min(int((y1 - Y0) / self.res) + 2, self.H)
+            sl = (slice(cy0, cy1), slice(cx0, cx1))
+            for li in range(len(LAYERS)):
+                self.hard[li][sl] = 0
+                self.clr[li][sl] = 0
+                self.soft[li][sl] = 0
+            self.holes[sl] = 0
+            self.hsoft[sl] = 0
+            self.nopadvia[sl] = 0
+            gx0, gy0 = X0 + cx0 * self.res, Y0 + cy0 * self.res
+            gx1, gy1 = X0 + cx1 * self.res, Y0 + cy1 * self.res
+            for pl, lis, tracks in self.keepouts:
+                if tracks:
+                    for li in lis:
+                        m = self.mask_polys(pl, cx0, cy0, cx1 - cx0, cy1 - cy0)
+                        self.hard[li][sl][m] = -1
+            for other in sorted(self.query(gx0 - 1, gy0 - 1, gx1 + 1, gy1 + 1),
+                                key=lambda o: o.GetOwnClearance(pcbnew.F_Cu)):
+                self.stamp_item(other)
 
     # -- build -------------------------------------------------------------
     def build(self, b):
@@ -191,6 +284,8 @@ class Raster:
                     self.stamp_polys(self.hard[LI[l]], pl, -1)
             if z.GetDoNotAllowVias():
                 self.stamp_polys(self.viakeep, pl, 1)
+        self.keepouts = [(self.polys(z.Outline()), [LI[l] for l in z.GetLayerSet().CuStack() if l in LI],
+                          z.GetDoNotAllowTracks()) for z in rule_areas]
         items = []
         for f in b.GetFootprints():
             for p in f.Pads():
@@ -199,33 +294,8 @@ class Raster:
         # larger clearances last so they win where items overlap
         items.sort(key=lambda it: it.GetOwnClearance(pcbnew.F_Cu))
         for it in items:
-            net = it.GetNetCode() if it.GetNetCode() > 0 else -1
-            cls = it.GetClass()
-            if cls == 'PAD' and it.GetAttribute() == pcbnew.PAD_ATTRIB_NPTH:
-                net = -1
-            for l in LAYERS:
-                if not it.IsOnLayer(l):
-                    continue
-                if cls in ('PAD', 'PCB_VIA') and not it.FlashLayer(l):
-                    continue
-                c = int(round(TOMM(it.GetOwnClearance(l)) * 100))
-                pl = self.polys(self.item_poly(it, l))
-                self.stamp_polys(self.hard[LI[l]], pl, net)
-                self.stamp_polys(self.clr[LI[l]], pl, c)
-                if cls == 'PAD' and it.GetAttribute() == pcbnew.PAD_ATTRIB_SMD:
-                    self.stamp_polys(self.nopadvia, pl, 1)
-                    if it.GetParentFootprint().GetReference() in BGA_REFS:
-                        # BGA balls may take a via-in-pad (filled + capped, see manufacturing.md),
-                        # but only dead centre
-                        px, py = self.px(it.GetPosition().x, it.GetPosition().y)
-                        self.nopadvia[int(round(py)), int(round(px))] = 0
-            if cls in ('PAD', 'PCB_VIA') and it.HasHole():
-                hs = it.GetEffectiveHoleShape()
-                a, bb = hs.GetSeg().A, hs.GetSeg().B
-                r = TOMM(hs.GetWidth()) / 2
-                for k in range(5):
-                    q = ((a.x + (bb.x - a.x) * k / 4) / 1e6, (a.y + (bb.y - a.y) * k / 4) / 1e6)
-                    self.stamp_disc(self.holes, q, r, net)
+            self.register(it)
+            self.stamp_item(it)
         print(f'raster {self.W}x{self.H}x{len(LAYERS)} @ {self.res} mm built in {time.time() - t0:.0f} s', flush=True)
 
 
@@ -341,7 +411,7 @@ class Router:
                         return 'ok'
         return 'fail'
 
-    def dist_maps(self, net, own_clr, allowed, wx0, wy0, w, h):
+    def dist_maps(self, net, own_clr, allowed, wx0, wy0, w, h, fixed_only=False):
         """Per layer: distance (mm) from each cell to the nearest other-net copper minus the
         required clearance. Track fits where deff >= w/2, a via pad where deff >= D/2.
         Computed on the window plus a 1 mm apron so copper just outside it still counts."""
@@ -356,11 +426,15 @@ class Router:
         de = (ndimage.distance_transform_edt(edge == 0) * R.res - EDGE_CLR)[crop] if edge.any() else None
         out, hole_eff = {}, None
         hm = R.holes[sl]
+        if fixed_only:                    # rip-up mode: routed copper is not an obstacle here
+            hm = np.where(R.hsoft[sl] != 0, 0, hm)
         fh = (hm != 0) & (hm != net)
         dfh = (ndimage.distance_transform_edt(~fh) * R.res - HOLE_CLR)[crop] if fh.any() else None
         for li in range(len(LAYERS)):
             hn, hc = R.hard[li][sl], R.clr[li][sl]
             foreign = (hn != 0) & (hn != net)
+            if fixed_only:
+                foreign &= R.soft[li][sl] != hn
             d = np.full((h, w), 1e3, np.float32)
             dh = np.full((h, w), 1e3, np.float32)
             if foreign.any():
@@ -390,12 +464,12 @@ class Router:
             out['edge'] = de
         return out
 
-    def search(self, conn_id, net, name, tw, clr, vd, vdr, allowed, src, dst, deff, wx0, wy0, w, h):
+    def masks(self, net, tw, vd, vdr, allowed, src, dst, deff, wx0, wy0, w, h):
+        """Track/via feasibility from distance maps: (blocked[L], padok[L], holeok, lcost[L])."""
         R, L = self.R, len(LAYERS)
         mg = 1.0 * R.res
         blocked = np.ones((L, h, w), np.uint8)
         padok = np.zeros((L, h, w), np.uint8)
-        st = np.zeros((L, h, w), np.uint8)
         lcost = np.zeros(L, np.float32)
         for li in allowed:
             d, dz = deff[li]
@@ -420,6 +494,22 @@ class Router:
         holeok = ((hole_eff >= vdr / 2 + mg) & (dhole >= vdr / 2 + mg) & nv).astype(np.uint8)
         if 'edge' in deff:
             holeok &= (deff['edge'] >= vd / 2 + mg).astype(np.uint8)
+        return blocked, padok, holeok, lcost
+
+    def search(self, conn_id, net, name, tw, clr, vd, vdr, allowed, src, dst, deff, wx0, wy0, w, h):
+        R, L = self.R, len(LAYERS)
+        mg = 1.0 * R.res
+        blocked, padok, holeok, lcost = self.masks(net, tw, vd, vdr, allowed, src, dst, deff, wx0, wy0, w, h)
+        pen = vpen = None
+        if getattr(self, 'rip', False):
+            # rip-up mode: only fixed copper blocks; crossing routed copper costs rip_pen per cell
+            fixed = self.dist_maps(net, clr, allowed, wx0, wy0, w, h, fixed_only=True)
+            fb, fp, fh, _ = self.masks(net, tw, vd, vdr, allowed, src, dst, fixed, wx0, wy0, w, h)
+            pen = np.ascontiguousarray(((blocked != 0) & (fb == 0)).astype(np.uint8))
+            vpen = np.ascontiguousarray((((holeok == 0) | (padok[list(allowed)] == 0).any(axis=0))
+                                         & (fh != 0)).astype(np.uint8))
+            blocked, padok, holeok = fb, fp, fh
+        st = np.zeros((L, h, w), np.uint8)
         tgt_any = False
         for which, cells in ((1, src), (2, dst)):
             for li, (m, ctr, need) in cells.items():
@@ -444,7 +534,9 @@ class Router:
         for attempt in range(8):
             n = lib.astar(L, h, w, np.ascontiguousarray(blocked), np.ascontiguousarray(padok), holeok,
                           np.ascontiguousarray(st), lcost, ctypes.c_float(1.2 / R.res), ctypes.c_float(0.3),
-                          int(ty.min()), int(tx.min()), int(ty.max()), int(tx.max()), out, w * h, 6_000_000)
+                          int(ty.min()), int(tx.min()), int(ty.max()), int(tx.max()), out, w * h, 6_000_000,
+                          None if pen is None else pen.ctypes.data, None if vpen is None else vpen.ctypes.data,
+                          ctypes.c_float(getattr(self, 'rip_pen', 0.0)))
             if n <= 0:
                 return 'nopath'
             path = out[:3 * n].reshape(n, 3)[::-1].copy()      # source -> target
@@ -452,7 +544,11 @@ class Router:
             clash = next((q for i, p in enumerate(vias) for q in vias[i + 1:]
                           if 0 < math.hypot(p[0] - q[0], p[1] - q[1]) < need), None)
             if clash is None:
-                self.commit(conn_id, net, path, blocked, tw, clr, vd, vdr, wx0, wy0)
+                sp = blocked
+                if pen is not None:            # shortcuts may not cross more routed copper than the path did
+                    sp = blocked | pen
+                    sp[path[:, 0], path[:, 1], path[:, 2]] = 0
+                self.commit(conn_id, net, path, sp, tw, clr, vd, vdr, wx0, wy0)
                 return 'ok'
             r = int(need) + 1                                  # two vias of this path too close: forbid one
             holeok[max(clash[0] - r, 0):clash[0] + r + 1, max(clash[1] - r, 0):clash[1] + r + 1] = 0
@@ -526,6 +622,7 @@ class Router:
             t.SetNet(netinfo)
             b.Add(t)
             R.stamp_segment(li, a, c, tw, net, clr)
+            R.register(t)
             self.flash_vias(net, li, a, c, tw, clr)
             self.added.append((conn_id, t))
             self.patch.append({'conn': conn_id, 'type': 'track', 'net': netinfo.GetNetname(),
@@ -544,9 +641,12 @@ class Router:
             # stamp it as copper on all layers (conservative) so later routes keep clear
             for li in range(len(LAYERS)):
                 sl, m = R.stamp_disc(R.hard[li], c, vd / 2, net)
+                R.soft[li][sl][m] = net
                 region = R.clr[li][sl]
                 region[m] = np.maximum(region[m], int(round(clr * 100)))
-            R.stamp_disc(R.holes, c, vdr / 2, net)
+            sl, m = R.stamp_disc(R.holes, c, vdr / 2, net)
+            R.hsoft[sl][m] = 1
+            R.register(v)
             self.vias_by_net.setdefault(net, []).append((c[0], c[1], vd / 2, v))
             self.added.append((conn_id, v))
             self.patch.append({'conn': conn_id, 'type': 'via', 'net': netinfo.GetNetname(), 'pos': c,
