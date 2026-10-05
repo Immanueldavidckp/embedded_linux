@@ -11,3 +11,4 @@ _autosave-*
 hardware/sbc-rk3576/build/
 *.unrouted.kicad_pcb.bak
 *.before-route.kicad_pcb.bak
+hardware/sbc-rk3576/tools/maze/libastar.so
