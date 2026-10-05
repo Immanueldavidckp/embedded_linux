@@ -40,8 +40,8 @@ GRAVE = []          # removed items stay referenced (and un-owned) until exit
 
 
 class Cleaner:
-    def __init__(self, b, anchors=()):
-        self.b, self.anchors, self.kept, self.log = b, set(anchors), {}, []
+    def __init__(self, b, anchors=None):
+        self.b, self.anchors, self.kept, self.gone, self.log = b, anchors or {}, {}, set(), []
         self.cu = list(b.GetEnabledLayers().CuStack())
         self.pads, self.zones = defaultdict(list), defaultdict(list)
         for f in b.GetFootprints():
@@ -50,6 +50,8 @@ class Cleaner:
         for z in b.Zones():
             if not z.GetIsRuleArea():
                 self.zones[z.GetNetCode()].append(z)
+        self.live = Counter(k for t in list(b.GetTracks()) + [p for ps in self.pads.values() for p in ps]
+                            for k in points(t))         # copper anchor points; pads never go
         self.n = self.unconnected()
 
     def unconnected(self):
@@ -91,6 +93,8 @@ class Cleaner:
             self.n = n
             for t in items:
                 t.thisown = 0           # never let SWIG free them; KiCad may still point at them
+                self.gone.add(t.m_Uuid.AsString())
+                self.live.subtract(points(t))
             GRAVE.extend(items)
             self.log += desc
             return len(items)
@@ -134,8 +138,7 @@ class Cleaner:
     def fix_holes(self):
         unresolved = []
         for a, b, gap in self.hole_pairs():
-            gone = {t.m_Uuid.AsString() for t in GRAVE}
-            if a.m_Uuid.AsString() in gone or b.m_Uuid.AsString() in gone:
+            if a.m_Uuid.AsString() in self.gone or b.m_Uuid.AsString() in self.gone:
                 continue
             opts = [t for t in (a, b) if t.GetClass() == 'PCB_VIA' and not self.protected(t)]
             opts.sort(key=lambda t: (not self.c.TestTrackEndpointDangling(t, True),
@@ -144,18 +147,20 @@ class Cleaner:
                 unresolved.append((a, b, gap))
         return unresolved
 
+    def tip(self, t, end):
+        """A partial route's tip: a ratsnest line ends here and its far end still has copper
+        (if that was a floating fragment we removed, the line is gone and so is the reason to keep)."""
+        far = self.anchors.get((t.GetNetCode(), end.x, end.y), ())
+        return self.attached(t) and any(k is None or self.live[k] > 0 for k in far)
+
     def strip_dangling(self):
         while True:
             cand = []
             for t, end in self.dangling():
                 u = t.m_Uuid.AsString()
-                if u in self.kept:
-                    continue
-                if self.protected(t):
+                if u not in self.kept and self.protected(t):
                     self.kept[u] = 'locked/in-pad/zone vias'
-                elif (t.GetNetCode(), end.x, end.y) in self.anchors and self.attached(t):
-                    self.kept[u] = 'partial-route tips at a ratsnest end'
-                else:
+                if u not in self.kept and not self.tip(t, end):
                     cand.append(t)
             if not cand:
                 return
@@ -168,23 +173,27 @@ class Cleaner:
                 self.trial(batch, 'dangling')
 
 
+def points(t):
+    """(net, x, y) anchors of a track/via, as KiCad's ratsnest uses them."""
+    ps = [t.GetStart(), t.GetEnd()] if t.GetClass() in ('PCB_TRACK', 'PCB_ARC') else [t.GetPosition()]
+    return [(t.GetNetCode(), p.x, p.y) for p in ps]
+
+
 def ratsnest_ends(b, drc):
-    """{(net, x, y)}: where KiCad's open ratsnest lines end (closest anchors of each item pair)."""
+    """{(net, x, y): far ends}: where KiCad's open ratsnest lines end (closest anchor pair of the
+    two DRC items). A zone end is not resolved: None, and all anchors of the other item count."""
     items = {t.m_Uuid.AsString(): t for t in b.GetTracks()}
     items.update((p.m_Uuid.AsString(), p) for f in b.GetFootprints() for p in f.Pads())
 
-    def anchors(t):                 # zones (not in items) -> [] -> keep every anchor of the other side
-        if t is None:
-            return []
-        return [t.GetStart(), t.GetEnd()] if t.GetClass() in ('PCB_TRACK', 'PCB_ARC') else [t.GetPosition()]
-    out = set()
+    out = defaultdict(set)
     for u in drc['unconnected_items']:
         a, z = (items.get(i['uuid']) for i in u['items'])
-        pa, pz = anchors(a), anchors(z)
+        pa, pz = (points(t) if t is not None else [] for t in (a, z))
         if pa and pz:
-            pa, pz = map(list, zip(min(((p, q) for p in pa for q in pz), key=lambda e: (e[0] - e[1]).EuclideanNorm())))
-        for t, ps in ((a, pa), (z, pz)):
-            out |= {(t.GetNetCode(), p.x, p.y) for p in ps}
+            pa, pz = map(list, zip(min(((p, q) for p in pa for q in pz), key=lambda e: math.dist(e[0][1:], e[1][1:]))))
+        for mine, far in ((pa, pz), (pz, pa)):
+            for k in mine:
+                out[k] |= set(far) or {None}
     return out
 
 
@@ -239,7 +248,7 @@ def main():
     ap.add_argument('-v', action='store_true', help='list every removed item')
     a = ap.parse_args()
 
-    anchors = set()
+    anchors = {}
     if not a.all:
         d = json.load(open(a.drc)) if a.drc else run_drc(a.inp, a.out + '.drc_in.json')
         if len(d['unconnected_items']) >= 499:
@@ -252,7 +261,8 @@ def main():
     d0 = Counter(t.GetClass() for t, _p in cl.dangling())
     unresolved = cl.fix_holes()
     cl.strip_dangling()
-    d1 = Counter(t.GetClass() for t, _p in cl.dangling())
+    left = cl.dangling()
+    d1 = Counter(t.GetClass() for t, _p in left)
     pcbnew.SaveBoard(a.out, b)
     pro = os.path.splitext(a.inp)[0] + '.kicad_pro'
     if os.path.exists(pro) and os.path.abspath(a.inp) != os.path.abspath(a.out):   # DRC rules live here
@@ -262,13 +272,15 @@ def main():
     by = Counter((w, k) for w, k, *_ in cl.log)
     print('removed:', ', '.join(f'{n} {k[4:].lower()} ({w})' for (w, k), n in sorted(by.items())) or 'nothing')
     nets = Counter(net for _w, _k, net, *_ in cl.log)
-    print('  by net:', ', '.join(f'{k} {n}' for k, n in nets.most_common(20)), '...' if len(nets) > 20 else '')
+    if nets:
+        print('  by net:', ', '.join(f'{k} {n}' for k, n in nets.most_common(20)), '...' if len(nets) > 20 else '')
     if a.v:
         for e in cl.log:
             print('   ', *e)
     print(f'dangling (exact; DRC lists at most 199): vias {d0["PCB_VIA"]} -> {d1["PCB_VIA"]}, '
           f'tracks {d0["PCB_TRACK"] + d0["PCB_ARC"]} -> {d1["PCB_TRACK"] + d1["PCB_ARC"]}; kept: '
-          + ', '.join(f'{n} {w}' for w, n in Counter(cl.kept.values()).most_common()))
+          + ', '.join(f'{n} {w}' for w, n in Counter(cl.kept.get(t.m_Uuid.AsString(), 'partial-route tips at a ratsnest end')
+                                                     for t, _p in left).most_common()))
     for x, y, gap in unresolved:
         print(f'  hole_to_hole unresolved ({gap:.4f} mm): ' + ' | '.join(
             f'{"locked " if t.IsLocked() else ""}{t.GetClass()[4:].lower()} [{t.GetNetname()}] '
