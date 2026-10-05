@@ -36,6 +36,12 @@ def main():
     board = pcbnew.LoadBoard(PCB)
     before = unrouted(board)
     shutil.copy(PCB, PCB.replace('.kicad_pcb', '.before-route.kicad_pcb.bak'))
+    # Power pours are exported as whole-outline "planes", so the router believes
+    # every pad inside is connected even where the real fill is an island. Hide
+    # them from the router (it then routes the rails); they stay on the board.
+    for z in list(board.Zones()):
+        if z.GetZoneName().startswith('PWR_'):
+            board.Remove(z)
     if not pcbnew.ExportSpecctraDSN(board, dsn):
         raise SystemExit('DSN export failed')
     # L2/L5/L7 are solid GND planes: mark them 'power' so the router only drops
