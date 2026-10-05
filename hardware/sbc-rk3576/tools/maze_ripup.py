@@ -161,7 +161,7 @@ def one_round(a, rnd):
     for k, u in enumerate(drc['unconnected_items']):
         ia, ib = u['items']
         A, B = r.byuuid.get(ia['uuid']), r.byuuid.get(ib['uuid'])
-        if A is None or B is None or not re.search(a.nets, A.GetNetname()):
+        if A is None or B is None or not re.search(a.nets, A.GetNetname()) or re.search(a.exclude, A.GetNetname()):
             continue
         pa, pb = (ia['pos']['x'], ia['pos']['y']), (ib['pos']['x'], ib['pos']['y'])
         if math.dist(pa, pb) > a.max_len:
@@ -196,6 +196,7 @@ def main():
     ap.add_argument('--rounds', type=int, default=8)
     ap.add_argument('--pen', type=float, default=60.0, help='cost per cell of crossing routed copper')
     ap.add_argument('--nets', default='.')
+    ap.add_argument('--exclude', default='^$')
     ap.add_argument('--res', type=float, default=0.025)
     ap.add_argument('--margin', type=float, default=2.5)
     ap.add_argument('--max-len', type=float, default=1e9, help='skip connections longer than this (mm)')
@@ -224,7 +225,7 @@ def main():
         best = open_n + errs if best is None else min(best, open_n + errs)
         subprocess.run([sys.executable, os.path.abspath(__file__), a.out, a.out, '--one-round', str(rnd),
                         '--pen', str(a.pen), '--nets', a.nets, '--res', str(a.res), '--margin', str(a.margin),
-                        '--max-len', str(a.max_len), '--first', a.first] + (['--no-rip'] if a.no_rip else []),
+                        '--max-len', str(a.max_len), '--first', a.first, '--exclude', a.exclude] + (['--no-rip'] if a.no_rip else []),
                        check=True)
         refill(a.out)
     print('done', flush=True)
