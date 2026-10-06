@@ -30,30 +30,36 @@ Also on the board: microSD (recovery boot), MASKROM/POWER/RESET keys, LEDs. It i
 | PMIC rail map | ✅ verified against mainline Linux `rk3576-rock-4d.dts` (same RK806S-5) | LOG.md #11 |
 | Device tree | ✅ `software/rk3576-sbc.dts` compiles against mainline `rk3576.dtsi`; 7/7 GPIOs match the schematic | `tools/check_dts.sh` |
 | Placement | ✅ all 484 footprints, 262 top / 222 bottom | renders in `docs/img/` |
-| BGA fan-out | ✅ 818 via-in-pad escapes (RK3576 + LPDDR5) | `tools/fanout.py` |
-| Planes / pours | ✅ GND on L2/L5 + 284 stitch vias; 36 power pours on L4/L7 + stitch vias | `tools/stitch.py`, `tools/pour.py` |
-| **Routing** | 🟡 **≈ 73 % done**: 1,789 → **482** left (134 signal, 348 power) after clearing signals off the power layers. Commit `d51ddcc` holds a 433-left variant whose pours are fragmented | [fab/drc.rpt](fab/drc.rpt) |
-| DRC | ✅ **0 errors** apart from the unrouted connections (219 warnings: pour islands, stubs) | [fab/drc.rpt](fab/drc.rpt) |
+| BGA fan-out | ✅ via-in-pad on every used ball: RK3576 + LPDDR5 (818) and eMMC (33) | `tools/fanout.py`, `tools/fanout_region.py` |
+| Planes / pours | ✅ GND on L2/L5 + stitch vias; power pours on L4/L7 rebuilt as one connected region per rail | `tools/stitch.py`, `tools/pour_fix.py` |
+| **Routing** | 🟡 **≈ 92 % done**: re-routed from scratch with our own maze router. **78 of 942** connections still open, mostly long LPDDR5-B / RGMII / SD / eMMC runs through the congested SoC area | [fab/drc.rpt](fab/drc.rpt), `tools/route_all.sh` |
+| DRC | ✅ **0 errors** apart from the 78 unconnected items (296 warnings: dangling stubs/vias left by rip-up, removed by `tools/cleanup.py` at the end) | [fab/drc.rpt](fab/drc.rpt) |
 | Schematic ↔ PCB parity | ✅ 0 issues | [fab/drc.rpt](fab/drc.rpt) |
 | Length / skew tuning | ❌ not done: 31 groups flagged | [fab/length_report.md](fab/length_report.md) |
 | BOM, JLCPCB BOM, CPL | ✅ | `fab/` |
 | Linux-PC readiness | ✅ on paper (Pi 4–5 class desktop) | [docs/linux_pc_readiness.md](docs/linux_pc_readiness.md) |
 
-> **Do not order from `fab/gerbers-draft/` yet.** The board needs: the remaining 433 connections, a
-> power-plane clean-up (L4 is shared by signals and power pours, which islands the pours), and length
-> tuning of LPDDR5/HDMI/PCIe/USB3. That last stage is interactive layout work in KiCad
-> (Route → Tune length). See [docs/layout_guide.md](docs/layout_guide.md).
+> **Do not order from `fab/gerbers-draft/` yet.** The board still needs the last 78 connections and
+> length tuning of LPDDR5/HDMI/PCIe/USB3 (`tools/tune_length.py` does the pairs automatically; the
+> LPDDR5 lanes need re-routing with length targets). See [docs/layout_guide.md](docs/layout_guide.md).
 
-### What stopped full auto-routing (and what to do next)
+### How the board was routed (and what is left)
 
-1. **Done:** the power layers L4/L7 were cleared of signal traces and re-poured (isolated islands 83 → 14).
-2. **Blocker:** with signals limited to L1/L3/L6/L8, Freerouting cannot escape the remaining nets from under
-   the 0.55 mm RK3576 and the LPDDR5 (no progress in a 1 h 45 min run). If it is allowed onto L4/L7, it
-   fragments the power pours again. This is the point where layout engineers route by hand.
-3. **Next (interactive, KiCad 9):** route the LPDDR5 byte lanes by hand on L3/L6 with the length tuner
-   (±0.5 mm per lane), then HDMI/PCIe/USB3 pairs on L1, then let `tools/route.py` finish the low-speed
-   nets. Join the remaining power islands with short wide traces or via stitching.
-   `tools/length_report.py` regenerates the tuning list.
+Freerouting stalled at 482 open connections. The board was then stripped back to fan-out + plane
+stitching (942 open) and re-routed with tools written for this board (`tools/route_all.sh`):
+
+1. `maze_route.py`: 25 µm grid, multi-layer A* in C, clearances from distance transforms; connections
+   taken from KiCad's own DRC, so "done" means KiCad agrees. 942 → 168.
+2. `fanout_region.py U701 --relocate`: the eMMC had never been fanned out; six bottom-side parts were
+   slid off its via sites and every used ball got a via-in-pad.
+3. `pour_fix.py`: power pours rebuilt as one connected region per rail: → 132.
+4. `maze_ripup.py`: routes from the whole connected copper of each end (including dangling fan-out
+   vias) with capped rip-up and reroute: → 78, DRC clean.
+
+The last 78 sit where four signal layers are full (between the RK3576 and the LPDDR5, and the long
+RGMII/SD runs under the SoC). Rip-up beyond a small budget cascades (LOG.md #27, #31). Options:
+hand-route them in KiCad (the router's partial routes are in place), or give signals part of L4 under
+the SoC. `tools/maze_diag.py` explains any single failure.
 
 ## Repository layout
 
@@ -66,7 +72,10 @@ hardware/sbc-rk3576/
 │   ├── gen_pcb.py          # stackup, outline, net classes, placement, planes
 │   ├── fanout.py           # BGA via-in-pad escape
 │   ├── stitch.py, pour.py  # GND stitching, power pours + stitching
-│   ├── route.py, import_ses.py   # Freerouting in chunks (Specctra DSN/SES)
+│   ├── route_all.sh        # the routing pipeline (strip → maze → eMMC fan-out → pours → rip-up → clean → tune)
+│   ├── maze_route.py, maze/astar.c, maze_ripup.py, maze_diag.py   # grid maze router + rip-up + diagnostics
+│   ├── fanout_region.py, pour_fix.py, cleanup.py, tune_length.py  # eMMC fan-out, pours, debris, meanders
+│   ├── route.py, import_ses.py   # earlier Freerouting flow (Specctra DSN/SES)
 │   ├── length_report.py    # DDR/HS length + skew report
 │   ├── gen_bom.py          # BOM, JLCPCB BOM, cost summary
 │   ├── check_dts.sh        # compile the board device tree against mainline Linux

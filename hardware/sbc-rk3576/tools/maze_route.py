@@ -403,6 +403,14 @@ class Router:
                 if ids:
                     reach[li] |= ids
                     grown = True
+        # own-net vias in the cluster: a route may also land on one on a layer where it has no
+        # pad yet (a dangling BGA fan-out via is exactly the way down from its ball)
+        land = []
+        for vx, vy, vr, v in self.vias_by_net.get(net, ()):
+            cx, cy = int(round((vx - X0) / R.res - 0.5)) - wx0, int(round((vy - Y0) / R.res - 0.5)) - wy0
+            if 0 <= cx < w and 0 <= cy < h and any(lab[li][cy, cx] in reach[li] for li in range(L)):
+                land.append((cy, cx, 2 * vr))
+        self._last_landing = land
         out = dict(cells)
         for li in range(L):
             if not reach[li]:
@@ -440,7 +448,9 @@ class Router:
             src = self.item_cells(A, posA, wx0, wy0, w, h)
             dst = self.item_cells(B, posB, wx0, wy0, w, h)
             src = self.expand(src, netcode, wx0, wy0, w, h)
+            self._land = {1: self._last_landing}
             dst = self.expand(dst, netcode, wx0, wy0, w, h)
+            self._land[2] = self._last_landing
             if name == 'GND':            # a via into either solid GND plane connects too
                 for li in (1, 4):
                     m = ndimage.binary_erosion(R.zone[li][wy0:wy0 + h, wx0:wx0 + w] == netcode, iterations=3)
@@ -533,6 +543,9 @@ class Router:
                 for li, (m, ctr, need) in cells.items():
                     if ctr is not None:
                         ob &= (yy - ctr[0]) ** 2 + (xx - ctr[1]) ** 2 > rr * rr
+            for lst in getattr(self, '_land', {}).values():
+                for cy, cx, _d in lst:
+                    ob &= (yy - cy) ** 2 + (xx - cx) ** 2 > rr * rr
             for li in allowed:
                 own = R.hard[li][wy0:wy0 + h, wx0:wx0 + w] == net
                 blocked[li] |= (ob & ~own).astype(np.uint8)
@@ -572,7 +585,14 @@ class Router:
                     free[ctr] = True
                 st[li][free & (st[li] == 0)] = which
                 tgt_any = tgt_any or which == 2
-        if not tgt_any:
+        for which, lst in getattr(self, '_land', {}).items():
+            for cy, cx, dv in lst:
+                for li in allowed:
+                    if st[li, cy, cx] == 0 and deff[li][0][cy, cx] >= dv / 2 + mg:
+                        st[li, cy, cx] = which
+                        blocked[li, cy, cx] = 0
+                        tgt_any = tgt_any or which == 2
+        if not tgt_any or not (st == 1).any():
             return 'no-target'
         ty, tx = np.nonzero(np.any(st == 2, axis=0))
         out = np.zeros(3 * w * h, np.int32)
@@ -580,7 +600,7 @@ class Router:
         for attempt in range(8):
             n = lib.astar(L, h, w, np.ascontiguousarray(blocked), np.ascontiguousarray(padok), holeok,
                           np.ascontiguousarray(st), lcost, ctypes.c_float(1.2 / R.res), ctypes.c_float(0.3),
-                          int(ty.min()), int(tx.min()), int(ty.max()), int(tx.max()), out, w * h, 6_000_000,
+                          int(ty.min()), int(tx.min()), int(ty.max()), int(tx.max()), out, w * h, getattr(self, 'max_expand', 6_000_000),
                           None if pen is None else pen.ctypes.data, None if vpen is None else vpen.ctypes.data,
                           ctypes.c_float(getattr(self, 'rip_pen', 0.0)))
             if n <= 0:
@@ -717,11 +737,13 @@ def main():
     ap.add_argument('--margin', type=float, default=2.5, help='window margin around a connection (mm)')
     ap.add_argument('--patch', help='write added items as JSON here')
     ap.add_argument('--limit', type=int, default=0)
+    ap.add_argument('--max-expand', type=int, default=6_000_000, help='A* node budget per search')
     a = ap.parse_args()
 
     b = pcbnew.LoadBoard(a.inp)
     drc = json.load(open(a.drc)) if a.drc else run_drc(a.inp, a.out + '.drc_in.json')
     r = Router(b, a.res, a.margin)
+    r.max_expand = a.max_expand
     conns = []
     for k, u in enumerate(drc['unconnected_items']):
         ia, ib = u['items']
