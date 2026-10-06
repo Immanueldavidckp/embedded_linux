@@ -457,6 +457,7 @@ class Router:
             w, h = wx1 - wx0, wy1 - wy0
             src = self.item_cells(A, posA, wx0, wy0, w, h)
             dst = self.item_cells(B, posB, wx0, wy0, w, h, others=A is B)
+            raw = (src, dst)
             src = self.expand(src, netcode, wx0, wy0, w, h)
             self._land = {1: self._last_landing}
             dst = self.expand(dst, netcode, wx0, wy0, w, h)
@@ -469,12 +470,54 @@ class Router:
             if not src or not dst:
                 return 'no-cells'
             deff = self.dist_maps(netcode, clr, allowed, wx0, wy0, w, h)
+            if A is not B and any(li in dst and (src[li][0] & dst[li][0]).any() for li in src):
+                # the two pieces already overlap on the grid, but KiCad joins tracks only at their
+                # end points: lay a short bridge between KiCad's two anchors
+                return self.bridge(conn_id, netcode, name, tw, clr, allowed, raw, src, dst, deff,
+                                   posA, posB, wx0, wy0, w, h)
             for tw_try in widths:
                 for vd, vdr in VIAS:
                     res = self.search(conn_id, netcode, name, tw_try, clr, vd, vdr, allowed, src, dst,
                                       deff, wx0, wy0, w, h)
                     if res == 'ok':
                         return 'ok'
+        return 'fail'
+
+    def bridge(self, conn_id, net, name, tw, clr, allowed, raw, src, dst, deff, posA, posB, wx0, wy0, w, h):
+        """Join two pieces that touch on the grid but not in KiCad's eyes: a segment between the
+        two anchors on a layer both are on, else a via at one anchor and a segment on the other
+        piece's layer. Every cell of the bridge must be clear of other-net copper."""
+        R = self.R
+        cell = lambda p: (int(round((p[1] - Y0) / R.res - 0.5)) - wy0, int(round((p[0] - X0) / R.res - 0.5)) - wx0)
+        ca, cb = cell(posA), cell(posB)
+        if not all(0 <= c[0] < h and 0 <= c[1] < w for c in (ca, cb)):
+            return 'fail'
+        la = [li for li in raw[0] if li in allowed]
+        lb = [li for li in raw[1] if li in allowed]
+        for vd, vdr in VIAS:
+            blocked, padok, holeok, _lc = self.masks(net, tw, vd, vdr, allowed, src, dst, deff, wx0, wy0, w, h)
+            strict = {li: ndimage.binary_dilation(blocked[li].astype(bool)) for li in set(la + lb)}
+
+            def free(li, p, q):
+                n = int(max(abs(q[0] - p[0]), abs(q[1] - p[1])) * 3) + 1
+                return all(not strict[li][int(round(p[0] + (q[0] - p[0]) * k / n)),
+                                          int(round(p[1] + (q[1] - p[1]) * k / n))] for k in range(n + 1))
+            plans = [[(li, ca), (li, cb)] for li in la if li in lb]
+            for (c, lv, lo) in ((ca, la, lb), (cb, lb, la)):
+                if holeok[c]:
+                    plans += [[(l1, c), (l2, c), (l2, cb if c == ca else ca)] for l1 in lv for l2 in lo
+                              if l1 != l2 and padok[l1][c] and padok[l2][c]]
+            for plan in plans:
+                if all(free(l, p, q) for (l, p), (l2, q) in zip(plan, plan[1:]) if l == l2):
+                    path = np.array([(l, y, x) for l, (y, x) in plan], np.int32)
+                    if len(plan) == 2 and plan[0][1] == plan[1][1]:     # anchors in the same cell
+                        y, x = plan[0][1]
+                        x2 = x + 2 if x + 2 < w else x - 2
+                        if not free(plan[0][0], (y, x), (y, x2)):
+                            continue
+                        path = np.array([(plan[0][0], y, x), (plan[0][0], y, x2), (plan[0][0], y, x)], np.int32)
+                    self.commit(conn_id, net, path, blocked, tw, clr, vd, vdr, wx0, wy0)
+                    return 'ok'
         return 'fail'
 
     def dist_maps(self, net, own_clr, allowed, wx0, wy0, w, h, fixed_only=False):
