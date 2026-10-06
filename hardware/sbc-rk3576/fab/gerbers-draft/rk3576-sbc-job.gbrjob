@@ -5,7 +5,7 @@
       "Application": "Pcbnew",
       "Version": "9.0.9-9.0.9~ubuntu24.04.1"
     },
-    "CreationDate": "2026-10-06T07:25:05+00:00"
+    "CreationDate": "2026-10-06T11:00:11+00:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
@@ -17,7 +17,7 @@
       "X": 100.1,
       "Y": 72.1
     },
-    "LayerNumber": 8,
+    "LayerNumber": 10,
     "BoardThickness": 1.6,
     "Finish": "ENIG"
   },
@@ -76,8 +76,18 @@
       "FilePolarity": "Positive"
     },
     {
+      "Path": "rk3576-sbc-In7_Cu.g7",
+      "FileFunction": "Copper,L8,Inr",
+      "FilePolarity": "Positive"
+    },
+    {
+      "Path": "rk3576-sbc-In8_Cu.g8",
+      "FileFunction": "Copper,L9,Inr",
+      "FilePolarity": "Positive"
+    },
+    {
       "Path": "rk3576-sbc-B_Cu.gbl",
-      "FileFunction": "Copper,L8,Bot",
+      "FileFunction": "Copper,L10,Bot",
       "FilePolarity": "Positive"
     },
     {
@@ -151,7 +161,7 @@
     },
     {
       "Type": "Dielectric",
-      "Thickness": 0.3,
+      "Thickness": 0.15,
       "Material": "FR4",
       "Name": "In1.Cu/In2.Cu",
       "Notes": "Type: dielectric layer 2 (from In1.Cu to In2.Cu)"
@@ -163,8 +173,8 @@
     },
     {
       "Type": "Dielectric",
-      "Thickness": 0.0994,
-      "Material": "3313",
+      "Thickness": 0.13,
+      "Material": "2116",
       "Name": "In2.Cu/In3.Cu",
       "Notes": "Type: dielectric layer 3 (from In2.Cu to In3.Cu)"
     },
@@ -175,7 +185,7 @@
     },
     {
       "Type": "Dielectric",
-      "Thickness": 0.3,
+      "Thickness": 0.15,
       "Material": "FR4",
       "Name": "In3.Cu/In4.Cu",
       "Notes": "Type: dielectric layer 4 (from In3.Cu to In4.Cu)"
@@ -187,8 +197,8 @@
     },
     {
       "Type": "Dielectric",
-      "Thickness": 0.0994,
-      "Material": "3313",
+      "Thickness": 0.32,
+      "Material": "7628",
       "Name": "In4.Cu/In5.Cu",
       "Notes": "Type: dielectric layer 5 (from In4.Cu to In5.Cu)"
     },
@@ -199,7 +209,7 @@
     },
     {
       "Type": "Dielectric",
-      "Thickness": 0.3,
+      "Thickness": 0.15,
       "Material": "FR4",
       "Name": "In5.Cu/In6.Cu",
       "Notes": "Type: dielectric layer 6 (from In5.Cu to In6.Cu)"
@@ -211,10 +221,34 @@
     },
     {
       "Type": "Dielectric",
+      "Thickness": 0.13,
+      "Material": "2116",
+      "Name": "In6.Cu/In7.Cu",
+      "Notes": "Type: dielectric layer 7 (from In6.Cu to In7.Cu)"
+    },
+    {
+      "Type": "Copper",
+      "Thickness": 0.0152,
+      "Name": "In7.Cu"
+    },
+    {
+      "Type": "Dielectric",
+      "Thickness": 0.15,
+      "Material": "FR4",
+      "Name": "In7.Cu/In8.Cu",
+      "Notes": "Type: dielectric layer 8 (from In7.Cu to In8.Cu)"
+    },
+    {
+      "Type": "Copper",
+      "Thickness": 0.0152,
+      "Name": "In8.Cu"
+    },
+    {
+      "Type": "Dielectric",
       "Thickness": 0.0994,
       "Material": "3313",
-      "Name": "In6.Cu/B.Cu",
-      "Notes": "Type: dielectric layer 7 (from In6.Cu to B.Cu)"
+      "Name": "In8.Cu/B.Cu",
+      "Notes": "Type: dielectric layer 9 (from In8.Cu to B.Cu)"
     },
     {
       "Type": "Copper",

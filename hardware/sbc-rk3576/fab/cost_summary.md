@@ -16,13 +16,13 @@
 | Build cost per board | 4GB / 32GB | 8GB / 64GB |
 |---|---:|---:|
 | Parts | 56.95 | 71.15 |
-| PCB (8L, ENIG, POFV, impedance) | 6.50 | 6.50 |
+| PCB (10L, ENIG, POFV, impedance) | 9.50 | 9.50 |
 | Assembly (2-sided, BGA X-ray) | 7.50 | 7.50 |
 | Test / flashing | 1.00 | 1.00 |
-| **Total** | **71.95** | **86.15** |
+| **Total** | **74.95** | **89.15** |
 
 Variant parts (same footprints): U601 -> LPDDR5 8GB MT62F2G32D4DS-026 WT:B; U701 -> eMMC 64GB FEMDNN064G-A3A55
 
-Cost drivers: SoC (~40%) and LPDDR5 (~25-40%). The 8-layer PCB with via-in-pad is the next biggest line; a 6-layer stackup is possible for LPDDR5 x32 only with 1-step HDI (laser microvias), which costs about the same - 8L through-via was chosen for wider fab choice.
+Cost drivers: SoC (~40%) and LPDDR5 (~25-40%). The 10-layer PCB with via-in-pad is the next biggest line (rev A1 was 8 layers, ~USD 3 cheaper, but could not be fully routed: LOG.md #31-#33). 1-step HDI (laser microvias) on 8 layers is the alternative at similar cost.
 
 Prototype quantities (5 boards) cost far more per board: expect roughly USD 150-250 each including PCB/stencil/BGA assembly setup fees.

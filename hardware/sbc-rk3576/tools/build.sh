@@ -30,7 +30,8 @@ fi
 python3 length_report.py || true
 echo "== Fabrication outputs (DRAFT until DRC shows 0 unconnected and lengths are tuned)"
 rm -rf "$FAB/gerbers-draft" && mkdir -p "$FAB/gerbers-draft"
-kicad-cli pcb export gerbers --layers F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,In5.Cu,In6.Cu,B.Cu,F.Paste,B.Paste,F.SilkS,B.SilkS,F.Mask,B.Mask,Edge.Cuts \
+CU=$(python3 -c "import stackup; print(','.join(stackup.COPPER))")   # all copper layers, from stackup.py
+kicad-cli pcb export gerbers --layers "$CU",F.Paste,B.Paste,F.SilkS,B.SilkS,F.Mask,B.Mask,Edge.Cuts \
     --subtract-soldermask -o "$FAB/gerbers-draft/" "$KI/rk3576-sbc.kicad_pcb" >/dev/null
 kicad-cli pcb export drill --format excellon --excellon-separate-th --generate-map --map-format pdf \
     -o "$FAB/gerbers-draft/" "$KI/rk3576-sbc.kicad_pcb" >/dev/null

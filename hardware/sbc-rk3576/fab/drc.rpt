@@ -1,8 +1,8 @@
 ** Drc report for rk3576-sbc.kicad_pcb **
-** Created on 2026-10-06T07:25:02+0000 **
+** Created on 2026-10-06T11:00:08+0000 **
 ** Report includes: Errors, Warnings, Exclusions **
 
-** Found 347 DRC violations **
+** Found 303 DRC violations **
 [copper_sliver]: Copper sliver (F.Cu)
     Local override; warning
 [copper_sliver]: Copper sliver (In2.Cu)
@@ -18,21 +18,9 @@
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(52.1500 mm, 35.7500 mm): Via [DBG_UART_RX] on F.Cu - B.Cu
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(44.7625 mm, 28.6625 mm): Track [DCPHY_VREG] on F.Cu, length 0.1000 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(45.3300 mm, 36.9000 mm): Via [DCPHY_VREG] on F.Cu - B.Cu
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(44.7375 mm, 28.6375 mm): Track [DCPHY_VREG] on In2.Cu, length 0.0354 mm
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(19.4000 mm, 30.9000 mm): Via [DDR_RESET_L] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(40.2000 mm, 35.4000 mm): Via [DDR_RESET_L] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(40.8000 mm, 34.2000 mm): Via [DDR_ZQ_A] on F.Cu - B.Cu
@@ -45,9 +33,6 @@
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(40.8000 mm, 30.6000 mm): Via [DDR_ZQ_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(50.4000 mm, 28.8000 mm): Via [EMMC_CMD] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(52.1500 mm, 26.9500 mm): Via [EMMC_DAT0] on F.Cu - B.Cu
@@ -63,12 +48,6 @@
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(51.6000 mm, 27.0000 mm): Via [EMMC_DAT2] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(52.1500 mm, 27.5000 mm): Via [EMMC_DAT3] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(51.6000 mm, 27.6000 mm): Via [EMMC_DAT4] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(64.6125 mm, 22.5625 mm): Track [EMMC_DAT5] on F.Cu, length 0.2828 mm
@@ -80,25 +59,13 @@
     @(52.1500 mm, 28.0500 mm): Via [EMMC_DAT5] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
-    @(52.1500 mm, 26.4000 mm): Via [EMMC_DAT6] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(51.6000 mm, 26.4000 mm): Via [EMMC_DAT7] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
     @(51.0000 mm, 28.8000 mm): Via [EMMC_DS] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(61.5125 mm, 22.2875 mm): Via [EMMC_DS] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(51.0000 mm, 27.6000 mm): Via [EMMC_RSTN] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(64.7500 mm, 22.2500 mm): Via [EMMC_RSTN] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(50.6875 mm, 26.0875 mm): Track [EMMC_RSTN] on In5.Cu, length 2.9259 mm
+    @(50.6875 mm, 26.0875 mm): Track [EMMC_RSTN] on In6.Cu, length 2.9259 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(45.2875 mm, 25.5625 mm): Via [ETH_MDC] on F.Cu - B.Cu
@@ -108,27 +75,12 @@
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(74.1125 mm, 62.7625 mm): Via [ETH_MDI1_N] on F.Cu - B.Cu
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(74.0125 mm, 62.6625 mm): Track [ETH_MDI1_N] on B.Cu, length 1.8561 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(78.3125 mm, 61.3875 mm): Via [ETH_MDI2_N] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(75.6875 mm, 63.0625 mm): Via [ETH_MDI3_P] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(41.7000 mm, 24.7500 mm): Via [ETH_MDIO] on F.Cu - B.Cu
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(45.9375 mm, 28.3125 mm): Track [ETH_MDIO] on B.Cu, length 0.1500 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(46.3625 mm, 41.6125 mm): Track [ETH_MDIO] on B.Cu, length 1.4849 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(47.8875 mm, 42.0375 mm): Track [ETH_MDIO] on B.Cu, length 0.6718 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(65.9800 mm, 57.0000 mm): Track [GND] on F.Cu, length 0.7600 mm
@@ -143,43 +95,52 @@
     @(48.2625 mm, 22.7375 mm): Track [GND] on B.Cu, length 0.5712 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(45.6375 mm, 23.2625 mm): Track [HDMI_D0_TERM] on In6.Cu, length 2.0846 mm
+    @(37.4800 mm, 21.0000 mm): Track [GND] on B.Cu, length 0.7600 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(44.1375 mm, 29.4375 mm): Track [HDMI_D0_TERM] on In6.Cu, length 0.3182 mm
+    @(58.9800 mm, 31.5000 mm): Track [GND] on B.Cu, length 0.7600 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(45.6375 mm, 23.2625 mm): Track [HDMI_D0_TERM] on In8.Cu, length 2.0846 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(44.1375 mm, 29.4375 mm): Track [HDMI_D0_TERM] on In8.Cu, length 0.3182 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(45.7375 mm, 55.2125 mm): Track [HDMI_D3P_C] on F.Cu, length 0.4500 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(49.7375 mm, 24.4375 mm): Track [HDMI_HPD] on F.Cu, length 1.5750 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(46.4625 mm, 27.3375 mm): Via [HDMI_HPD] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(47.7375 mm, 24.8625 mm): Via [HDMI_HPD] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(47.4625 mm, 25.0375 mm): Track [HDMI_HPD] on In2.Cu, length 0.1953 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(47.3125 mm, 25.1875 mm): Track [HDMI_HPD] on In5.Cu, length 0.2121 mm
+    @(47.8625 mm, 25.1625 mm): Track [HDMI_HPD] on In2.Cu, length 0.2475 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(51.6000 mm, 40.7000 mm): Via [HDMI_TX_D0N] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
-    @(51.6000 mm, 40.2000 mm): Via [HDMI_TX_D0P] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
     @(52.1500 mm, 41.2500 mm): Via [HDMI_TX_D1N] on F.Cu - B.Cu
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(50.5375 mm, 40.2375 mm): Track [HDMI_TX_D3N] on F.Cu, length 0.6010 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(51.3875 mm, 41.0875 mm): Track [HDMI_TX_D3N] on In6.Cu, length 1.2021 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(51.0500 mm, 41.2500 mm): Via [HDMI_TX_D3P] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(49.2000 mm, 37.8000 mm): Via [HDMI_TX_REXT] on F.Cu - B.Cu
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(50.3125 mm, 35.4625 mm): Track [HDMI_TX_REXT] on In6.Cu, length 0.0250 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(44.0200 mm, 38.8500 mm): Via [HUB_UP_DM] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(43.3800 mm, 38.8500 mm): Via [HUB_UP_DP] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(50.4000 mm, 37.8000 mm): Via [LED_SYS_L] on F.Cu - B.Cu
@@ -191,43 +152,13 @@
     @(25.0000 mm, 30.2000 mm): Via [LP5_A2_A] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
-    @(25.0000 mm, 35.8000 mm): Via [LP5_A2_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(39.0000 mm, 30.6000 mm): Via [LP5_A2_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
     @(38.4000 mm, 34.8000 mm): Via [LP5_A3_A] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(27.4000 mm, 30.9000 mm): Via [LP5_A3_A] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
-    @(38.4000 mm, 29.4000 mm): Via [LP5_A3_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(22.6000 mm, 35.1000 mm): Via [LP5_A3_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
     @(26.6000 mm, 30.2000 mm): Via [LP5_A4_A] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(23.4000 mm, 35.8000 mm): Via [LP5_A4_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(39.6000 mm, 28.8000 mm): Via [LP5_A4_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(21.0000 mm, 35.1000 mm): Via [LP5_A5_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(40.2000 mm, 31.2000 mm): Via [LP5_A5_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(21.8000 mm, 35.8000 mm): Via [LP5_A6_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(40.2000 mm, 30.0000 mm): Via [LP5_A6_B] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(25.8000 mm, 31.6000 mm): Via [LP5_CLKN_A] on F.Cu - B.Cu
@@ -239,46 +170,19 @@
     @(40.2000 mm, 33.0000 mm): Via [LP5_CSN1_A] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(28.8875 mm, 39.7375 mm): Track [LP5_DMI0_B] on B.Cu, length 5.6295 mm
+    @(31.8375 mm, 40.0875 mm): Track [LP5_DMI0_B] on B.Cu, length 2.1501 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(33.5125 mm, 40.0375 mm): Track [LP5_DMI0_B] on B.Cu, length 0.4809 mm
+    @(31.8375 mm, 40.0875 mm): Track [LP5_DMI0_B] on B.Cu, length 2.2000 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(33.5125 mm, 40.0375 mm): Track [LP5_DMI0_B] on B.Cu, length 0.4809 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(33.9875 mm, 40.1125 mm): Track [LP5_DMI0_B] on In5.Cu, length 1.8502 mm
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(21.8000 mm, 40.0000 mm): Via [LP5_DMI1_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(37.8000 mm, 26.4000 mm): Via [LP5_DMI1_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(37.3000 mm, 34.6500 mm): Via [LP5_DQ0_A] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(19.4000 mm, 28.1000 mm): Via [LP5_DQ0_A] on F.Cu - B.Cu
+    @(33.9875 mm, 40.1125 mm): Track [LP5_DMI0_B] on In6.Cu, length 0.0559 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(30.6000 mm, 37.9000 mm): Via [LP5_DQ0_B] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(38.4000 mm, 27.6000 mm): Via [LP5_DQ0_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(37.8500 mm, 24.7500 mm): Via [LP5_DQ11_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(21.0000 mm, 37.9000 mm): Via [LP5_DQ11_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(22.6000 mm, 39.3000 mm): Via [LP5_DQ12_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(37.8000 mm, 28.2000 mm): Via [LP5_DQ12_B] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(38.4000 mm, 36.6000 mm): Via [LP5_DQ13_A] on F.Cu - B.Cu
@@ -305,34 +209,16 @@
     @(22.6000 mm, 36.5000 mm): Via [LP5_DQ15_B] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
-    @(37.8000 mm, 34.8000 mm): Via [LP5_DQ1_A] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(20.2000 mm, 27.4000 mm): Via [LP5_DQ1_A] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
     @(38.4000 mm, 28.8000 mm): Via [LP5_DQ1_B] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(29.8000 mm, 38.6000 mm): Via [LP5_DQ1_B] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
-    @(20.2000 mm, 28.8000 mm): Via [LP5_DQ2_A] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(37.8000 mm, 33.6000 mm): Via [LP5_DQ2_A] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
     @(29.8000 mm, 37.2000 mm): Via [LP5_DQ2_B] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(37.8000 mm, 29.4000 mm): Via [LP5_DQ2_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(37.3000 mm, 33.5500 mm): Via [LP5_DQ3_A] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(21.0000 mm, 28.1000 mm): Via [LP5_DQ3_A] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(37.3000 mm, 29.7000 mm): Via [LP5_DQ3_B] on F.Cu - B.Cu
@@ -347,43 +233,13 @@
     @(39.6000 mm, 36.6000 mm): Via [LP5_DQ5_A] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
-    @(39.0000 mm, 26.4000 mm): Via [LP5_DQ5_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(26.6000 mm, 38.6000 mm): Via [LP5_DQ5_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
     @(26.6000 mm, 37.2000 mm): Via [LP5_DQ6_B] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(34.2125 mm, 24.0125 mm): Track [LP5_DQ6_B] on B.Cu, length 1.5750 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
-    @(37.8000 mm, 25.8000 mm): Via [LP5_DQ8_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(19.4000 mm, 37.9000 mm): Via [LP5_DQ8_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(20.2000 mm, 38.6000 mm): Via [LP5_DQ9_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(37.3000 mm, 25.3000 mm): Via [LP5_DQ9_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
     @(28.2000 mm, 38.6000 mm): Via [LP5_RDQS0N_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(21.8000 mm, 38.6000 mm): Via [LP5_RDQS1N_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(38.4000 mm, 25.3000 mm): Via [LP5_RDQS1N_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(38.4000 mm, 24.7500 mm): Via [LP5_RDQS1P_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(21.0000 mm, 39.3000 mm): Via [LP5_RDQS1P_B] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(39.6000 mm, 29.4000 mm): Via [LP5_WCK0N_B] on F.Cu - B.Cu
@@ -396,24 +252,33 @@
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(28.2000 mm, 28.8000 mm): Via [LP5_WCK1P_A] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
+[track_dangling]: Track has unconnected end
     Local override; warning
-    @(39.6000 mm, 27.6000 mm): Via [LP5_WCK1P_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(21.8000 mm, 37.2000 mm): Via [LP5_WCK1P_B] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(52.7000 mm, 33.5500 mm): Via [OSC_24M_OUT] on F.Cu - B.Cu
+    @(52.7125 mm, 33.6125 mm): Track [OSC_24M_OUT] on F.Cu, length 0.6562 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(37.3000 mm, 40.1500 mm): Via [PCIE0_PERST_L] on F.Cu - B.Cu
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(49.7125 mm, 35.1125 mm): Track [PCIE0_REFCLKN] on B.Cu, length 0.3750 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(53.5875 mm, 38.6125 mm): Track [PCIE0_REFCLKN] on B.Cu, length 0.0750 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(56.5375 mm, 35.6125 mm): Via [PCIE0_RXN] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(54.2375 mm, 33.9375 mm): Via [PCIE0_RXN] on F.Cu - B.Cu
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(50.1875 mm, 36.3125 mm): Track [PCIE0_RXP] on In6.Cu, length 2.2013 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(49.5125 mm, 34.6875 mm): Track [PCIE0_RXP] on In6.Cu, length 0.9500 mm
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(52.1500 mm, 31.9000 mm): Via [PCIE0_TXN] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(55.6375 mm, 32.5875 mm): Track [PMIC_FB1] on F.Cu, length 0.5000 mm
@@ -435,12 +300,15 @@
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(43.6375 mm, 41.5125 mm): Track [PMIC_FB5] on In2.Cu, length 4.0253 mm
-[via_dangling]: Via is not connected or connected on only one layer
+[track_dangling]: Track has unconnected end
     Local override; warning
-    @(47.0375 mm, 20.6125 mm): Via [PMIC_FB6] on F.Cu - B.Cu
+    @(51.4375 mm, 37.4875 mm): Track [PMIC_FB5] on In6.Cu, length 0.0707 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(58.8625 mm, 35.6625 mm): Via [PMIC_INT_L] on F.Cu - B.Cu
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(51.2375 mm, 35.6625 mm): Track [PMIC_INT_L] on B.Cu, length 4.0038 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(52.1500 mm, 35.2000 mm): Via [PMIC_PWRCTRL1] on F.Cu - B.Cu
@@ -450,33 +318,12 @@
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(51.6000 mm, 34.8000 mm): Via [PMIC_PWRCTRL2] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(52.7000 mm, 35.2000 mm): Via [PMIC_PWRCTRL3] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(48.0625 mm, 25.6125 mm): Track [PMIC_PWRCTRL3] on B.Cu, length 2.1397 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(48.3125 mm, 23.4875 mm): Track [PMIC_PWRCTRL3] on In2.Cu, length 0.1061 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(48.3125 mm, 23.4875 mm): Track [PMIC_PWRCTRL3] on In5.Cu, length 0.0250 mm
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(72.7125 mm, 19.2625 mm): Via [PMIC_SDA] on F.Cu - B.Cu
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(50.7375 mm, 28.6375 mm): Track [PMIC_SDA] on B.Cu, length 5.8500 mm
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(43.9125 mm, 27.4375 mm): Via [RGMII_RXC] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(43.9000 mm, 25.3000 mm): Via [RGMII_RXCTL] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(43.9000 mm, 24.7500 mm): Via [RGMII_RXD0] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(43.8000 mm, 25.8000 mm): Via [RGMII_RXD1] on F.Cu - B.Cu
+    @(44.3375 mm, 27.0125 mm): Track [RGMII_RXC] on In2.Cu, length 0.6010 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(43.3500 mm, 25.3000 mm): Via [RGMII_RXD2] on F.Cu - B.Cu
@@ -492,15 +339,12 @@
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(44.8625 mm, 27.8875 mm): Track [RGMII_TXC_SOC] on F.Cu, length 0.3000 mm
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(42.8000 mm, 25.3000 mm): Via [RGMII_TXC_SOC] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(46.3625 mm, 29.0875 mm): Track [RGMII_TXC_SOC] on In2.Cu, length 2.7250 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(43.3125 mm, 27.8875 mm): Track [RGMII_TXD0] on F.Cu, length 0.0250 mm
+    @(43.7125 mm, 29.2125 mm): Track [RGMII_TXD0] on F.Cu, length 0.2500 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(42.6000 mm, 25.8000 mm): Via [RGMII_TXD0] on F.Cu - B.Cu
@@ -512,34 +356,13 @@
     @(43.7375 mm, 38.9625 mm): Track [RGMII_TXD1] on B.Cu, length 0.3536 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
-    @(42.0000 mm, 25.8000 mm): Via [RGMII_TXD2] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
     @(41.7000 mm, 25.3000 mm): Via [RGMII_TXD3] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(49.8000 mm, 26.4000 mm): Via [SD_CLK] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(47.1375 mm, 21.9875 mm): Track [SD_CMD] on F.Cu, length 0.9192 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
-    @(49.9500 mm, 25.3000 mm): Via [SD_D0] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
     @(50.5000 mm, 25.3000 mm): Via [SD_D1] on F.Cu - B.Cu
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(45.3375 mm, 23.7875 mm): Track [SD_D2] on F.Cu, length 1.1314 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(49.8375 mm, 23.7125 mm): Track [SD_D2] on F.Cu, length 0.0707 mm
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(49.4000 mm, 24.7500 mm): Via [SD_D2] on F.Cu - B.Cu
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(43.6625 mm, 29.1875 mm): Track [SD_D2] on In5.Cu, length 0.0354 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(49.4000 mm, 25.3000 mm): Via [SD_D3] on F.Cu - B.Cu
@@ -552,9 +375,9 @@
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(45.1375 mm, 27.9375 mm): Track [USB3_OTG0_REXT] on B.Cu, length 0.6718 mm
-[via_dangling]: Via is not connected or connected on only one layer
+[track_dangling]: Track has unconnected end
     Local override; warning
-    @(52.7000 mm, 30.8000 mm): Via [USB3_RXN] on F.Cu - B.Cu
+    @(43.7375 mm, 29.2375 mm): Track [USB3_OTG0_REXT] on In4.Cu, length 0.3250 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(52.7000 mm, 31.3500 mm): Via [USB3_TXN] on F.Cu - B.Cu
@@ -572,10 +395,13 @@
     @(61.2125 mm, 18.8625 mm): Via [USB_HOST_PWREN] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(76.6125 mm, 31.1375 mm): Track [VBUS_USB2A] on In5.Cu, length 9.8753 mm
+    @(46.3375 mm, 25.2375 mm): Track [USB_HOST_PWREN] on In6.Cu, length 0.6005 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(68.0625 mm, 12.7875 mm): Track [VBUS_USB2A] on In5.Cu, length 1.3752 mm
+    @(76.6125 mm, 31.1375 mm): Track [VBUS_USB2A] on In6.Cu, length 9.8753 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(68.0625 mm, 12.7875 mm): Track [VBUS_USB2A] on In6.Cu, length 1.3752 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(47.9625 mm, 24.0625 mm): Track [VBUS_USB3A] on F.Cu, length 0.4596 mm
@@ -620,16 +446,10 @@
     @(45.7301 mm, 16.7343 mm): Via [VCC5V0_SYS_S5] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(38.1375 mm, 22.9375 mm): Track [VCC5V0_SYS_S5] on In5.Cu, length 0.0500 mm
+    @(38.1375 mm, 22.9375 mm): Track [VCC5V0_SYS_S5] on In6.Cu, length 0.0500 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(45.8000 mm, 8.9250 mm): Via [VCCA1V8_PLDO2_S0] on F.Cu - B.Cu
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(48.2625 mm, 32.9125 mm): Track [VCCA1V8_PLDO2_S0] on In3.Cu, length 1.1003 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(49.0875 mm, 32.1125 mm): Track [VCCA1V8_PLDO2_S0] on In3.Cu, length 0.2828 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(30.1875 mm, 24.0625 mm): Track [VCCA_1V8_S0] on F.Cu, length 1.7324 mm
@@ -641,10 +461,10 @@
     @(39.7625 mm, 41.4875 mm): Track [VCCA_1V8_S0] on B.Cu, length 0.4750 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(39.7625 mm, 41.0125 mm): Track [VCCA_1V8_S0] on In5.Cu, length 3.2751 mm
+    @(39.7625 mm, 41.0125 mm): Track [VCCA_1V8_S0] on In6.Cu, length 3.2751 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(30.0625 mm, 24.6125 mm): Track [VCCA_1V8_S0] on In6.Cu, length 0.5750 mm
+    @(30.0625 mm, 24.6125 mm): Track [VCCA_1V8_S0] on In8.Cu, length 0.5750 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(40.9826 mm, 20.4626 mm): Via [VCCA_3V3_S0] on F.Cu - B.Cu
@@ -668,19 +488,16 @@
     @(40.6125 mm, 12.7375 mm): Track [VCC_1V1_NLDO_S3] on In2.Cu, length 0.6750 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(40.6125 mm, 12.0625 mm): Track [VCC_1V1_NLDO_S3] on In5.Cu, length 0.6329 mm
+    @(40.6125 mm, 12.0625 mm): Track [VCC_1V1_NLDO_S3] on In6.Cu, length 0.6329 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(40.0574 mm, 45.5374 mm): Via [VCC_1V8_S3] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(47.6125 mm, 21.7875 mm): Track [VCC_1V8_S3] on B.Cu, length 0.0500 mm
+    @(44.3375 mm, 29.2375 mm): Track [VCC_1V8_S3] on In6.Cu, length 0.2475 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(41.5625 mm, 48.4625 mm): Track [VCC_1V8_S3] on In5.Cu, length 4.4162 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(47.6125 mm, 21.8375 mm): Track [VCC_1V8_S3] on In5.Cu, length 0.2828 mm
+    @(41.5625 mm, 48.4625 mm): Track [VCC_1V8_S3] on In6.Cu, length 4.4162 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(45.4000 mm, 7.2000 mm): Via [VCC_2V0_PLDO_S3] on F.Cu - B.Cu
@@ -725,7 +542,7 @@
     @(67.7125 mm, 12.5000 mm): Via [VDD1_DDR_S3] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(31.0125 mm, 27.8875 mm): Track [VDD1_DDR_S3] on In5.Cu, length 0.3052 mm
+    @(31.0125 mm, 27.8875 mm): Track [VDD1_DDR_S3] on In6.Cu, length 0.3052 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(58.5125 mm, 31.8625 mm): Track [VDD2H_DDR_S3] on F.Cu, length 0.3182 mm
@@ -740,31 +557,19 @@
     @(20.0574 mm, 24.0374 mm): Via [VDD2H_DDR_S3] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
-    @(58.8791 mm, 32.1541 mm): Via [VDD2H_DDR_S3] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
     @(23.8179 mm, 21.7092 mm): Via [VDD2H_DDR_S3] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(42.2000 mm, 7.2000 mm): Via [VDD2H_DDR_S3] on F.Cu - B.Cu
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(58.2875 mm, 32.0875 mm): Track [VDD2H_DDR_S3] on In2.Cu, length 0.3400 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(39.5574 mm, 51.0374 mm): Via [VDDA0V75_HDMI_S0] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(42.0574 mm, 18.5374 mm): Via [VDDA_0V75_S0] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(40.2000 mm, 11.6000 mm): Via [VDDA_0V75_S0] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(47.9300 mm, 33.6500 mm): Via [VDDA_0V75_S0] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(47.9300 mm, 33.0000 mm): Via [VDDA_0V75_S0] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(47.5200 mm, 51.0000 mm): Track [VDDA_0V75_S0] on B.Cu, length 0.7600 mm
@@ -774,6 +579,18 @@
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(58.5200 mm, 46.2600 mm): Via [VDDA_0V85_S0] on F.Cu - B.Cu
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(51.7875 mm, 36.8625 mm): Track [VDDA_1V2_S0] on B.Cu, length 0.8839 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(48.8125 mm, 38.3875 mm): Track [VDDA_1V2_S0] on In4.Cu, length 0.2000 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(61.4125 mm, 26.1375 mm): Track [VDDA_1V2_S0] on In8.Cu, length 1.0548 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(48.8125 mm, 38.5875 mm): Track [VDDA_1V2_S0] on In8.Cu, length 0.2850 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(32.3375 mm, 40.1375 mm): Track [VDDQ_DDR_S0] on F.Cu, length 0.6270 mm
@@ -789,9 +606,6 @@
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(42.0574 mm, 51.0374 mm): Via [VDDQ_DDR_S0] on F.Cu - B.Cu
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(58.0574 mm, 44.5374 mm): Via [VDDQ_DDR_S0] on F.Cu - B.Cu
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(60.5574 mm, 42.0374 mm): Via [VDDQ_DDR_S0] on F.Cu - B.Cu
@@ -839,6 +653,9 @@
     @(42.0800 mm, 32.3500 mm): Via [VDDQ_DDR_S0] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
+    @(57.5200 mm, 44.0000 mm): Track [VDDQ_DDR_S0] on B.Cu, length 0.7600 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
     @(30.8375 mm, 30.0125 mm): Track [VDDQ_DDR_S0] on In2.Cu, length 0.2121 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
@@ -857,10 +674,16 @@
     @(54.5200 mm, 35.0000 mm): Track [VDD_CPU_BIG_S0] on B.Cu, length 0.7600 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
+    @(54.7250 mm, 31.0000 mm): Track [VDD_CPU_BIG_S0] on B.Cu, length 0.9250 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
     @(33.7250 mm, 24.0000 mm): Track [VDD_CPU_LIT_S0] on F.Cu, length 0.9250 mm
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(46.6000 mm, 8.9250 mm): Via [VDD_CPU_LIT_S0] on F.Cu - B.Cu
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(47.5200 mm, 46.5000 mm): Track [VDD_CPU_LIT_S0] on B.Cu, length 0.7600 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(54.9625 mm, 42.4625 mm): Track [VDD_CPU_LIT_S0] on B.Cu, length 1.7813 mm
@@ -882,12 +705,27 @@
 [via_dangling]: Via is not connected or connected on only one layer
     Local override; warning
     @(39.5574 mm, 49.5374 mm): Via [VDD_DDR_S0] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(44.8791 mm, 50.6541 mm): Via [VDD_DDR_S0] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(30.9826 mm, 22.5374 mm): Via [VDD_DDR_S0] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(59.5200 mm, 40.0000 mm): Track [VDD_DDR_S0] on B.Cu, length 0.7600 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
+    @(47.8125 mm, 49.6125 mm): Track [VDD_DDR_S0] on In2.Cu, length 0.6329 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
     @(61.8125 mm, 17.7875 mm): Track [VDD_DDR_S0] on In2.Cu, length 1.8500 mm
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(55.8756 mm, 23.8556 mm): Via [VDD_GPU_S0] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(52.5200 mm, 21.7600 mm): Via [VDD_GPU_S0] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(52.5200 mm, 45.0000 mm): Track [VDD_GPU_S0] on B.Cu, length 0.7600 mm
@@ -896,7 +734,13 @@
     @(62.1625 mm, 22.7875 mm): Track [VDD_GPU_S0] on In2.Cu, length 3.0994 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(62.1375 mm, 23.0875 mm): Track [VDD_GPU_S0] on In5.Cu, length 0.3010 mm
+    @(62.1375 mm, 23.0875 mm): Track [VDD_GPU_S0] on In6.Cu, length 0.3010 mm
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(50.5574 mm, 48.5374 mm): Via [VDD_LOGIC_S0] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(55.8791 mm, 21.6541 mm): Via [VDD_LOGIC_S0] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(31.5200 mm, 23.5000 mm): Track [VDD_LOGIC_S0] on B.Cu, length 0.7600 mm
@@ -905,7 +749,19 @@
     @(60.3875 mm, 40.5375 mm): Track [VDD_LOGIC_S0] on In2.Cu, length 1.7106 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
-    @(59.2375 mm, 41.0125 mm): Track [VDD_LOGIC_S0] on In5.Cu, length 1.2442 mm
+    @(59.2375 mm, 41.0125 mm): Track [VDD_LOGIC_S0] on In6.Cu, length 1.2442 mm
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(45.3300 mm, 31.0500 mm): Via [VDD_NPU_S0] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(45.9800 mm, 30.4000 mm): Via [VDD_NPU_S0] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(45.3300 mm, 30.4000 mm): Via [VDD_NPU_S0] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(45.9800 mm, 31.0500 mm): Via [VDD_NPU_S0] on F.Cu - B.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(59.5200 mm, 30.0000 mm): Track [VDD_NPU_S0] on B.Cu, length 0.7600 mm
@@ -914,293 +770,177 @@
     @(57.0200 mm, 24.5000 mm): Track [VDD_NPU_S0] on B.Cu, length 0.7600 mm
 [track_dangling]: Track has unconnected end
     Local override; warning
+    @(47.8125 mm, 48.2125 mm): Track [VDD_NPU_S0] on B.Cu, length 0.1601 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
     @(62.9875 mm, 16.0875 mm): Track [WIFI_USB_DP] on F.Cu, length 2.3250 mm
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(60.2950 mm, 29.7309 mm): Zone 'PWR_VDD_NPU_S0' [VDD_NPU_S0] on In3.Cu, priority 65
+    @(60.2950 mm, 29.7309 mm): Zone 'PWR_VDD_NPU_S0' [VDD_NPU_S0] on In4.Cu, priority 65
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(55.8450 mm, 16.8309 mm): Zone 'PWR_VDD_CPU_BIG_S0' [VDD_CPU_BIG_S0] on In3.Cu, priority 83
+    @(55.8450 mm, 16.8309 mm): Zone 'PWR_VDD_CPU_BIG_S0' [VDD_CPU_BIG_S0] on In4.Cu, priority 83
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(43.8950 mm, 36.5309 mm): Zone 'PWR_VCCA_1V8_S0' [VCCA_1V8_S0] on In3.Cu, priority 66
+    @(43.8950 mm, 36.5309 mm): Zone 'PWR_VCCA_1V8_S0' [VCCA_1V8_S0] on In4.Cu, priority 66
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(53.4450 mm, 37.4309 mm): Zone 'PWR_VCCA_1V8_S0' [VCCA_1V8_S0] on In3.Cu, priority 91
+    @(53.4450 mm, 37.4309 mm): Zone 'PWR_VCCA_1V8_S0' [VCCA_1V8_S0] on In4.Cu, priority 91
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(59.5950 mm, 25.0309 mm): Zone 'PWR_VDD_LOGIC_S0' [VDD_LOGIC_S0] on In3.Cu, priority 166
+    @(59.5950 mm, 25.0309 mm): Zone 'PWR_VDD_LOGIC_S0' [VDD_LOGIC_S0] on In4.Cu, priority 166
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(43.9450 mm, 8.5309 mm): Zone 'PWR_VCCA_3V3_S0' [VCCA_3V3_S0] on In3.Cu, priority 51
+    @(43.9450 mm, 8.5309 mm): Zone 'PWR_VCCA_3V3_S0' [VCCA_3V3_S0] on In4.Cu, priority 51
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(41.2450 mm, 31.2809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In3.Cu, priority 115
+    @(41.2450 mm, 31.2809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In4.Cu, priority 115
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(55.9950 mm, 18.4309 mm): Zone 'PWR_VCCA1V8_PLDO2_S0' [VCCA1V8_PLDO2_S0] on In3.Cu, priority 52
+    @(55.9950 mm, 18.4309 mm): Zone 'PWR_VCCA1V8_PLDO2_S0' [VCCA1V8_PLDO2_S0] on In4.Cu, priority 52
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(55.9950 mm, 18.4309 mm): Zone 'PWR_VCCA1V8_PLDO2_S0' [VCCA1V8_PLDO2_S0] on In3.Cu, priority 52
+    @(55.9950 mm, 18.4309 mm): Zone 'PWR_VCCA1V8_PLDO2_S0' [VCCA1V8_PLDO2_S0] on In4.Cu, priority 52
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(55.9950 mm, 18.4309 mm): Zone 'PWR_VCCA1V8_PLDO2_S0' [VCCA1V8_PLDO2_S0] on In3.Cu, priority 52
+    @(55.9950 mm, 18.4309 mm): Zone 'PWR_VCCA1V8_PLDO2_S0' [VCCA1V8_PLDO2_S0] on In4.Cu, priority 52
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(55.9950 mm, 18.4309 mm): Zone 'PWR_VCCA1V8_PLDO2_S0' [VCCA1V8_PLDO2_S0] on In3.Cu, priority 52
+    @(55.9950 mm, 18.4309 mm): Zone 'PWR_VCCA1V8_PLDO2_S0' [VCCA1V8_PLDO2_S0] on In4.Cu, priority 52
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(43.1950 mm, 11.1809 mm): Zone 'PWR_VDDA0V75_HDMI_S0' [VDDA0V75_HDMI_S0] on In3.Cu, priority 41
+    @(55.9950 mm, 18.4309 mm): Zone 'PWR_VCCA1V8_PLDO2_S0' [VCCA1V8_PLDO2_S0] on In4.Cu, priority 52
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(43.1950 mm, 11.1809 mm): Zone 'PWR_VDDA0V75_HDMI_S0' [VDDA0V75_HDMI_S0] on In3.Cu, priority 41
+    @(43.1950 mm, 11.1809 mm): Zone 'PWR_VDDA0V75_HDMI_S0' [VDDA0V75_HDMI_S0] on In4.Cu, priority 41
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(43.1950 mm, 11.1809 mm): Zone 'PWR_VDDA0V75_HDMI_S0' [VDDA0V75_HDMI_S0] on In3.Cu, priority 41
+    @(43.1950 mm, 11.1809 mm): Zone 'PWR_VDDA0V75_HDMI_S0' [VDDA0V75_HDMI_S0] on In4.Cu, priority 41
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(43.1950 mm, 11.1809 mm): Zone 'PWR_VDDA0V75_HDMI_S0' [VDDA0V75_HDMI_S0] on In3.Cu, priority 41
+    @(43.1950 mm, 11.1809 mm): Zone 'PWR_VDDA0V75_HDMI_S0' [VDDA0V75_HDMI_S0] on In4.Cu, priority 41
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In3.Cu, priority 38
+    @(43.1950 mm, 11.1809 mm): Zone 'PWR_VDDA0V75_HDMI_S0' [VDDA0V75_HDMI_S0] on In4.Cu, priority 41
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In3.Cu, priority 38
+    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In4.Cu, priority 38
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In3.Cu, priority 38
+    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In4.Cu, priority 38
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In3.Cu, priority 38
+    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In4.Cu, priority 38
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In3.Cu, priority 38
+    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In4.Cu, priority 38
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In3.Cu, priority 38
+    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In4.Cu, priority 38
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(57.0950 mm, 23.5809 mm): Zone 'PWR_VDD_NPU_S0' [VDD_NPU_S0] on In6.Cu, priority 90
+    @(40.2950 mm, 13.5809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In4.Cu, priority 38
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(57.0950 mm, 23.5809 mm): Zone 'PWR_VDD_NPU_S0' [VDD_NPU_S0] on In6.Cu, priority 90
+    @(57.0950 mm, 23.5809 mm): Zone 'PWR_VDD_NPU_S0' [VDD_NPU_S0] on In8.Cu, priority 90
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In6.Cu, priority 32
+    @(57.0950 mm, 23.5809 mm): Zone 'PWR_VDD_NPU_S0' [VDD_NPU_S0] on In8.Cu, priority 90
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In6.Cu, priority 32
+    @(41.5950 mm, 10.1309 mm): Zone 'PWR_VCC_1V8_S3' [VCC_1V8_S3] on In8.Cu, priority 76
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In6.Cu, priority 32
+    @(62.1950 mm, 1.8309 mm): Zone 'PWR_VCCA_1V8_S0' [VCCA_1V8_S0] on In8.Cu, priority 22
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In6.Cu, priority 32
+    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In8.Cu, priority 32
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In6.Cu, priority 32
+    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In8.Cu, priority 32
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In6.Cu, priority 32
+    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In8.Cu, priority 32
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In6.Cu, priority 32
+    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In8.Cu, priority 32
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In6.Cu, priority 32
+    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In8.Cu, priority 32
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In6.Cu, priority 32
+    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In8.Cu, priority 32
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(51.6450 mm, 29.3809 mm): Zone 'PWR_VCC_1V8_S3' [VCC_1V8_S3] on In6.Cu, priority 47
+    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In8.Cu, priority 32
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(28.9450 mm, 23.3809 mm): Zone 'PWR_VDDA_0V75_S0' [VDDA_0V75_S0] on In6.Cu, priority 43
+    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In8.Cu, priority 32
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(28.9450 mm, 23.3809 mm): Zone 'PWR_VDDA_0V75_S0' [VDDA_0V75_S0] on In6.Cu, priority 43
+    @(41.5950 mm, 19.2809 mm): Zone 'PWR_VDD_CPU_LIT_S0' [VDD_CPU_LIT_S0] on In8.Cu, priority 32
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(49.1450 mm, 36.2809 mm): Zone 'PWR_VDDA0V75_HDMI_S0' [VDDA0V75_HDMI_S0] on In6.Cu, priority 169
+    @(51.6450 mm, 29.3809 mm): Zone 'PWR_VCC_1V8_S3' [VCC_1V8_S3] on In8.Cu, priority 47
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(40.3450 mm, 13.6809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In6.Cu, priority 64
+    @(28.9450 mm, 23.3809 mm): Zone 'PWR_VDDA_0V75_S0' [VDDA_0V75_S0] on In8.Cu, priority 43
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(40.3450 mm, 13.6809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In6.Cu, priority 64
+    @(28.9450 mm, 23.3809 mm): Zone 'PWR_VDDA_0V75_S0' [VDDA_0V75_S0] on In8.Cu, priority 43
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(48.0950 mm, 31.4309 mm): Zone 'PWR_VDDA_0V85_S0' [VDDA_0V85_S0] on In6.Cu, priority 67
+    @(49.1450 mm, 36.2809 mm): Zone 'PWR_VDDA0V75_HDMI_S0' [VDDA0V75_HDMI_S0] on In8.Cu, priority 169
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(37.3950 mm, 15.3309 mm): Zone 'PWR_VDDA_0V85_S0' [VDDA_0V85_S0] on In6.Cu, priority 48
+    @(40.3450 mm, 13.6809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In8.Cu, priority 64
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(37.3950 mm, 15.3309 mm): Zone 'PWR_VDDA_0V85_S0' [VDDA_0V85_S0] on In6.Cu, priority 48
+    @(40.3450 mm, 13.6809 mm): Zone 'PWR_VDD_0V75_S3' [VDD_0V75_S3] on In8.Cu, priority 64
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(50.1950 mm, 13.3309 mm): Zone 'PWR_VDDQ_DDR_S0' [VDDQ_DDR_S0] on In6.Cu, priority 95
+    @(48.0950 mm, 31.4309 mm): Zone 'PWR_VDDA_0V85_S0' [VDDA_0V85_S0] on In8.Cu, priority 67
 [isolated_copper]: Isolated copper fill
     Local override; warning
-    @(43.6950 mm, 19.3309 mm): Zone 'PWR_VCC_1V8_S3' [VCC_1V8_S3] on In6.Cu, priority 71
+    @(43.6950 mm, 19.3309 mm): Zone 'PWR_VCC_1V8_S3' [VCC_1V8_S3] on In8.Cu, priority 71
+[isolated_copper]: Isolated copper fill
+    Local override; warning
+    @(50.1950 mm, 13.3309 mm): Zone 'PWR_VDDQ_DDR_S0' [VDDQ_DDR_S0] on In8.Cu, priority 95
+[isolated_copper]: Isolated copper fill
+    Local override; warning
+    @(37.3950 mm, 15.3309 mm): Zone 'PWR_VDDA_0V85_S0' [VDDA_0V85_S0] on In8.Cu, priority 48
+[isolated_copper]: Isolated copper fill
+    Local override; warning
+    @(37.3950 mm, 15.3309 mm): Zone 'PWR_VDDA_0V85_S0' [VDDA_0V85_S0] on In8.Cu, priority 48
 
-** Found 72 unconnected pads **
+** Found 14 unconnected pads **
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(44.7375 mm, 28.6375 mm): Track [DCPHY_VREG] on In2.Cu, length 0.0354 mm
-    @(44.7625 mm, 28.6625 mm): Track [DCPHY_VREG] on F.Cu, length 0.1000 mm
+    @(33.9875 mm, 40.1125 mm): Track [LP5_DMI0_B] on In6.Cu, length 0.0559 mm
+    @(31.8375 mm, 40.0875 mm): Track [LP5_DMI0_B] on B.Cu, length 2.1501 mm
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(19.7625 mm, 31.4375 mm): Track [DDR_RESET_L] on F.Cu, length 12.2000 mm
-    @(40.2000 mm, 35.4000 mm): Via [DDR_RESET_L] on F.Cu - B.Cu
+    @(52.1500 mm, 31.9000 mm): Pad P28 [PCIE0_TXN] of U401 on F.Cu
+    @(78.1800 mm, 42.5000 mm): Pad 1 [PCIE0_TXN] of C802 on B.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(50.4000 mm, 28.8000 mm): Via [EMMC_CMD] on F.Cu - B.Cu
-    @(64.7500 mm, 23.2500 mm): Via [EMMC_CMD] on F.Cu - B.Cu
+    @(47.0000 mm, 15.9375 mm): Pad 31 [PMIC_FB6] of U201 on F.Cu
+    @(57.7375 mm, 37.4625 mm): Track [PMIC_FB6] on F.Cu, length 1.5002 mm
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(63.2500 mm, 18.2500 mm): Via [EMMC_DAT3] on F.Cu - B.Cu
-    @(52.1500 mm, 27.5000 mm): Via [EMMC_DAT3] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(51.6000 mm, 27.6000 mm): Via [EMMC_DAT4] on F.Cu - B.Cu
-    @(64.1375 mm, 19.0125 mm): Track [EMMC_DAT4] on In2.Cu, length 0.5303 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(62.9875 mm, 18.8625 mm): Track [EMMC_DAT6] on B.Cu, length 1.3000 mm
-    @(52.1500 mm, 26.4000 mm): Via [EMMC_DAT6] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(65.2500 mm, 18.2500 mm): Via [EMMC_DAT7] on F.Cu - B.Cu
-    @(51.6000 mm, 26.4000 mm): Via [EMMC_DAT7] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(64.7500 mm, 22.2500 mm): Via [EMMC_RSTN] on F.Cu - B.Cu
-    @(50.6875 mm, 26.0875 mm): Track [EMMC_RSTN] on In5.Cu, length 2.9259 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(74.1375 mm, 62.1375 mm): Track [ETH_MDI1_N] on B.Cu, length 0.6255 mm
-    @(74.0125 mm, 62.6625 mm): Track [ETH_MDI1_N] on B.Cu, length 1.8561 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(47.4125 mm, 42.6625 mm): Track [ETH_MDIO] on In2.Cu, length 3.1000 mm
-    @(47.8875 mm, 42.0375 mm): Track [ETH_MDIO] on B.Cu, length 0.6718 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(44.1375 mm, 29.4375 mm): Track [HDMI_D0_TERM] on In6.Cu, length 0.3182 mm
-    @(45.6375 mm, 23.2625 mm): Track [HDMI_D0_TERM] on In6.Cu, length 2.0846 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(46.1800 mm, 55.0000 mm): Pad 1 [HDMI_TX_D0P] of C901 on F.Cu
-    @(51.6000 mm, 40.2000 mm): Pad 1AE24 [HDMI_TX_D0P] of U401 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(43.3800 mm, 38.8500 mm): Pad 2T4 [HUB_UP_DP] of U401 on F.Cu
-    @(71.8700 mm, 30.5100 mm): Pad 16 [HUB_UP_DP] of U1401 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(25.0000 mm, 35.8000 mm): Via [LP5_A2_B] on F.Cu - B.Cu
-    @(39.0000 mm, 30.6000 mm): Pad 1J3 [LP5_A2_B] of U401 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(22.6000 mm, 35.1000 mm): Via [LP5_A3_B] on F.Cu - B.Cu
-    @(38.4000 mm, 29.4000 mm): Pad 1G2 [LP5_A3_B] of U401 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(23.4000 mm, 35.8000 mm): Via [LP5_A4_B] on F.Cu - B.Cu
-    @(39.6000 mm, 28.8000 mm): Pad 1F4 [LP5_A4_B] of U401 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(21.0000 mm, 35.1000 mm): Via [LP5_A5_B] on F.Cu - B.Cu
-    @(40.2000 mm, 31.2000 mm): Pad 1K5 [LP5_A5_B] of U401 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(21.8000 mm, 35.8000 mm): Via [LP5_A6_B] on F.Cu - B.Cu
-    @(40.2000 mm, 30.0000 mm): Pad 1H5 [LP5_A6_B] of U401 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(33.9875 mm, 40.1125 mm): Track [LP5_DMI0_B] on In5.Cu, length 1.8502 mm
-    @(31.5625 mm, 39.8625 mm): Track [LP5_DMI0_B] on B.Cu, length 2.4379 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(21.8000 mm, 40.0000 mm): Via [LP5_DMI1_B] on F.Cu - B.Cu
-    @(37.8000 mm, 26.4000 mm): Pad 1B1 [LP5_DMI1_B] of U401 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(19.4000 mm, 28.1000 mm): Via [LP5_DQ0_A] on F.Cu - B.Cu
-    @(37.3000 mm, 34.6500 mm): Via [LP5_DQ0_A] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(21.0000 mm, 37.9000 mm): Via [LP5_DQ11_B] on F.Cu - B.Cu
-    @(37.8500 mm, 24.7500 mm): Pad A2 [LP5_DQ11_B] of U401 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(22.6000 mm, 39.3000 mm): Via [LP5_DQ12_B] on F.Cu - B.Cu
-    @(37.8000 mm, 28.2000 mm): Via [LP5_DQ12_B] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(20.2000 mm, 27.4000 mm): Via [LP5_DQ1_A] on F.Cu - B.Cu
-    @(37.8000 mm, 34.8000 mm): Pad 1T1 [LP5_DQ1_A] of U401 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(20.2000 mm, 28.8000 mm): Via [LP5_DQ2_A] on F.Cu - B.Cu
-    @(37.8000 mm, 33.6000 mm): Via [LP5_DQ2_A] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(21.0000 mm, 28.1000 mm): Via [LP5_DQ3_A] on F.Cu - B.Cu
-    @(37.3000 mm, 33.5500 mm): Via [LP5_DQ3_A] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(26.6000 mm, 38.6000 mm): Via [LP5_DQ5_B] on F.Cu - B.Cu
-    @(39.0000 mm, 26.4000 mm): Via [LP5_DQ5_B] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(19.4000 mm, 37.9000 mm): Via [LP5_DQ8_B] on F.Cu - B.Cu
-    @(37.8000 mm, 25.8000 mm): Via [LP5_DQ8_B] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(20.2000 mm, 38.6000 mm): Via [LP5_DQ9_B] on F.Cu - B.Cu
-    @(37.3000 mm, 25.3000 mm): Via [LP5_DQ9_B] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(21.8000 mm, 38.6000 mm): Via [LP5_RDQS1N_B] on F.Cu - B.Cu
-    @(38.4000 mm, 25.3000 mm): Via [LP5_RDQS1N_B] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(21.0000 mm, 39.3000 mm): Via [LP5_RDQS1P_B] on F.Cu - B.Cu
-    @(38.4000 mm, 24.7500 mm): Via [LP5_RDQS1P_B] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(21.8000 mm, 37.2000 mm): Via [LP5_WCK1P_B] on F.Cu - B.Cu
-    @(39.6000 mm, 27.6000 mm): Pad 1D4 [LP5_WCK1P_B] of U401 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(48.3125 mm, 23.4875 mm): Track [PMIC_PWRCTRL3] on In2.Cu, length 0.1061 mm
-    @(48.0625 mm, 25.6125 mm): Track [PMIC_PWRCTRL3] on B.Cu, length 2.1397 mm
+    @(41.0625 mm, 14.8000 mm): Pad 16 [PMIC_PWRCTRL3] of U201 on F.Cu
+    @(52.7000 mm, 35.2000 mm): Pad Y29 [PMIC_PWRCTRL3] of U401 on F.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
     @(41.0625 mm, 10.0000 mm): Pad 4 [PWRON_L] of U201 on F.Cu
     @(34.5200 mm, 37.5000 mm): Pad 1 [PWRON_L] of C505 on F.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(43.9000 mm, 25.3000 mm): Via [RGMII_RXCTL] on F.Cu - B.Cu
-    @(71.8000 mm, 57.5000 mm): Pad 26 [RGMII_RXCTL] of U1301 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(43.9000 mm, 24.7500 mm): Pad A13 [RGMII_RXD0] of U401 on F.Cu
-    @(72.2000 mm, 57.5000 mm): Pad 25 [RGMII_RXD0] of U1301 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(43.8000 mm, 25.8000 mm): Pad 1A11 [RGMII_RXD1] of U401 on F.Cu
-    @(72.6000 mm, 57.5000 mm): Pad 24 [RGMII_RXD1] of U1301 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(43.3500 mm, 25.3000 mm): Via [RGMII_RXD2] on F.Cu - B.Cu
+    @(43.3500 mm, 25.3000 mm): Pad B12 [RGMII_RXD2] of U401 on F.Cu
     @(73.0000 mm, 57.5000 mm): Pad 23 [RGMII_RXD2] of U1301 on F.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(43.2000 mm, 25.8000 mm): Pad 1A10 [RGMII_RXD3] of U401 on F.Cu
+    @(43.2000 mm, 25.8000 mm): Via [RGMII_RXD3] on F.Cu - B.Cu
     @(73.4000 mm, 57.5000 mm): Pad 22 [RGMII_RXD3] of U1301 on F.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
@@ -1208,131 +948,27 @@
     @(74.5000 mm, 58.6000 mm): Pad 19 [RGMII_TXCTL] of U1301 on F.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(46.3625 mm, 29.0875 mm): Track [RGMII_TXC_SOC] on In2.Cu, length 2.7250 mm
-    @(44.8625 mm, 27.8875 mm): Track [RGMII_TXC_SOC] on F.Cu, length 0.3000 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(42.0000 mm, 25.8000 mm): Pad 1A8 [RGMII_TXD2] of U401 on F.Cu
-    @(74.5000 mm, 59.8000 mm): Pad 16 [RGMII_TXD2] of U1301 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(16.9500 mm, 51.6550 mm): Pad 5 [SD_CLK] of J701 on B.Cu
-    @(49.8000 mm, 26.4000 mm): Via [SD_CLK] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(16.9500 mm, 53.8550 mm): Pad 7 [SD_D0] of J701 on B.Cu
-    @(49.9500 mm, 25.3000 mm): Via [SD_D0] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
     @(16.9500 mm, 54.9550 mm): Pad 8 [SD_D1] of J701 on B.Cu
-    @(50.5000 mm, 25.3000 mm): Via [SD_D1] on F.Cu - B.Cu
+    @(50.5000 mm, 25.3000 mm): Pad B25 [SD_D1] of U401 on F.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(45.3375 mm, 23.7875 mm): Track [SD_D2] on F.Cu, length 1.1314 mm
-    @(49.4000 mm, 24.7500 mm): Pad A23 [SD_D2] of U401 on F.Cu
+    @(48.7450 mm, 20.4309 mm): Zone 'PWR_VCCA_1V8_S0' [VCCA_1V8_S0] on In4.Cu, priority 61
+    @(48.7450 mm, 20.4309 mm): Zone 'PWR_VCCA_1V8_S0' [VCCA_1V8_S0] on In4.Cu, priority 61
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(79.3875 mm, 20.4625 mm): Track [USB3_RXN] on F.Cu, length 0.0750 mm
-    @(52.7000 mm, 30.8000 mm): Via [USB3_RXN] on F.Cu - B.Cu
+    @(51.6450 mm, 29.3809 mm): Zone 'PWR_VCC_1V8_S3' [VCC_1V8_S3] on In8.Cu, priority 47
+    @(51.6450 mm, 29.3809 mm): Zone 'PWR_VCC_1V8_S3' [VCC_1V8_S3] on In8.Cu, priority 47
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(49.0875 mm, 32.1125 mm): Track [VCCA1V8_PLDO2_S0] on In3.Cu, length 0.2828 mm
-    @(48.2625 mm, 32.9125 mm): Track [VCCA1V8_PLDO2_S0] on In3.Cu, length 1.1003 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(50.0125 mm, 41.9125 mm): Track [VCCA_1V8_S0] on In6.Cu, length 0.5303 mm
-    @(54.5200 mm, 39.5000 mm): Pad 1 [VCCA_1V8_S0] of C4111 on B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(48.8950 mm, 34.0809 mm): Zone 'PWR_VCCA_3V3_S0' [VCCA_3V3_S0] on In6.Cu, priority 79
-    @(43.9450 mm, 8.5309 mm): Zone 'PWR_VCCA_3V3_S0' [VCCA_3V3_S0] on In3.Cu, priority 51
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(51.6450 mm, 29.3809 mm): Zone 'PWR_VCC_1V8_S3' [VCC_1V8_S3] on In6.Cu, priority 47
-    @(51.6450 mm, 29.3809 mm): Zone 'PWR_VCC_1V8_S3' [VCC_1V8_S3] on In6.Cu, priority 47
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(47.6125 mm, 21.7875 mm): Track [VCC_1V8_S3] on B.Cu, length 0.0500 mm
-    @(47.6125 mm, 21.8375 mm): Track [VCC_1V8_S3] on In6.Cu, length 0.6750 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(47.6125 mm, 21.8375 mm): Track [VCC_1V8_S3] on In5.Cu, length 0.2828 mm
-    @(47.6125 mm, 21.7875 mm): Track [VCC_1V8_S3] on B.Cu, length 0.0500 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(60.7250 mm, 33.5000 mm): Track [VCC_2V0_PLDO_S3] on F.Cu, length 0.9250 mm
+    @(60.7250 mm, 33.5000 mm): Pad 1 [VCC_2V0_PLDO_S3] of C303 on F.Cu
     @(34.5200 mm, 36.0000 mm): Pad 1 [VCC_2V0_PLDO_S3] of C249 on F.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(58.2875 mm, 32.0875 mm): Track [VDD2H_DDR_S3] on In2.Cu, length 0.3400 mm
-    @(58.5125 mm, 31.8625 mm): Track [VDD2H_DDR_S3] on F.Cu, length 0.3182 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(52.5200 mm, 21.0000 mm): Track [VDDA0V75_HDMI_S0] on F.Cu, length 0.7600 mm
-    @(41.9250 mm, 12.8000 mm): Via [VDDA0V75_HDMI_S0] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(60.6125 mm, 37.9125 mm): Track [VDDA0V75_HDMI_S0] on In3.Cu, length 0.6364 mm
-    @(62.0200 mm, 38.5000 mm): Track [VDDA0V75_HDMI_S0] on B.Cu, length 0.7600 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(44.7625 mm, 37.9125 mm): Track [VDDA_0V75_S0] on In2.Cu, length 0.3750 mm
-    @(47.5200 mm, 51.0000 mm): Track [VDDA_0V75_S0] on B.Cu, length 0.7600 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(47.9300 mm, 33.0000 mm): Via [VDDA_0V75_S0] on F.Cu - B.Cu
-    @(41.5200 mm, 18.0000 mm): Track [VDDA_0V75_S0] on F.Cu, length 0.7600 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(37.3950 mm, 15.3309 mm): Zone 'PWR_VDDA_0V85_S0' [VDDA_0V85_S0] on In6.Cu, priority 48
-    @(37.3950 mm, 15.3309 mm): Zone 'PWR_VDDA_0V85_S0' [VDDA_0V85_S0] on In6.Cu, priority 48
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(47.5200 mm, 18.0000 mm): Track [VDDA_0V85_S0] on F.Cu, length 0.7600 mm
-    @(43.3125 mm, 21.2125 mm): Track [VDDA_0V85_S0] on In6.Cu, length 3.2880 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(62.9875 mm, 32.9375 mm): Track [VDDA_0V85_S0] on B.Cu, length 0.8132 mm
-    @(48.2125 mm, 33.1125 mm): Track [VDDA_0V85_S0] on In6.Cu, length 0.0250 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(60.6875 mm, 25.8875 mm): Track [VDDA_1V2_S0] on In3.Cu, length 0.9906 mm
-    @(62.0200 mm, 26.0000 mm): Track [VDDA_1V2_S0] on B.Cu, length 0.7600 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(60.6875 mm, 25.8875 mm): Track [VDDA_1V2_S0] on In3.Cu, length 0.9906 mm
-    @(46.2000 mm, 8.0625 mm): Track [VDDA_1V2_S0] on F.Cu, length 0.8625 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(42.8375 mm, 19.9375 mm): Track [VDDA_DDR_PLL_S0] on In3.Cu, length 2.5280 mm
     @(41.0625 mm, 13.2000 mm): Pad 12 [VDDA_DDR_PLL_S0] of U201 on F.Cu
+    @(42.8375 mm, 19.9375 mm): Track [VDDA_DDR_PLL_S0] on In4.Cu, length 2.5280 mm
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(45.1450 mm, 20.7309 mm): Zone 'PWR_VDDA_DDR_PLL_S0' [VDDA_DDR_PLL_S0] on In3.Cu, priority 58
-    @(48.7450 mm, 21.3309 mm): Zone 'PWR_VDDA_DDR_PLL_S0' [VDDA_DDR_PLL_S0] on In6.Cu, priority 130
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(41.0625 mm, 14.0000 mm): Track [VDD_0V75_S3] on F.Cu, length 1.0625 mm
-    @(45.2375 mm, 14.8625 mm): Track [VDD_0V75_S3] on In6.Cu, length 0.7150 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(33.7250 mm, 24.0000 mm): Pad 1 [VDD_CPU_LIT_S0] of C212 on F.Cu
-    @(41.5625 mm, 19.3375 mm): Track [VDD_CPU_LIT_S0] on In5.Cu, length 0.2121 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(59.4125 mm, 22.1875 mm): Track [VDD_LOGIC_S0] on In2.Cu, length 1.0960 mm
-    @(58.9826 mm, 25.4626 mm): Via [VDD_LOGIC_S0] on F.Cu - B.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(59.2375 mm, 41.0125 mm): Track [VDD_LOGIC_S0] on In5.Cu, length 1.2442 mm
-    @(60.3875 mm, 40.5375 mm): Track [VDD_LOGIC_S0] on In2.Cu, length 1.7106 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(59.5200 mm, 30.0000 mm): Track [VDD_NPU_S0] on B.Cu, length 0.7600 mm
-    @(59.7250 mm, 35.0000 mm): Track [VDD_NPU_S0] on B.Cu, length 0.9250 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(60.0625 mm, 30.5125 mm): Track [VDD_NPU_S0] on In3.Cu, length 1.3098 mm
+    @(60.0625 mm, 30.5125 mm): Track [VDD_NPU_S0] on In4.Cu, length 1.3098 mm
     @(59.5200 mm, 30.0000 mm): Track [VDD_NPU_S0] on B.Cu, length 0.7600 mm
 
 ** Found 0 Footprint errors **

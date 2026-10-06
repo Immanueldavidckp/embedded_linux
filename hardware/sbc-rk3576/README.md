@@ -32,14 +32,14 @@ Also on the board: microSD (recovery boot), MASKROM/POWER/RESET keys, LEDs. It i
 | Placement | ✅ all 484 footprints, 262 top / 222 bottom | renders in `docs/img/` |
 | BGA fan-out | ✅ via-in-pad on every used ball: RK3576 + LPDDR5 (818) and eMMC (33) | `tools/fanout.py`, `tools/fanout_region.py` |
 | Planes / pours | ✅ GND on L2/L6 + stitch vias; power pours on L5/L9 rebuilt as one connected region per rail | `tools/stitch.py`, `tools/pour_fix.py` |
-| **Routing** | 🟡 **≈ 92 % done**: re-routed from scratch with our own maze router. **72 of 942** connections still open: ~45 long LPDDR5-B / RGMII / SD / eMMC / high-speed runs through the full SoC area, ~25 power-pour joins | [fab/drc.rpt](fab/drc.rpt), `tools/route_all.sh` |
-| DRC | ✅ **0 errors** apart from the 72 unconnected items (warnings: dangling stubs/vias left by rip-up and small pour islands, removed by `tools/cleanup.py` at the end) | [fab/drc.rpt](fab/drc.rpt) |
+| **Routing** | 🟡 **≈ 98.5 % done**: 10-layer rev A2, **14 of 942** connections still open (RGMII ×3, SD ×1, PCIe ×1, four PMIC control/feedback lines, a few power-pour joins) | [fab/drc.rpt](fab/drc.rpt), `tools/route_all.sh` |
+| DRC | ✅ **0 errors** apart from the 14 unconnected items (warnings: dangling stubs/vias left by rip-up and small pour islands, removed by `tools/cleanup.py` at the end) | [fab/drc.rpt](fab/drc.rpt) |
 | Schematic ↔ PCB parity | ✅ 0 issues | [fab/drc.rpt](fab/drc.rpt) |
 | Length / skew tuning | ❌ not done: 31 groups flagged | [fab/length_report.md](fab/length_report.md) |
 | BOM, JLCPCB BOM, CPL | ✅ | `fab/` |
 | Linux-PC readiness | ✅ on paper (Pi 4–5 class desktop) | [docs/linux_pc_readiness.md](docs/linux_pc_readiness.md) |
 
-> **Do not order from `fab/gerbers-draft/` yet.** The board still needs the last 72 connections and
+> **Do not order from `fab/gerbers-draft/` yet.** The board still needs the last 14 connections and
 > length tuning of LPDDR5/HDMI/PCIe/USB3 (`tools/tune_length.py` does the pairs automatically; the
 > LPDDR5 lanes need re-routing with length targets). See [docs/layout_guide.md](docs/layout_guide.md).
 
@@ -57,11 +57,14 @@ stitching (942 open) and re-routed with tools written for this board (`tools/rou
    vias) with capped rip-up and reroute: → 78, DRC clean.
 5. Slow nets (PMIC feedback/control, GPIO, UART, PHY interrupt) allowed onto the power layers
    (`--pwr-ok`), pours re-planned around them: → 72, DRC clean.
+6. **Rev A2: 10 layers.** Four signal layers were full between the RK3576 and the LPDDR5, so two signal
+   layers were added (`tools/stackup.py`, `tools/to_10layer.py` moved the routed board over intact):
+   72 → 21 in one pass. Pieces that touch on the grid but not in KiCad are bridged, and nets stranded
+   inside the BGA ball field are stripped and re-routed from their pads (`strip_routes.py --nets`): → 14.
 
-The last 72 sit where four signal layers are full (between the RK3576 and the LPDDR5, and the long
-RGMII/SD runs under the SoC). Rip-up beyond a small budget cascades (LOG.md #27, #31). Options:
-hand-route them in KiCad (the router's partial routes are in place), or give signals part of L4 under
-the SoC. `tools/maze_diag.py` explains any single failure.
+The last 14 are long runs (RGMII SoC → PHY, SD, PCIe TX) and PMIC control lines whose corridors are
+taken; `tools/maze_diag.py` explains each one. They can be finished by hand in KiCad's interactive
+router, or by one more targeted strip-and-reroute of their neighbours.
 
 ## Repository layout
 
