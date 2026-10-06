@@ -86,3 +86,24 @@ allowed; 0.3 mm copper-to-edge.
 3. Route LPDDR5 → HDMI → PCIe → USB3 → eMMC/SD → power → low speed.
 4. Pour L4 power islands. Stitch GND every 2–3 mm along high-speed routes and the board edge.
 5. Run DRC to zero unconnected items, then get SI/PI review (or at least the Rockchip HW checklist).
+
+## Finishing the last 14 connections
+
+Everything else is routed and DRC-clean. These 14 are where the automatic router stopped (pockets walled in
+by neighbouring routes; rip-up beyond a few items cascades). In KiCad: open `kicad/rk3576-sbc.kicad_pro`,
+press **X** (Route Single Track) with **Shove** mode on (Route → Interactive Router Settings), and click the
+ratsnest line of each. `tools/maze_diag.py BOARD DRC.json NETREGEX` shows the free space at each end.
+
+| Net | From → to | What is in the way / how to finish |
+|---|---|---|
+| RGMII_RXD2, RXD3, TXCTL | U401 B12 / 1A10 / A11 → U1301 pins 23 / 22 / 19 (≈ 45 mm) | the other RGMII lines took the corridor; shove them aside on L3/L4, route on the same layer as RXD0/RXD1 (keep the group within ±1 mm, `length_report.py`) |
+| SD_D1 | J701 pin 8 (bottom) → U401 B25 (≈ 45 mm) | follow SD_D0/D2 on L7/L8; one via near J701 |
+| PCIE0_TXN | U401 P28 → C802 pin 1 (≈ 28 mm) | route next to PCIE0_TXP as a pair (Route → Differential Pair, 85 Ω class); then `tune_length.py` |
+| PMIC_PWRCTRL3, PWRON_L, PMIC_FB6, VDDA_DDR_PLL_S0 | U201 (PMIC) pins 16 / 4 / 31 / 12 → SoC / caps | the PMIC's pin fan-out on F.Cu is boxed by its own switch-node copper; drop a via right at each pin (0.25/0.15) and run on L3/L4 (slow signals; L5/L9 are allowed for them too) |
+| LP5_DMI0_B | 2.2 mm gap between two pieces near (33.9, 40.1) | join on L7 (In6) |
+| VDD_NPU_S0 | 0.7 mm gap at (60, 30.5) | a 0.3 mm via from the B.Cu stub into the L5 pour |
+| VCC_2V0_PLDO_S3 | C303 → C249 (≈ 26 mm) | one 0.25 mm track on L5/L9 (cuts through other pours; re-run `tools/pour_fix.py` after) |
+| VCCA_1V8_S0, VCC_1V8_S3 | zone split into islands (L5 / L9) | widen the neck between the islands in the zone outline, or add a short 0.2 mm track across it; refill |
+
+After the last connection: `tools/cleanup.py` → `tools/tune_length.py` → `tools/build.sh` and DRC must report
+0 unconnected items before the Gerbers leave `fab/gerbers-draft/`.

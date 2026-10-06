@@ -33,9 +33,9 @@ Also on the board: microSD (recovery boot), MASKROM/POWER/RESET keys, LEDs. It i
 | BGA fan-out | ✅ via-in-pad on every used ball: RK3576 + LPDDR5 (818) and eMMC (33) | `tools/fanout.py`, `tools/fanout_region.py` |
 | Planes / pours | ✅ GND on L2/L6 + stitch vias; power pours on L5/L9 rebuilt as one connected region per rail | `tools/stitch.py`, `tools/pour_fix.py` |
 | **Routing** | 🟡 **≈ 98.5 % done**: 10-layer rev A2, **14 of 942** connections still open (RGMII ×3, SD ×1, PCIe ×1, four PMIC control/feedback lines, a few power-pour joins) | [fab/drc.rpt](fab/drc.rpt), `tools/route_all.sh` |
-| DRC | ✅ **0 errors** apart from the 14 unconnected items (warnings: dangling stubs/vias left by rip-up and small pour islands, removed by `tools/cleanup.py` at the end) | [fab/drc.rpt](fab/drc.rpt) |
+| DRC | ✅ **0 errors** apart from the 14 unconnected items (warnings only: route tips at the open connections, locked fan-out vias, small pour islands) | [fab/drc.rpt](fab/drc.rpt) |
 | Schematic ↔ PCB parity | ✅ 0 issues | [fab/drc.rpt](fab/drc.rpt) |
-| Length / skew tuning | ❌ not done: 31 groups flagged | [fab/length_report.md](fab/length_report.md) |
+| Length / skew tuning | 🟡 **22 of 24** complete differential pairs within skew tolerance (HDMI, PCIe, USB 3/2, Ethernet, LPDDR5 CK/WCK/RDQS) by automatic meanders; LPDDR5 byte lanes still 8–11 mm apart (no free space for meanders) | [fab/tuning_report.md](fab/tuning_report.md), [fab/length_report.md](fab/length_report.md) |
 | BOM, JLCPCB BOM, CPL | ✅ | `fab/` |
 | Linux-PC readiness | ✅ on paper (Pi 4–5 class desktop) | [docs/linux_pc_readiness.md](docs/linux_pc_readiness.md) |
 
@@ -62,9 +62,10 @@ stitching (942 open) and re-routed with tools written for this board (`tools/rou
    72 → 21 in one pass. Pieces that touch on the grid but not in KiCad are bridged, and nets stranded
    inside the BGA ball field are stripped and re-routed from their pads (`strip_routes.py --nets`): → 14.
 
-The last 14 are long runs (RGMII SoC → PHY, SD, PCIe TX) and PMIC control lines whose corridors are
-taken; `tools/maze_diag.py` explains each one. They can be finished by hand in KiCad's interactive
-router, or by one more targeted strip-and-reroute of their neighbours.
+7. `cleanup.py` removed routing debris, `tune_length.py` added 107 meanders (pairs into tolerance).
+
+The last 14 are listed, with what blocks each one and how to finish it in KiCad's interactive router,
+in [docs/layout_guide.md](docs/layout_guide.md#finishing-the-last-14-connections).
 
 ## Repository layout
 
