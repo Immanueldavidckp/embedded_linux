@@ -1,25 +1,37 @@
 #!/usr/bin/env python3
 """Strip all routing back to the fixed base, ready for a full re-route.
 
-    python3 strip_routes.py IN.kicad_pcb OUT.kicad_pcb
+    python3 strip_routes.py IN.kicad_pcb OUT.kicad_pcb [--nets REGEX]
+
+With --nets, only those nets lose their routed tracks/vias (locked fan-out vias stay) and
+nothing is re-stitched: used to re-route nets whose partial routes got stranded inside a
+BGA ball field, where no new via fits and a route can only change layer at its own
+fan-out via.
 
 Keeps pads, the locked BGA fan-out vias, zones; removes every other track and
 via (Freerouting's and the maze router's), then re-stitches GND and every power
 rail pad to its plane/pour (stitch.py) so the planes are connected the same way
-as before. What is left open is pure routing work for pathfinder.py.
+as before. What is left open is pure routing work for maze_ripup.py.
 """
-import os, re, shutil, subprocess, sys
+import argparse, os, re, shutil, subprocess, sys
 import pcbnew
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 GRAVE = []          # removed items must stay referenced (KiCad SWIG ownership bug)
 
 
-def main(src, dst):
+def main(src, dst, nets=None):
     if os.path.abspath(src) != os.path.abspath(dst):
         shutil.copy(src.replace('.kicad_pcb', '.kicad_pro'), dst.replace('.kicad_pcb', '.kicad_pro'))
     b = pcbnew.LoadBoard(src)
-    gone = [t for t in b.GetTracks() if not t.IsLocked()]
+    gone = [t for t in b.GetTracks() if not t.IsLocked() and (nets is None or re.search(nets, t.GetNetname()))]
+    if nets is not None:
+        for t in gone:
+            b.Remove(t)
+            GRAVE.append(t)
+        pcbnew.SaveBoard(dst, b)
+        print(f'stripped {len(gone)} tracks/vias of nets matching {nets!r}', flush=True)
+        return
     for t in gone:
         b.Remove(t)
         GRAVE.append(t)
@@ -46,4 +58,8 @@ c = b.GetConnectivity(); c.RecalculateRatsnest(); print('unconnected', c.GetUnco
 
 
 if __name__ == '__main__':
-    main(sys.argv[1], sys.argv[2])
+    ap = argparse.ArgumentParser()
+    ap.add_argument('src'); ap.add_argument('dst')
+    ap.add_argument('--nets', help='only strip these nets (regex), no re-stitching')
+    a = ap.parse_args()
+    main(a.src, a.dst, a.nets)
