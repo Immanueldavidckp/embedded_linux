@@ -324,7 +324,9 @@ class Router:
 
     # cells of an item (eroded so the end point is truly inside it):
     # {layer index: (mask, centre cell or None, via diameter if the pad is not flashed yet)}
-    def item_cells(self, it, pos, wx0, wy0, w, h):
+    def item_cells(self, it, pos, wx0, wy0, w, h, others=False):
+        """others=True (zones only): every fill island of the zone except the one at pos -- KiCad
+        reports a zone split into islands as a zone-to-itself connection with one anchor."""
         R = self.R
         out = {}
         cls = it.GetClass()
@@ -346,7 +348,11 @@ class Router:
                 if best is None or bd > MM(0.3) ** 2:
                     continue
                 single = pcbnew.SHAPE_POLY_SET()
-                single.AddOutline(fp.Outline(best))
+                for i in range(fp.OutlineCount()):
+                    if (i != best) if others else (i == best):
+                        single.AddOutline(fp.Outline(i))
+                if single.OutlineCount() == 0:
+                    continue
                 m = R.mask_polys(R.polys(single), wx0, wy0, w, h)
                 m = ndimage.binary_erosion(m, iterations=2)
                 if m.any():
@@ -450,7 +456,7 @@ class Router:
             wy0 = max(int((by0 - Y0) / R.res), 0); wy1 = min(int((by1 - Y0) / R.res) + 1, R.H)
             w, h = wx1 - wx0, wy1 - wy0
             src = self.item_cells(A, posA, wx0, wy0, w, h)
-            dst = self.item_cells(B, posB, wx0, wy0, w, h)
+            dst = self.item_cells(B, posB, wx0, wy0, w, h, others=A is B)
             src = self.expand(src, netcode, wx0, wy0, w, h)
             self._land = {1: self._last_landing}
             dst = self.expand(dst, netcode, wx0, wy0, w, h)
