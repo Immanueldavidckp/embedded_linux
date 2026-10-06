@@ -159,6 +159,7 @@ def one_round(a, rnd):
     r.mg_cells = a.mg
     r.max_rip = a.max_rip
     r.pwr_ok = a.pwr_ok
+    r.max_expand = a.max_expand
     r.gone_ids |= gone
     conns = []
     for k, u in enumerate(drc['unconnected_items']):
@@ -208,6 +209,7 @@ def main():
     ap.add_argument('--mg', type=float, default=1.0, help='clearance safety margin in grid cells')
     ap.add_argument('--max-rip', type=int, default=8, help='undo a path that would rip more items')
     ap.add_argument('--pwr-ok', default='', help='regex: nets allowed to cross the power-pour layers')
+    ap.add_argument('--max-expand', type=int, default=6_000_000, help='A* node budget per search')
     ap.add_argument('--one-round', type=int, default=-1, help=argparse.SUPPRESS)
     a = ap.parse_args()
     if a.one_round >= 0:
@@ -231,7 +233,7 @@ def main():
         best = open_n + errs if best is None else min(best, open_n + errs)
         subprocess.run([sys.executable, os.path.abspath(__file__), a.out, a.out, '--one-round', str(rnd),
                         '--pen', str(a.pen), '--nets', a.nets, '--res', str(a.res), '--margin', str(a.margin),
-                        '--max-len', str(a.max_len), '--first', a.first, '--exclude', a.exclude, '--mg', str(a.mg), '--max-rip', str(a.max_rip), '--pwr-ok', a.pwr_ok] + (['--no-rip'] if a.no_rip else []),
+                        '--max-len', str(a.max_len), '--first', a.first, '--exclude', a.exclude, '--mg', str(a.mg), '--max-rip', str(a.max_rip), '--pwr-ok', a.pwr_ok, '--max-expand', str(a.max_expand)] + (['--no-rip'] if a.no_rip else []),
                        check=True)
         refill(a.out)
     print('done', flush=True)
