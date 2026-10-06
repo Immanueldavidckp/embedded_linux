@@ -427,9 +427,12 @@ class Router:
         netcode = A.GetNetCode()
         name = A.GetNetname()
         tw, clr, power = net_class(name)
+        # slow nets (and rails) may cross the power layers, cutting other rails' pours there;
+        # pour_fix.py re-plans the pours around them afterwards
+        self.cut_pours = bool(getattr(self, 'pwr_ok', None)) and bool(re.search(self.pwr_ok, name))
         if name == 'GND':
             allowed = tuple(range(len(LAYERS)))
-        elif power:
+        elif power or self.cut_pours:
             allowed = SIG + PWR_LAYERS
         else:
             allowed = SIG
@@ -507,7 +510,7 @@ class Router:
             dz = d
             zn = R.zone[li][sl]
             zf = (zn != 0) & (zn != net)
-            if zf.any() and li in allowed and li not in SIG:
+            if zf.any() and li in allowed and li not in SIG and not getattr(self, 'cut_pours', False):
                 dz = np.minimum(d, (ndimage.distance_transform_edt(~zf) * R.res)[crop] - max(0.10, own_clr))
             out[li] = (d, dz)
         dhole = (ndimage.distance_transform_edt(hm == 0) * R.res - HOLE2HOLE)[crop] if hm.any() \
@@ -531,7 +534,7 @@ class Router:
             d, dz = deff[li]
             blocked[li] = dz < tw / 2 + mg
             padok[li] = d >= vd / 2 + mg
-            lcost[li] = 1.0
+            lcost[li] = 3.0 if getattr(self, 'cut_pours', False) and li in PWR_LAYERS else 1.0
         # Own-net vias without a pad on a layer: touching one there would make KiCad add the
         # pad (and its clearance) after the fact, so keep hole clearance from them as well,
         # except around this connection's own end items.
@@ -738,12 +741,14 @@ def main():
     ap.add_argument('--patch', help='write added items as JSON here')
     ap.add_argument('--limit', type=int, default=0)
     ap.add_argument('--max-expand', type=int, default=6_000_000, help='A* node budget per search')
+    ap.add_argument('--pwr-ok', default='', help='regex: nets allowed to cross the power-pour layers')
     a = ap.parse_args()
 
     b = pcbnew.LoadBoard(a.inp)
     drc = json.load(open(a.drc)) if a.drc else run_drc(a.inp, a.out + '.drc_in.json')
     r = Router(b, a.res, a.margin)
     r.max_expand = a.max_expand
+    r.pwr_ok = a.pwr_ok
     conns = []
     for k, u in enumerate(drc['unconnected_items']):
         ia, ib = u['items']
