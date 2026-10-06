@@ -368,6 +368,10 @@ def main():
         if z.GetZoneName().startswith('PWR_') and not z.GetIsRuleArea():
             proto.setdefault((z.GetLayer(), z.GetNetname()), (z.GetIslandRemovalMode(), z.GetMinIslandArea()))
     orig = set(proto)
+    if a.dst and os.path.abspath(a.dst) != os.path.abspath(a.src):
+        # net classes and rules live in the project file: without it the fill uses defaults
+        import shutil
+        shutil.copy(a.src.replace('.kicad_pcb', '.kicad_pro'), a.dst.replace('.kicad_pcb', '.kicad_pro'))
     zones_strip.strip(a.src, a.dst, ('PWR_',))
     b = pcbnew.LoadBoard(a.dst)
     G = Grid(b, a.res)
