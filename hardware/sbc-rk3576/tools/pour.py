@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Power pours on L4 (In3.Cu) + stitch vias for every power rail.
+"""Power pours on the power layers (stackup.py) + stitch vias for every power rail.
 
 Each rail gets a zone on the power layer covering the area its pads span (+1 mm).
 Overlaps are resolved by priority: the smaller (more local) rail wins, so core
@@ -11,6 +11,7 @@ import os, re, sys
 import subprocess
 import pcbnew
 import zones_strip
+import stackup
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PCB = os.path.join(HERE, '..', 'kicad', 'rk3576-sbc.kicad_pcb')
@@ -18,12 +19,12 @@ MM, TOMM = pcbnew.FromMM, pcbnew.ToMM
 RAIL = re.compile(r'^(VDD|VCC|VBUS)')
 W, H = 100.0, 72.0
 # board-wide rails get their own layer (L7) so local pours on L4 can't island them
-BIG = {'VCC5V0_SYS_S5': pcbnew.In6_Cu, 'VCC_3V3_S3': pcbnew.In6_Cu, 'VCC_3V3_S0': pcbnew.In6_Cu,
-       'VCC_1V8_S3': pcbnew.In6_Cu}
+_BIG = stackup.lid(stackup.BIG_PWR)
+BIG = {'VCC5V0_SYS_S5': _BIG, 'VCC_3V3_S3': _BIG, 'VCC_3V3_S0': _BIG, 'VCC_1V8_S3': _BIG}
 
 
 def main(path=PCB):
-    zones_strip.strip(path, path, ('PWR_', 'GND_In6.Cu'))   # idempotent; L7 = big-rail layer
+    zones_strip.strip(path, path, ('PWR_', f'GND_{stackup.BIG_PWR}'))   # idempotent; big-rail layer
     b = pcbnew.LoadBoard(path)
     rails = {}
     for f in b.GetFootprints():
@@ -44,7 +45,7 @@ def main(path=PCB):
     netinfo = b.GetNetsByName()
     for prio, (_a, n, (x0, y0, x1, y1)) in enumerate(reversed(boxes)):
         z = pcbnew.ZONE(b)
-        z.SetLayer(BIG.get(n, pcbnew.In3_Cu))
+        z.SetLayer(BIG.get(n, stackup.lid(stackup.CORE_PWR)))
         z.SetNet(netinfo[n])
         z.SetZoneName(f'PWR_{n}')
         z.SetAssignedPriority(prio + 1)             # smallest box = highest priority
@@ -59,7 +60,7 @@ def main(path=PCB):
             o.Append(MM(x), MM(y))
         b.Add(z)
     pcbnew.SaveBoard(path, b)
-    print(f'pours: {len(boxes)} power zones ({len(BIG)} board-wide on In6.Cu, rest on In3.Cu)')
+    print(f'pours: {len(boxes)} power zones ({len(BIG)} board-wide on {stackup.BIG_PWR}, rest on {stackup.CORE_PWR})')
     # separate process: reloading a board after zone removal crashes KiCad 9 SWIG
     subprocess.run([sys.executable, os.path.join(HERE, 'stitch.py'), path, *[n for _a, n, _b in boxes]], check=True)
 

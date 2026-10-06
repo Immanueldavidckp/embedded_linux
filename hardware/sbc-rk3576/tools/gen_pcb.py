@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the KiCad PCB from design.py: 8-layer stackup, outline, net classes,
+"""Build the KiCad PCB from design.py: 10-layer stackup, outline, net classes,
 floorplan placement of every footprint, ground planes.
 
 Placement strategy (this is a floorplan, not a routed board):
@@ -89,46 +89,8 @@ NETCLASSES = [
      ['VDD*', 'VCC*', 'VBUS*', 'PMIC_SW*', '*_SW', 'HDMI_5V_PTC']),
 ]
 
-# 8-layer 1.6mm stackup (JLCPCB JLC08161H-3313-like). Confirm with the fab's
-# impedance calculator before release; trace widths above assume these values.
-STACKUP = [
-    ('F.SilkS', 'Top Silk Screen', None, None), ('F.Paste', 'Top Solder Paste', None, None),
-    ('F.Mask', 'Top Solder Mask', 0.01, None),
-    ('F.Cu', 'copper', 0.035, 'L1 SIG (BGA escape, HS pairs)'),
-    ('dielectric 1', 'prepreg', 0.0994, ('3313', 4.10)),
-    ('In1.Cu', 'copper', 0.0152, 'L2 GND'),
-    ('dielectric 2', 'core', 0.30, ('FR4', 4.60)),
-    ('In2.Cu', 'copper', 0.0152, 'L3 SIG (DDR byte lanes)'),
-    ('dielectric 3', 'prepreg', 0.0994, ('3313', 4.10)),
-    ('In3.Cu', 'copper', 0.0152, 'L4 PWR (core rails split)'),
-    ('dielectric 4', 'core', 0.30, ('FR4', 4.60)),
-    ('In4.Cu', 'copper', 0.0152, 'L5 GND'),
-    ('dielectric 5', 'prepreg', 0.0994, ('3313', 4.10)),
-    ('In5.Cu', 'copper', 0.0152, 'L6 SIG (DDR CA, low speed)'),
-    ('dielectric 6', 'core', 0.30, ('FR4', 4.60)),
-    ('In6.Cu', 'copper', 0.0152, 'L7 GND / PWR'),
-    ('dielectric 7', 'prepreg', 0.0994, ('3313', 4.10)),
-    ('B.Cu', 'copper', 0.035, 'L8 SIG + decoupling'),
-    ('B.Mask', 'Bottom Solder Mask', 0.01, None), ('B.Paste', 'Bottom Solder Paste', None, None),
-    ('B.SilkS', 'Bottom Silk Screen', None, None),
-]
-
-
-def stackup_sexp():
-    out = ['\t\t(stackup']
-    for name, typ, th, extra in STACKUP:
-        s = f'\t\t\t(layer "{name}" (type "{typ}")'
-        if th is not None:
-            s += f' (thickness {th})'
-        if typ in ('prepreg', 'core'):
-            s += f' (material "{extra[0]}") (epsilon_r {extra[1]}) (loss_tangent 0.02)'
-        if 'Mask' in name:
-            s += ' (color "Green")'
-        if 'SilkS' in name:
-            s += ' (color "White")'
-        out.append(s + ')')
-    out += ['\t\t\t(copper_finish "ENIG")', '\t\t\t(dielectric_constraints no)', '\t\t)']
-    return '\n'.join(out)
+# Stackup (10 layers since rev A2): see stackup.py.
+from stackup import STACKUP, stackup_sexp, LAYER_COUNT, BIG_PWR, layers as stack_layers, lid
 
 
 # ---------------------------------------------------------------- helpers
@@ -371,7 +333,7 @@ def main():
     d = build()
     write_project()
     board = pcbnew.BOARD()
-    board.SetCopperLayerCount(8)
+    board.SetCopperLayerCount(LAYER_COUNT)
     ds = board.GetDesignSettings()
     ds.SetBoardThickness(MM(1.6))
     outline(board)
@@ -493,8 +455,8 @@ def main():
     if failed:
         print('could not place:', failed)
 
-    # 3) planes: L2, L5, L7 solid GND
-    for l in (pcbnew.In1_Cu, pcbnew.In4_Cu, pcbnew.In6_Cu):
+    # 3) planes: solid GND on the GND layers (and on the big-rail layer until pour.py claims it)
+    for l in stack_layers('gnd') + [lid(BIG_PWR)]:
         gnd_zone(board, l, nets['GND'])
 
     # 4) silkscreen

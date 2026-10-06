@@ -3,17 +3,18 @@
 
 Autorouters are poor at "connect to plane" for hundreds of small pads; layout
 engineers drop a short stub + via next to each GND pad instead. This does that
-for GND (planes on L2/L5/L7), choosing the first nearby spot that clears every
+for GND (the GND plane layers in stackup.py), choosing the first nearby spot that clears every
 other copper item.
 """
 import math, os, sys
 import pcbnew
+import stackup
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PCB = os.path.join(HERE, '..', 'kicad', 'rk3576-sbc.kicad_pcb')
 MM, TOMM = pcbnew.FromMM, pcbnew.ToMM
 VIA_D, VIA_DRILL, TRACK_W, CLR = 0.35, 0.20, 0.20, 0.135   # 0.12 rule + margin
-PLANE_LAYERS = {pcbnew.In1_Cu, pcbnew.In4_Cu}
+PLANE_LAYERS = set(stackup.layers('gnd'))
 NETS = ('GND',)
 SKIP_REFS = ('U401', 'U601')     # fanned out via-in-pad already
 

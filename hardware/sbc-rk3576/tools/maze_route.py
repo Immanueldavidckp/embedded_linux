@@ -23,8 +23,8 @@ How it works
   4. String-pull the cell path into straight segments, add tracks and vias to
      the board, and stamp them into the rasters so later routes avoid them.
 
-Layers: signals use L1/L3/L6/L8 (F, In2, In5, B). Power nets may also use their
-own pours on L4/L7 (In3, In6); GND may use everything. L2/L5 stay solid GND.
+Layers come from stackup.py: signals use the signal layers, power nets may also use
+their own pours on the power layers, GND may use everything; GND planes stay solid.
 New vias remove unconnected pads (non-functional pad removal), which also
 opens the channels between the BGA fan-out vias on the inner layers.
 """
@@ -33,14 +33,15 @@ import numpy as np
 from PIL import Image, ImageDraw
 from scipy import ndimage
 import pcbnew
+import stackup
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MM, TOMM = pcbnew.FromMM, pcbnew.ToMM
-LAYERS = [pcbnew.F_Cu, pcbnew.In1_Cu, pcbnew.In2_Cu, pcbnew.In3_Cu, pcbnew.In4_Cu, pcbnew.In5_Cu,
-          pcbnew.In6_Cu, pcbnew.B_Cu]
+LAYERS = stackup.layers()                                   # copper, top to bottom
 LI = {l: i for i, l in enumerate(LAYERS)}
-SIG = (0, 2, 5, 7)            # F, In2, In5, B
-PWR_LAYERS = (3, 6)           # In3, In6 pours
+SIG = tuple(LI[l] for l in stackup.layers('sig'))          # signal layers
+PWR_LAYERS = tuple(LI[l] for l in stackup.layers('pwr'))   # power pours
+GND_LAYERS = tuple(LI[l] for l in stackup.layers('gnd'))   # solid GND planes
 X0, Y0, X1, Y1 = -0.5, -0.5, 100.5, 72.5
 EDGE_CLR, HOLE_CLR, HOLE2HOLE = 0.30, 0.12, 0.25
 # name-pattern -> (track width, clearance); first match wins (mirrors gen_pcb.NETCLASSES)
@@ -455,7 +456,7 @@ class Router:
             dst = self.expand(dst, netcode, wx0, wy0, w, h)
             self._land[2] = self._last_landing
             if name == 'GND':            # a via into either solid GND plane connects too
-                for li in (1, 4):
+                for li in GND_LAYERS:
                     m = ndimage.binary_erosion(R.zone[li][wy0:wy0 + h, wx0:wx0 + w] == netcode, iterations=3)
                     if m.any():
                         dst[li] = (dst[li][0] | m, None, 0) if li in dst else (m, None, 0)
