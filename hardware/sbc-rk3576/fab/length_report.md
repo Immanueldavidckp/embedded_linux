@@ -1,6 +1,6 @@
 # Routed length report
 
-Unrouted connections: **78**. Lengths are copper only (via barrels excluded), measured from the KiCad board.
+Unrouted connections: **72**. Lengths are copper only (via barrels excluded), measured from the KiCad board.
 
 ## LPDDR5 byte lanes (target: DQ/DMI within ±0.5 mm of the lane mean)
 
@@ -9,7 +9,7 @@ Unrouted connections: **78**. Lengths are copper only (via barrels excluded), me
 | A0 | 5/9 | 24.36 | 38.97 | 14.61 | TUNE |
 | A1 | 9/9 | 12.63 | 24.34 | 11.70 | TUNE |
 | CA_A | 9/9 | 12.35 | 25.93 | 13.58 | TUNE |
-| B0 | 8/9 | 11.90 | 41.04 | 29.13 | TUNE |
+| B0 | 8/9 | 11.90 | 45.90 | 34.00 | TUNE |
 | B1 | 4/9 | 26.41 | 39.31 | 12.91 | TUNE |
 | CA_B | 4/9 | 11.09 | 14.47 | 3.38 | TUNE |
 
@@ -32,14 +32,14 @@ Unrouted connections: **78**. Lengths are copper only (via barrels excluded), me
 | HDMI_TX_D2P / HDMI_TX_D2N | 16.70 | 16.39 | 0.31 | 0.15 | TUNE |
 | HDMI_TX_D3P / HDMI_TX_D3N | 16.41 | 18.27 | 1.87 | 0.15 | TUNE |
 | PCIE0_TXP / PCIE0_TXN | 20.82 | 33.42 | 12.60 | 0.15 | TUNE |
-| PCIE0_RXP / PCIE0_RXN | 35.08 | 27.66 | 7.41 | 0.15 | TUNE |
+| PCIE0_RXP / PCIE0_RXN | 35.08 | 29.69 | 5.39 | 0.15 | TUNE |
 | PCIE0_REFCLKP / PCIE0_REFCLKN | 32.80 | 30.76 | 2.04 | 0.15 | TUNE |
 | USB3_TXP / USB3_TXN | 51.06 | 38.62 | 12.44 | 0.15 | TUNE |
 | USB3_RXP / USB3_RXN | 41.45 | 11.77 | 29.68 | 0.15 | TUNE |
 | USBC_DP / USBC_DM | 37.86 | 41.16 | 3.30 | 0.15 | TUNE |
 | HUB_UP_D | 0.00 | 37.39 | - | 0.15 | unrouted |
 | ETH_MDI0_P / ETH_MDI0_N | 15.30 | 12.00 | 3.30 | 0.15 | TUNE |
-| ETH_MDI1_P / ETH_MDI1_N | 16.15 | 12.98 | 3.17 | 0.15 | TUNE |
+| ETH_MDI1_P / ETH_MDI1_N | 16.15 | 21.96 | 5.81 | 0.15 | TUNE |
 | ETH_MDI2_P / ETH_MDI2_N | 11.74 | 15.15 | 3.41 | 0.15 | TUNE |
 | ETH_MDI3_P / ETH_MDI3_N | 18.76 | 14.75 | 4.02 | 0.15 | TUNE |
 
