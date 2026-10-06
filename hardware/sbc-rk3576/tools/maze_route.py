@@ -595,8 +595,8 @@ class Router:
                         st[li, cy, cx] = which
                         blocked[li, cy, cx] = 0
                         tgt_any = tgt_any or which == 2
-        if not tgt_any or not (st == 1).any():
-            return 'no-target'
+        if not (st == 2).any() or not (st == 1).any():
+            return 'no-target'          # also: both ends touch on the grid (KiCad still sees a gap)
         ty, tx = np.nonzero(np.any(st == 2, axis=0))
         out = np.zeros(3 * w * h, np.int32)
         need = (vdr + HOLE2HOLE) / R.res + 1.0          # min via-to-via spacing, cells
