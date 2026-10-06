@@ -376,6 +376,45 @@ class Router:
             out[LI[l]] = (e, ctr, need)
         return out
 
+    def expand(self, cells, net, wx0, wy0, w, h):
+        """Grow an end item to all own-net copper already connected to it inside the window
+        (its fan-out via on every layer it reaches, partial routes, pours), so a route can
+        leave a BGA ball through the via that is already in the pad."""
+        R, L = self.R, len(LAYERS)
+        win = (slice(wy0, wy0 + h), slice(wx0, wx0 + w))
+        own = [(R.hard[li][win] == net) | (R.zone[li][win] == net) for li in range(L)]
+        lab = [ndimage.label(own[li], structure=np.ones((3, 3), bool))[0] for li in range(L)]
+        holes = R.holes[win] == net
+        reach = [set() for _ in range(L)]
+        for li, (m, ctr, need) in cells.items():
+            ids = np.unique(lab[li][m & own[li]])
+            reach[li] |= set(int(i) for i in ids if i)
+        grown = True
+        while grown:
+            grown = False
+            hit = np.zeros((h, w), bool)
+            for li in range(L):
+                if reach[li]:
+                    hit |= holes & np.isin(lab[li], list(reach[li]))
+            if not hit.any():
+                break
+            for li in range(L):
+                ids = set(int(i) for i in np.unique(lab[li][hit & own[li]]) if i) - reach[li]
+                if ids:
+                    reach[li] |= ids
+                    grown = True
+        out = dict(cells)
+        for li in range(L):
+            if not reach[li]:
+                continue
+            m = ndimage.binary_erosion(np.isin(lab[li], list(reach[li])), iterations=2)
+            if li in out:
+                om, ctr, need = out[li]
+                out[li] = (om | m, ctr, need)
+            elif m.any():
+                out[li] = (m, None, 0)
+        return out
+
     def route(self, conn_id, A, B, posA, posB, max_margin=8.0):
         netcode = A.GetNetCode()
         name = A.GetNetname()
@@ -400,6 +439,8 @@ class Router:
             w, h = wx1 - wx0, wy1 - wy0
             src = self.item_cells(A, posA, wx0, wy0, w, h)
             dst = self.item_cells(B, posB, wx0, wy0, w, h)
+            src = self.expand(src, netcode, wx0, wy0, w, h)
+            dst = self.expand(dst, netcode, wx0, wy0, w, h)
             if name == 'GND':            # a via into either solid GND plane connects too
                 for li in (1, 4):
                     m = ndimage.binary_erosion(R.zone[li][wy0:wy0 + h, wx0:wx0 + w] == netcode, iterations=3)

@@ -29,9 +29,11 @@ def blocks(f, sites, dia, own_nets=True):
     return False
 
 
-def relocate(b, fp, sites, dia, gone):
+def relocate(b, fp, sites, dia, gone, keep_clear=None):
     """Move other-side footprints off the via sites: nearest spot (spiral, 0.25 mm steps, <= 6 mm)
-    whose pads clear every site and whose body clears every other footprint on that side."""
+    whose pads clear every site (and every keep_clear point) and whose body clears every other
+    footprint on that side."""
+    keep_clear = sites if keep_clear is None else keep_clear
     side = [f for f in b.GetFootprints() if f.IsFlipped() != fp.IsFlipped()]
     edge = b.GetBoardEdgesBoundingBox()
     extra = []
@@ -49,7 +51,7 @@ def relocate(b, fp, sites, dia, gone):
                 f.SetPosition(pcbnew.VECTOR2I(int(home.x + d * math.cos(ang)), int(home.y + d * math.sin(ang))))
                 bb = f.GetBoundingBox(False, False)
                 bb.Inflate(MM(0.1))
-                if not edge.Contains(bb) or blocks(f, sites, dia):
+                if not edge.Contains(bb) or blocks(f, keep_clear, dia):
                     continue
                 if any(bb.Intersects(g.GetBoundingBox(False, False)) for g in others):
                     continue
@@ -62,8 +64,17 @@ def relocate(b, fp, sites, dia, gone):
             print(f'  {f.GetReference()}: no free spot found, left in place', flush=True)
             continue
         f.SetPosition(best)
-        # routes that ended on the part's old pads are stale now
+        # routes that ended on the part's old pads are stale now, and routed copper of other
+        # nets under its new pads must go
         nets = {p.GetNetname() for p in f.Pads()}
+        body = f.GetBoundingBox(False, False)
+        body.Inflate(MM(0.15))
+        layer = pcbnew.B_Cu if f.IsFlipped() else pcbnew.F_Cu
+        for t in b.GetTracks():
+            if t.IsLocked() or any(t is g for g in extra) or t.GetNetname() in nets:
+                continue
+            if (t.GetClass() == 'PCB_VIA' or t.GetLayer() == layer) and body.Intersects(t.GetBoundingBox()):
+                extra.append(t)
         for t in b.GetTracks():
             if t.IsLocked() or t.GetNetname() not in nets or any(t is g for g in extra):
                 continue
@@ -83,6 +94,8 @@ def main():
     ap.add_argument('src'); ap.add_argument('dst'); ap.add_argument('ref')
     ap.add_argument('--via', default='0.25/0.15')
     ap.add_argument('--margin', type=float, default=0.3)
+    ap.add_argument('--only-missing', action='store_true',
+                    help='keep the routing; only add the balls that have no via-in-pad yet')
     ap.add_argument('--relocate', action='store_true',
                     help='slide other-side parts that sit on a ball\'s via site to the nearest free spot')
     a = ap.parse_args()
@@ -97,19 +110,27 @@ def main():
     y0 = min(TOMM(p.GetBoundingBox().GetTop()) for p in pads) - a.margin
     y1 = max(TOMM(p.GetBoundingBox().GetBottom()) for p in pads) + a.margin
     gone = []
-    for t in b.GetTracks():
-        if t.IsLocked():
-            continue
-        bb = t.GetBoundingBox()
-        if TOMM(bb.GetRight()) >= x0 and TOMM(bb.GetLeft()) <= x1 and \
-                TOMM(bb.GetBottom()) >= y0 and TOMM(bb.GetTop()) <= y1:
-            gone.append(t)
-    for t in gone:
-        b.Remove(t)
-        GRAVE.append(t)
+    used = [p for p in pads if p.GetNetname() and not p.GetNetname().startswith('unconnected-')]
+    vias = [t for t in b.GetTracks() if t.GetClass() == 'PCB_VIA']
+    if a.only_missing:
+        has = lambda p: any(v.GetNetname() == p.GetNetname() and
+                            (v.GetPosition() - p.GetPosition()).EuclideanNorm() < MM(0.05) for v in vias)
+        pads = [p for p in used if not has(p)]
+        print(f'{a.ref}: {len(pads)} used balls without via-in-pad', flush=True)
+    else:
+        for t in b.GetTracks():
+            if t.IsLocked():
+                continue
+            bb = t.GetBoundingBox()
+            if TOMM(bb.GetRight()) >= x0 and TOMM(bb.GetLeft()) <= x1 and \
+                    TOMM(bb.GetBottom()) >= y0 and TOMM(bb.GetTop()) <= y1:
+                gone.append(t)
+        for t in gone:
+            b.Remove(t)
+            GRAVE.append(t)
     sites = [p.GetPosition() for p in pads if p.GetNetname() and not p.GetNetname().startswith('unconnected-')]
     if a.relocate:
-        relocate(b, fp, sites, dia, gone)
+        relocate(b, fp, sites, dia, gone, keep_clear=[p.GetPosition() for p in used])
     other_side = [p for f in b.GetFootprints() if f.IsFlipped() != fp.IsFlipped() for p in f.Pads()]
     placed, skipped = 0, []
     for pad in pads:
@@ -132,6 +153,20 @@ def main():
         v.Padstack().SetUnconnectedLayerMode(pcbnew.PADSTACK.UNCONNECTED_LAYER_MODE_REMOVE_ALL)
         b.Add(v)
         placed += 1
+        if a.only_missing:            # routed copper of other nets too close to the new via
+            reach = MM(dia / 2 + 0.25)
+            for t in list(b.GetTracks()):
+                if t is v or t.IsLocked() or t.GetNetname() == net:
+                    continue
+                if t.GetClass() == 'PCB_VIA':
+                    hit = (t.GetPosition() - pos).EuclideanNorm() < reach + t.GetWidth(pcbnew.F_Cu) // 2
+                else:
+                    hit = pcbnew.SHAPE_SEGMENT(t.GetStart(), t.GetEnd(), t.GetWidth()).Collide(
+                        pcbnew.SHAPE_SEGMENT(pos, pos, 2 * reach), 0)
+                if hit:
+                    b.Remove(t)
+                    GRAVE.append(t)
+                    gone.append(t)
     pcbnew.SaveBoard(a.dst, b)
     print(f'{a.ref}: removed {len(gone)} routed items in the ball field, placed {placed} via-in-pad, '
           f'skipped {len(skipped)} {skipped[:10]} (other-side pad)', flush=True)
