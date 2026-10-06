@@ -431,8 +431,8 @@ class Router:
         de = (ndimage.distance_transform_edt(edge == 0) * R.res - EDGE_CLR)[crop] if edge.any() else None
         out, hole_eff = {}, None
         hm = R.holes[sl]
-        if fixed_only:                    # rip-up mode: routed copper is not an obstacle here
-            hm = np.where(R.hsoft[sl] != 0, 0, hm)
+        if fixed_only:                    # rip-up mode: other nets' routed drills are not obstacles here
+            hm = np.where((R.hsoft[sl] != 0) & (hm != net), 0, hm)
         fh = (hm != 0) & (hm != net)
         dfh = (ndimage.distance_transform_edt(~fh) * R.res - HOLE_CLR)[crop] if fh.any() else None
         for li in range(len(LAYERS)):
@@ -472,7 +472,7 @@ class Router:
     def masks(self, net, tw, vd, vdr, allowed, src, dst, deff, wx0, wy0, w, h):
         """Track/via feasibility from distance maps: (blocked[L], padok[L], holeok, lcost[L])."""
         R, L = self.R, len(LAYERS)
-        mg = 1.0 * R.res
+        mg = getattr(self, 'mg_cells', 1.0) * R.res
         blocked = np.ones((L, h, w), np.uint8)
         padok = np.zeros((L, h, w), np.uint8)
         lcost = np.zeros(L, np.float32)
@@ -503,7 +503,7 @@ class Router:
 
     def search(self, conn_id, net, name, tw, clr, vd, vdr, allowed, src, dst, deff, wx0, wy0, w, h):
         R, L = self.R, len(LAYERS)
-        mg = 1.0 * R.res
+        mg = getattr(self, 'mg_cells', 1.0) * R.res
         blocked, padok, holeok, lcost = self.masks(net, tw, vd, vdr, allowed, src, dst, deff, wx0, wy0, w, h)
         pen = vpen = None
         if getattr(self, 'rip', False):

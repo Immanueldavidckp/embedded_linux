@@ -156,6 +156,7 @@ def one_round(a, rnd):
     if gone:
         print(f'round {rnd}: removed {len(gone)} routed item(s) in DRC violations', flush=True)
     r = RipRouter(b, a.res, a.margin, a.pen * (1 + 0.5 * rnd), history)
+    r.mg_cells = a.mg
     r.gone_ids |= gone
     conns = []
     for k, u in enumerate(drc['unconnected_items']):
@@ -202,6 +203,7 @@ def main():
     ap.add_argument('--max-len', type=float, default=1e9, help='skip connections longer than this (mm)')
     ap.add_argument('--first', default='', help='comma-separated net regexes routed first, in this order')
     ap.add_argument('--no-rip', action='store_true', help='plain multi-pass routing (no rip-up)')
+    ap.add_argument('--mg', type=float, default=1.0, help='clearance safety margin in grid cells')
     ap.add_argument('--one-round', type=int, default=-1, help=argparse.SUPPRESS)
     a = ap.parse_args()
     if a.one_round >= 0:
@@ -225,7 +227,7 @@ def main():
         best = open_n + errs if best is None else min(best, open_n + errs)
         subprocess.run([sys.executable, os.path.abspath(__file__), a.out, a.out, '--one-round', str(rnd),
                         '--pen', str(a.pen), '--nets', a.nets, '--res', str(a.res), '--margin', str(a.margin),
-                        '--max-len', str(a.max_len), '--first', a.first, '--exclude', a.exclude] + (['--no-rip'] if a.no_rip else []),
+                        '--max-len', str(a.max_len), '--first', a.first, '--exclude', a.exclude, '--mg', str(a.mg)] + (['--no-rip'] if a.no_rip else []),
                        check=True)
         refill(a.out)
     print('done', flush=True)
