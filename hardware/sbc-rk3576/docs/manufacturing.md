@@ -4,9 +4,9 @@
 
 | Item | Value |
 |---|---|
-| Layers | 8 |
+| Layers | 10 (rev A2; see `tools/stackup.py`) |
 | Thickness | 1.6 mm ±10 % |
-| Stackup | JLC08161H-3313 (or equivalent; see layout_guide.md) |
+| Stackup | 10-layer 1.6 mm, symmetric (see layout_guide.md / `tools/stackup.py`) |
 | Impedance control | yes: 40/50 Ω SE, 80/85/90/100 Ω diff (see net classes) |
 | Min track / space | 0.09 / 0.09 mm (3.5/3.5 mil) |
 | Min via | 0.20 mm drill / 0.35 mm pad (0.15/0.25 allowed) |

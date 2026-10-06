@@ -18,7 +18,7 @@ FAB = os.path.join(HERE, '..', 'fab')
 VARIANT_8G = {'U601': ('LPDDR5 8GB', 'MT62F2G32D4DS-026 WT:B', 26.00),
               'U701': ('eMMC 64GB', 'FEMDNN064G-A3A55', 8.50)}
 # Board-level costs (USD per board @1k, budgetary; JLCPCB/PCBWay style pricing)
-PCB_COST = 6.50        # 8L 85x56mm 1.6mm ENIG, via-in-pad (POFV), impedance control
+PCB_COST = 9.50        # 10L 100x72mm 1.6mm ENIG, via-in-pad (POFV), impedance control
 ASSY_COST = 7.50       # double-sided SMT, ~410 placements, BGA X-ray, stencils amortised
 TEST_COST = 1.00       # flash + functional test fixture amortised
 
@@ -82,15 +82,15 @@ def main():
     lines += [f'| **Parts total (4GB LPDDR5 / 32GB eMMC)** | **{base_parts:.2f}** |', '',
               '| Build cost per board | 4GB / 32GB | 8GB / 64GB |', '|---|---:|---:|',
               f'| Parts | {base_parts:.2f} | {base_parts + up:.2f} |',
-              f'| PCB (8L, ENIG, POFV, impedance) | {PCB_COST:.2f} | {PCB_COST:.2f} |',
+              f'| PCB (10L, ENIG, POFV, impedance) | {PCB_COST:.2f} | {PCB_COST:.2f} |',
               f'| Assembly (2-sided, BGA X-ray) | {ASSY_COST:.2f} | {ASSY_COST:.2f} |',
               f'| Test / flashing | {TEST_COST:.2f} | {TEST_COST:.2f} |',
               f'| **Total** | **{base_parts + PCB_COST + ASSY_COST + TEST_COST:.2f}** | '
               f'**{base_parts + up + PCB_COST + ASSY_COST + TEST_COST:.2f}** |', '',
               'Variant parts (same footprints): ' + '; '.join(f'{r} -> {v[0]} {v[1]}' for r, v in VARIANT_8G.items()),
-              '', 'Cost drivers: SoC (~40%) and LPDDR5 (~25-40%). The 8-layer PCB with via-in-pad is the '
-              'next biggest line; a 6-layer stackup is possible for LPDDR5 x32 only with 1-step HDI '
-              '(laser microvias), which costs about the same - 8L through-via was chosen for wider fab choice.',
+              '', 'Cost drivers: SoC (~40%) and LPDDR5 (~25-40%). The 10-layer PCB with via-in-pad is the '
+              'next biggest line (rev A1 was 8 layers, ~USD 3 cheaper, but could not be fully routed: '
+              'LOG.md #31-#33). 1-step HDI (laser microvias) on 8 layers is the alternative at similar cost.',
               '', 'Prototype quantities (5 boards) cost far more per board: expect roughly USD 150-250 each '
               'including PCB/stencil/BGA assembly setup fees.']
     open(os.path.join(FAB, 'cost_summary.md'), 'w').write('\n'.join(lines) + '\n')

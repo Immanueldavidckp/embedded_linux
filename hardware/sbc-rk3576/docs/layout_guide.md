@@ -3,20 +3,27 @@
 ## Board
 
 - 100 × 72 mm, R3 corners, 4× M2.5 holes 3.5 mm in from each corner (93 × 65 mm pattern).
-- 8 layers, 1.6 mm, ENIG. Stackup is defined in the PCB file (Board Setup → Physical Stackup):
+- **10 layers** (rev A2; rev A1 was 8), 1.6 mm, ENIG. Stackup is defined in `tools/stackup.py` and in the
+  PCB file (Board Setup → Physical Stackup):
 
 | Layer | Use | Dielectric below |
 |---|---|---|
 | L1 F.Cu | BGA escape, HDMI/PCIe/USB3 pairs, eMMC | 3313 prepreg 0.0994 mm, εr 4.1 |
-| L2 In1 | **solid GND** (reference for L1/L3) | core 0.30 mm |
-| L3 In2 | LPDDR5 byte lanes (DQ/DMI/RDQS/WCK) | 3313 prepreg 0.0994 mm |
-| L4 In3 | power: split core rails (CPU_BIG, LOGIC, GPU, NPU, DDR) | core 0.30 mm |
-| L5 In4 | **solid GND** | 3313 prepreg 0.0994 mm |
-| L6 In5 | LPDDR5 CA/CK/CS, low-speed | core 0.30 mm |
-| L7 In6 | **GND** (power islands allowed under the PMIC) | 3313 prepreg 0.0994 mm |
-| L8 B.Cu | BGA decoupling, M.2, microSD, short stubs | — |
+| L2 In1 | **solid GND** (reference for L1/L3) | core 0.15 mm |
+| L3 In2 | LPDDR5 byte lanes (DQ/DMI/RDQS/WCK) | 2116 prepreg 0.13 mm |
+| L4 In3 | signal (rev A2), routed orthogonal to L3 (dual stripline) | core 0.15 mm |
+| L5 In4 | power: core and DDR rails (one connected pour per rail, `pour_fix.py`) | 7628 prepreg 0.32 mm |
+| L6 In5 | **solid GND** | core 0.15 mm |
+| L7 In6 | LPDDR5 CA/CK/CS, low-speed | 2116 prepreg 0.13 mm |
+| L8 In7 | signal (rev A2), routed orthogonal to L7 (dual stripline) | core 0.15 mm |
+| L9 In8 | power: 5 V, 3V3, 1V8 board-wide rails | 3313 prepreg 0.0994 mm |
+| L10 B.Cu | BGA decoupling, M.2, microSD, short stubs | — |
 
-Get the fab's impedance calculator result (e.g. JLCPCB JLC08161H-3313) **before** routing. The net-class
+Why 10: with 4 signal layers the area between the RK3576 and the LPDDR5 was full and 72 connections could
+not be placed (LOG.md #31-#33); two more signal layers took that to the low tens in one pass.
+Slow nets (PMIC feedback/control, GPIO, UART) may also cross the power layers (`maze_ripup.py --pwr-ok`).
+
+Get the fab's impedance calculator result (JLCPCB 10-layer 1.6 mm stack) **before** routing. The net-class
 widths below are starting values for this stackup.
 
 ## Net classes (set in `kicad/rk3576-sbc.kicad_pro`)

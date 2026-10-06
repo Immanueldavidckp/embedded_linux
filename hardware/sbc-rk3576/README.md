@@ -15,10 +15,10 @@ PCB, BOM and placement files are generated from it, so they cannot drift apart.
 | UART | 3-pin debug UART0 header, **3.3 V**, 1 500 000 8N1 |
 | USB | USB 3.0-A host + **2× USB 2.0-A** (FE1.1s hub) + USB-C (5 V in, OTG for maskrom/ADB) |
 | Network (rev A1) | **Gigabit Ethernet** (RTL8211F + MagJack) and **Wi-Fi 5 + BT 4.2** (BL-M8821CU1, u.FL antenna) |
-| Low price | **≈ $57 parts, ≈ $72 per built board** at 1k units (4 GB/32 GB); ≈ $86 for 8 GB/64 GB. See [fab/cost_summary.md](fab/cost_summary.md) |
+| Low price | **≈ $57 parts, ≈ $75 per built board** at 1k units (4 GB/32 GB, 10-layer PCB); ≈ $89 for 8 GB/64 GB. See [fab/cost_summary.md](fab/cost_summary.md) |
 
 Also on the board: microSD (recovery boot), MASKROM/POWER/RESET keys, LEDs. It is **100 × 72 mm** with an
-8-layer 1.6 mm stackup (via-in-pad under the BGAs).
+10-layer 1.6 mm stackup (rev A2; via-in-pad under the BGAs).
 
 ## Status
 
@@ -31,7 +31,7 @@ Also on the board: microSD (recovery boot), MASKROM/POWER/RESET keys, LEDs. It i
 | Device tree | ✅ `software/rk3576-sbc.dts` compiles against mainline `rk3576.dtsi`; 7/7 GPIOs match the schematic | `tools/check_dts.sh` |
 | Placement | ✅ all 484 footprints, 262 top / 222 bottom | renders in `docs/img/` |
 | BGA fan-out | ✅ via-in-pad on every used ball: RK3576 + LPDDR5 (818) and eMMC (33) | `tools/fanout.py`, `tools/fanout_region.py` |
-| Planes / pours | ✅ GND on L2/L5 + stitch vias; power pours on L4/L7 rebuilt as one connected region per rail | `tools/stitch.py`, `tools/pour_fix.py` |
+| Planes / pours | ✅ GND on L2/L6 + stitch vias; power pours on L5/L9 rebuilt as one connected region per rail | `tools/stitch.py`, `tools/pour_fix.py` |
 | **Routing** | 🟡 **≈ 92 % done**: re-routed from scratch with our own maze router. **72 of 942** connections still open: ~45 long LPDDR5-B / RGMII / SD / eMMC / high-speed runs through the full SoC area, ~25 power-pour joins | [fab/drc.rpt](fab/drc.rpt), `tools/route_all.sh` |
 | DRC | ✅ **0 errors** apart from the 72 unconnected items (warnings: dangling stubs/vias left by rip-up and small pour islands, removed by `tools/cleanup.py` at the end) | [fab/drc.rpt](fab/drc.rpt) |
 | Schematic ↔ PCB parity | ✅ 0 issues | [fab/drc.rpt](fab/drc.rpt) |
