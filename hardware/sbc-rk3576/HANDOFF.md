@@ -1,7 +1,7 @@
 # HANDOFF: RK3576 SBC hardware project (read this first)
 
 This file is for whoever (person or AI) picks the project up next. It says what exists, what state it
-is in, how to rebuild it, and exactly what is left. Last updated **2026-10-07**, at commit `b0a8ded`
+is in, how to rebuild it, and exactly what is left. Last updated **2026-10-07** (routing state of commit `b0a8ded`)
 on branch `ccr-2ee6a8c6-02t1jx` (PR #1, draft, into `main`).
 
 ## 1. Status in one table
@@ -99,6 +99,7 @@ The machine had 4 cores and 15 GB RAM; a full-board raster is ~10 layers × 4040
 | `maze_ripup.py` | DRC-driven rounds around maze_route (each round in its own process): drops routed items in DRC errors, routes, optional rip-up (`--max-rip`, `--no-rip`), refills, stops on no progress |
 | `maze_diag.py BOARD DRC.json NETREGEX` | flood-fills free space from both ends: "boxed in" vs "congested corridor" |
 | `strip_routes.py IN OUT [--nets RE]` | strip all routing (re-stitch planes), or only some nets (to re-route them from their pads) |
+| `maze_ripup.py --vip U201` | lets the router put a via-in-pad on another part's pads (centre line of long QFN pads) |
 | `fanout.py`, `fanout_region.py` | BGA via-in-pad; late fan-out of one BGA with `--relocate` (moves other-side parts off via sites) / `--only-missing` |
 | `pour.py`, `pour_fix.py` | power pours; `pour_fix` re-plans each rail as one connected region (run after signal changes; refill ~3–15 min) |
 | `stitch.py` | stub + via from every GND / rail pad into its plane |
@@ -116,7 +117,7 @@ The machine had 4 cores and 15 GB RAM; a full-board raster is ~10 layers × 4040
 | 1–3 | RGMII_RXD2, RXD3, TXCTL | U401 B12 / 1A10 / A11 → U1301 pins 23 / 22 / 19 (≈ 45 mm) | corridor SoC → PHY taken by the other RGMII lines | KiCad push-and-shove (X key, Shove mode), same layer as RXD0/RXD1; keep the RGMII group within ±1 mm |
 | 4 | SD_D1 | J701 pin 8 (bottom) → U401 B25 | long run through the SoC area | follow SD_D0/D2 on L7/L8 |
 | 5 | PCIE0_TXN | U401 P28 → C802 pin 1 | SoC ball boxed in on F.Cu | route as a diff pair with PCIE0_TXP (85 Ω), then `tune_length.py` |
-| 6–9 | PMIC_PWRCTRL3, PWRON_L, PMIC_FB6, VDDA_DDR_PLL_S0 | U201 pins 16 / 4 / 31 / 12 → SoC / caps | PMIC (QFN) pins boxed by its own switch-node copper; no via site nearby | via-in-pad (0.25/0.15, POFV) on those U201 pins or a dog-bone, then L3/L4 (`--pwr-ok` also lets them use L5/L9) |
+| 6–9 | PMIC_PWRCTRL3, PWRON_L, PMIC_FB6, VDDA_DDR_PLL_S0 | U201 pins 16 / 4 / 31 / 12 → SoC / caps | PMIC (QFN) pins boxed on F.Cu. Tried 2026-10-07 with `maze_ripup.py --vip U201` (via-in-pad anywhere along the 0.82 mm pad): pin 4 misses hole-to-hole by ~6 µm; pins 12/16/31 have other nets' tracks right under them on L3/L10, and every path needs > 6 rips | in KiCad: shove the tracks under pins 12/16/31 aside on L3/L10, drop a 0.25/0.15 via-in-pad at the outer end of each pin, route on L4/L8 (slow signals; L5/L9 also allowed) |
 | 10 | LP5_DMI0_B | 2.2 mm gap near (33.9, 40.1) | stranded piece | join on L7 |
 | 11 | VDD_NPU_S0 | 0.7 mm gap at (60, 30.5) | stranded piece | via from the B.Cu stub into the L5 pour |
 | 12 | VCC_2V0_PLDO_S3 | C303 → C249 (≈ 26 mm) | power, crosses other pours | 0.25 mm track on L5/L9, then re-run `pour_fix.py` |

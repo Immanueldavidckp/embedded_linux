@@ -218,9 +218,14 @@ class Raster:
                 self.stamp_polys(self.nopadvia, pl, 1)
                 if it.GetParentFootprint().GetReference() in BGA_REFS:
                     # BGA balls may take a via-in-pad (filled + capped, see manufacturing.md),
-                    # but only dead centre
+                    # dead centre; on long QFN-style pads anywhere along the pad's centre line
                     px, py = self.px(it.GetPosition().x, it.GetPosition().y)
-                    self.nopadvia[int(round(py)), int(round(px))] = 0
+                    bb = it.GetBoundingBox()
+                    lx, ly = TOMM(bb.GetWidth()), TOMM(bb.GetHeight())
+                    half = max(0.0, (max(lx, ly) - min(lx, ly)) / 2) / self.res
+                    for k in range(-int(half), int(half) + 1):
+                        x, y = (px + k, py) if lx > ly else (px, py + k)
+                        self.nopadvia[int(round(y)), int(round(x))] = 0
         if cls in ('PAD', 'PCB_VIA') and it.HasHole():
             hs = it.GetEffectiveHoleShape()
             a, bb = hs.GetSeg().A, hs.GetSeg().B
