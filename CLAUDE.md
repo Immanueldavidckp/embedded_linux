@@ -54,3 +54,8 @@ Each phase above maps to a Jira task (SCRUM-31 … SCRUM-37). Move each to Done 
 - Keep a `LOG.md` in each phase folder: what broke, how I fixed it. This becomes my interview-story bank.
 - Commit milestones to git; the repo is the portfolio that goes to GitHub.
 - Prefer mainline/upstream approaches where they exist; note where I had to use vendor BSP and why.
+
+## Hardware side project: RK3576 SBC (KiCad)
+- `hardware/sbc-rk3576/` holds a 10-layer RK3576 single-board computer designed in KiCad 9 from Python
+  generators. **Before touching it, read `hardware/sbc-rk3576/HANDOFF.md`** (status, setup, tools, the
+  exact list of what is left, pitfalls) and `hardware/sbc-rk3576/LOG.md`.
