@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "sbc")(type "KiCad")(uri "${KIPRJMOD}/sbc.kicad_sym")(options "")(descr "RK3576 SBC project symbols"))
+)
